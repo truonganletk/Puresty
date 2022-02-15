@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "382301756016",
+    "project_id": "puresty-a823e",
+    "storage_bucket": "puresty-a823e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:382301756016:android:648fd000c8bdcc09d072b5",
+        "android_client_info": {
+          "package_name": "com.example.puresty"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "382301756016-44h56kjkltoen5jsf5qpjo7pvk50ndtp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.puresty",
+            "certificate_hash": "979760c949aee37160464390028a41eeba38639e"
+          }
+        },
+        {
+          "client_id": "382301756016-r5p3gn8e73cvm72tmnlvu9870t3e4te9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAXl5EdTBxJFfCevEleb23Ia0-Kyupx9fI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "382301756016-r5p3gn8e73cvm72tmnlvu9870t3e4te9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
