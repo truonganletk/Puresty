@@ -36,7 +36,11 @@ class LoginScreen extends StatelessWidget {
               },
               child: Text("Login")),
           Text('OR'),
-          ElevatedButton(onPressed: () {}, child: Text("Login with Google")),
+          ElevatedButton(
+              onPressed: () {
+                context.read<FirebaseAuthentication>().signInWithGoogle();
+              },
+              child: Text("Login with Google")),
         ],
       ),
     );
