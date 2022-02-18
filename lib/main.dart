@@ -7,8 +7,6 @@ import 'package:provider/provider.dart';
 import 'package:puresty/authwrapper.dart';
 import 'package:puresty/services/firebase_auth.dart';
 import 'services/firebase_options.dart';
-import 'package:puresty/screens/auth_screens/log_in_screen/log_in_screen.dart';
-import 'package:puresty/screens/main_screens/setting_screen/setting_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
