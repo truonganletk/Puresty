@@ -5,8 +5,8 @@ import 'package:puresty/services/firebase_auth.dart';
 class SettingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
+    return Container(
+      child: Column(
         children: [
           ElevatedButton(
               onPressed: () {
