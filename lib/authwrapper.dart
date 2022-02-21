@@ -12,7 +12,7 @@ class AuthenticationWrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     final firebaseUser = context.watch<User?>();
     print(firebaseUser);
-    if (firebaseUser != null) return MainScreen();
-    return LoginScreen();
+    if (firebaseUser == null) return LoginScreen();
+    return MainScreen();
   }
 }
