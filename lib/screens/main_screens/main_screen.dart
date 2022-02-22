@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:puresty/constants/app_colors.dart';
+import 'package:puresty/screens/main_screens/add_screen/add_screen.dart';
 import 'package:puresty/screens/main_screens/notification_screen/notification_screen.dart';
 import 'package:puresty/screens/main_screens/post_screen/post_screen.dart';
 import 'package:puresty/screens/main_screens/report_screen/report_screen.dart';
-import 'package:puresty/screens/main_screens/scan_screen/scan_screen_control.dart';
 import 'package:puresty/screens/main_screens/setting_screen/setting_screen.dart';
 
 class MainScreen extends StatefulWidget {
@@ -18,7 +18,7 @@ class _MainScreenState extends State<MainScreen> {
   static List<Widget> _widgetOptions = <Widget>[
     PostScreen(),
     ReportScreen(),
-    ScanControlScreen(),
+    AddScreen(),
     NotificationScreen(),
     SettingScreen(),
   ];
@@ -58,7 +58,7 @@ class _MainScreenState extends State<MainScreen> {
               Icons.add_circle,
               color: _selectedIndex == 2 ? dullgreen : black,
             ),
-            label: 'Scan',
+            label: 'Add',
             backgroundColor: white,
           ),
           BottomNavigationBarItem(
