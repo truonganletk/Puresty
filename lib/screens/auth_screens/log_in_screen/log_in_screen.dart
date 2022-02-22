@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:puresty/screens/auth_screens/sign_up_screen/sign_up_screen.dart';
 import 'package:puresty/services/firebase_auth.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -13,7 +14,18 @@ class LoginScreen extends StatelessWidget {
         children: [
           Text('Login'),
           Row(
-            children: [Text('Dont-have-an-account-Sign-up')],
+            children: [
+              Text('Dont-have-an-account '),
+              GestureDetector(
+                onTap: () => {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => SignUpScreen()),
+                  )
+                },
+                child: Text('Sign-up'),
+              )
+            ],
           ),
           Text('Email'),
           TextField(
