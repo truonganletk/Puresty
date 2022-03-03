@@ -1,6 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:puresty/models/post.dart';
+import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 
 class PostDetailScreen extends StatefulWidget {
   final Post post;
@@ -27,20 +27,22 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          Container(
-            child: GestureDetector(
-              onTap: () => {Navigator.pop(context)},
-              child: Text(
-                'Back',
-                style: TextStyle(fontSize: 50),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              child: GestureDetector(
+                onTap: () => {Navigator.pop(context)},
+                child: Text(
+                  'Back',
+                  style: TextStyle(fontSize: 50),
+                ),
               ),
             ),
-          ),
-          Text(post.title),
-          Text(post.content)
-        ],
+            Text(post.title),
+            HtmlWidget(post.content)
+          ],
+        ),
       ),
     );
   }
