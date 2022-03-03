@@ -24,13 +24,10 @@ class _PostScreenState extends State<PostScreen> {
     super.dispose();
   }
 
-  final List<String> entries = <String>['A', 'B', 'C'];
-  final List<int> colorCodes = <int>[600, 500, 100];
-
   final scrollController = ScrollController();
   String errorMessage = '';
   bool isFetching = false;
-  int documentLimit = 3;
+  int documentLimit = 5;
   List _allresultList = [];
   List<Post> _listpost = [];
   getallPost() async {
@@ -124,9 +121,8 @@ class _PostScreenState extends State<PostScreen> {
                               child: Container(
                                 width: 300,
                                 height: 100,
-                                color: Colors.amber[colorCodes[index]],
-                                child: Center(
-                                    child: Text('Entry ${entries[index]}')),
+                                color: Colors.pinkAccent,
+                                child: Center(child: Text('<3')),
                               ),
                             );
                           }),
