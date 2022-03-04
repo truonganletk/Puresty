@@ -7,3 +7,4 @@ const darksage = Color.fromRGBO(82, 117, 71, 1);
 const black = Color.fromRGBO(0, 0, 0, 1);
 const white = Color.fromRGBO(255, 255, 255, 1);
 const softgreen = Color.fromRGBO(129, 199, 107, 1);
+const lightgrey = Color.fromRGBO(220, 224, 219, 1);
