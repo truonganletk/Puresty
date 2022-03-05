@@ -72,6 +72,8 @@ class _SearchScreenState extends State<SearchScreen> {
         _allresultList.addAll(data.docs);
         _resultList.addAll(data.docs);
         for (var snapshot in _resultList) {
+          print(snapshot.get('name'));
+          print(snapshot.get('id'));
           _fruitlist.add(Fruit.fromSnapshot(snapshot));
         }
       });
@@ -125,7 +127,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 child: Column(
                   children: [
                     Container(
-                      width: 300,
+                      width: 400,
                       height: 500,
                       child: ListView.builder(
                           controller: scrollController,
@@ -142,7 +144,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                 );
                               },
                               child: Container(
-                                width: 300,
+                                width: 400,
                                 height: 100,
                                 color: Colors.cyan,
                                 child: Center(

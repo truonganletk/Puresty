@@ -16,10 +16,11 @@ class FirebaseAuthentication {
       await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
       //----------
-      CollectionReference users =
-          FirebaseFirestore.instance.collection('users');
+      var users = FirebaseFirestore.instance
+          .collection('users')
+          .doc(FirebaseAuth.instance.currentUser?.uid);
       users
-          .add({
+          .set({
             'id': FirebaseAuth.instance.currentUser?.uid,
             'fullname': fullname,
             'username': username,
