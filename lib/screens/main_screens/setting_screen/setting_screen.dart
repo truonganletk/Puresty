@@ -16,7 +16,7 @@ class SettingScreen extends StatelessWidget {
           Row(
             children: [
               Text(
-                'Setting',
+                'Settings',
                 style: TextStyle(
                   fontFamily: 'Poppins',
                   fontWeight: FontWeight.bold,
