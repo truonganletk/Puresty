@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Fruit {
+  String id;
   String name;
   dynamic cal;
   dynamic fats;
@@ -8,15 +9,16 @@ class Fruit {
   dynamic fibre;
   dynamic protein;
 
-  Fruit(this.name, this.cal, this.fats, this.carbs, this.fibre, this.protein);
+  Fruit(this.id, this.name, this.cal, this.fats, this.carbs, this.fibre,
+      this.protein);
 
   Fruit.empty()
-      : name = "",
-        cal = "",
-        fats = "";
+      : id = "",
+        name = "";
 
   Fruit.fromSnapshot(DocumentSnapshot snapshot)
-      : name = snapshot.get('name'),
+      : id = snapshot.get('id'),
+        name = snapshot.get('name'),
         cal = snapshot.get('cal'),
         fats = snapshot.get('fats'),
         carbs = snapshot.get('carbs'),
