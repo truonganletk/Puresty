@@ -9,6 +9,7 @@ import 'package:puresty/services/firebase_auth.dart';
 import 'services/firebase_options.dart';
 
 void main() async {
+  Provider.debugCheckInvalidValueType = null;
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -29,6 +30,9 @@ class MyApp extends StatelessWidget {
           create: (context) =>
               context.read<FirebaseAuthentication>().authStateChanges,
           initialData: null,
+        ),
+        ChangeNotifierProvider<FirebaseAuthentication>(
+          create: (context) => FirebaseAuthentication(FirebaseAuth.instance),
         )
       ],
       child: MaterialApp(
