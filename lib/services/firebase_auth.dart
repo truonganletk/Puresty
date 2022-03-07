@@ -21,8 +21,10 @@ class FirebaseAuthentication extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future signUp(String email, String password, String fullname, String username,
-      String sex, String height, String weight) async {
+  Future<String> signUp(String email, String password, String fullname,
+      String username, String sex, String height, String weight) async {
+    isSigningIn = true;
+    String err = '';
     try {
       await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
@@ -43,7 +45,15 @@ class FirebaseAuthentication extends ChangeNotifier {
           .then((value) => print("User Added"))
           .catchError((error) => print("Failed to add user: $error"));
       //-------------
+      isSigningIn = false;
     } on FirebaseAuthException catch (e) {
+      Fluttertoast.showToast(
+        msg: e.code,
+        backgroundColor: pastelred,
+        textColor: white,
+        gravity: ToastGravity.TOP,
+      );
+      err = e.toString();
       if (e.code == 'weak-password') {
         print('The password provided is too weak.');
       } else if (e.code == 'email-already-in-use') {
@@ -51,7 +61,16 @@ class FirebaseAuthentication extends ChangeNotifier {
       }
     } catch (e) {
       print(e);
+      err = e.toString();
+      Fluttertoast.showToast(
+        msg: e.toString(),
+        backgroundColor: pastelred,
+        textColor: white,
+        gravity: ToastGravity.TOP,
+      );
     }
+    isSigningIn = false;
+    return err;
   }
 
   Future signIn(String user, String password) async {

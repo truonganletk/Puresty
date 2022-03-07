@@ -374,15 +374,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       } else if (!isNumeric(heightController.text)) {
                         _showToast("Height là 1 số");
                       } else {
-                        context.read<FirebaseAuthentication>().signUp(
-                            emailController.text,
-                            passwordController.text,
-                            fullnameController.text,
-                            usernameController.text,
-                            _sex.toString(),
-                            heightController.text,
-                            weightController.text);
-                        Navigator.pop(context);
+                        context
+                            .read<FirebaseAuthentication>()
+                            .signUp(
+                                emailController.text,
+                                passwordController.text,
+                                fullnameController.text,
+                                usernameController.text,
+                                _sex.toString(),
+                                heightController.text,
+                                weightController.text)
+                            .then((value) =>
+                                {if (value == '') Navigator.pop(context)});
                       }
                     },
                     child: Container(
