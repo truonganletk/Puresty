@@ -3,12 +3,16 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:provider/provider.dart';
 import 'package:puresty/authwrapper.dart';
 import 'package:puresty/services/firebase_auth.dart';
 import 'services/firebase_options.dart';
 
 void main() async {
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  Provider.debugCheckInvalidValueType = null;
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -29,6 +33,9 @@ class MyApp extends StatelessWidget {
           create: (context) =>
               context.read<FirebaseAuthentication>().authStateChanges,
           initialData: null,
+        ),
+        ChangeNotifierProvider<FirebaseAuthentication>(
+          create: (context) => FirebaseAuthentication(FirebaseAuth.instance),
         )
       ],
       child: MaterialApp(

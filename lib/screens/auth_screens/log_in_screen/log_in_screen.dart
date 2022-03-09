@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:puresty/constants/app_colors.dart';
 import 'package:puresty/screens/auth_screens/sign_up_screen/sign_up_screen.dart';
@@ -25,10 +26,7 @@ class _LoginScreenState extends State<LoginScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Container(
-                  width: 100,
-                  height: 100,
-                  child: Image.asset('assets/logo/fruits.png')),
+              Container(child: SvgPicture.asset('assets/logo/PurestyLogo.svg')),
               Text(
                 'Login',
                 style: TextStyle(
