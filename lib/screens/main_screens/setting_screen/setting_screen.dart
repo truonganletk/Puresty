@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:puresty/constants/app_colors.dart';
+import 'package:puresty/screens/main_screens/setting_screen/food_cart_screen/food_cart_screen.dart';
 import 'package:puresty/services/firebase_auth.dart';
 
 class SettingScreen extends StatelessWidget {
@@ -32,7 +33,10 @@ class SettingScreen extends StatelessWidget {
                 style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(white)),
                 onPressed: () {
-                  context.read<FirebaseAuthentication>().signOut();
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => FoodCart()),
+                  );
                 },
                 child: Container(
                   padding: EdgeInsets.all(10),
