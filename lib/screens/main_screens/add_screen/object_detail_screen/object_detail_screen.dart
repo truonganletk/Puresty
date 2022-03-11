@@ -25,6 +25,7 @@ class _ObjectDetailState extends State<ObjectDetail> {
         .add({
           'date': Timestamp.now(),
           'foodid': fr.id,
+          'foodname': fr.name,
           'foodweight': int.parse(fweight),
         })
         .then((value) => print("Foodeaten Added"))
