@@ -4,16 +4,19 @@ class FoodCartItem {
   dynamic date;
   dynamic foodid;
   dynamic foodweight;
+  String foodname;
 
-  FoodCartItem(this.date, this.foodid, this.foodweight);
+  FoodCartItem(this.date, this.foodid, this.foodweight, this.foodname);
 
   FoodCartItem.empty()
-      : date = "",
+      : foodname = "",
+        date = "",
         foodweight = "",
         foodid = "";
 
   FoodCartItem.fromSnapshot(DocumentSnapshot snapshot)
       : date = snapshot.get('date'),
         foodid = snapshot.get('foodid'),
+        foodname = snapshot.get('foodname'),
         foodweight = snapshot.get('foodweight');
 }

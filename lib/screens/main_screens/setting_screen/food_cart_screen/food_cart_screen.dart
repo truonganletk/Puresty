@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:puresty/constants/app_colors.dart';
 import 'package:puresty/models/foodcart.dart';
-import 'package:puresty/models/fruit.dart';
 
 class FoodCart extends StatefulWidget {
   @override
@@ -28,36 +27,47 @@ class _FoodCartState extends State<FoodCart> {
   String errorMessage = '';
   bool isFetching = false;
   bool hasNext = true;
+  bool gotdata = false;
   int documentLimit = 5;
   List _allresultList = [];
   List _listfoodcartitem = [];
-  List _fruitlist = [];
+
+  String convertToDayAgo(DateTime input) {
+    Duration diff = DateTime.now().difference(input);
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final yesterday = DateTime(now.year, now.month, now.day - 1);
+    final dateToCheck = DateTime(input.year, input.month, input.day);
+    if (dateToCheck == today) {
+      return 'Today';
+    } else if (dateToCheck == yesterday) {
+      return 'Yesterday';
+    } else
+      return '${diff.inDays} days ago';
+  }
+
+  bool compareDate(DateTime input1, DateTime input2) {
+    final date1 = DateTime(input1.year, input1.month, input1.day);
+    final date2 = DateTime(input2.year, input2.month, input2.day);
+    if (date1 == date2) {
+      return true;
+    } else
+      return false;
+  }
 
   void scrollListener() {
     if (scrollController.offset >= scrollController.position.maxScrollExtent) {
-      print("scrollend");
-      print(hasNext);
+      //print("scrollend");
+      //print(hasNext);
       if (hasNext) {
         getfoodcart();
       }
     }
   }
 
-  frlistadd(String id) async {
-    await FirebaseFirestore.instance
-        .collection('fruits')
-        .doc(id)
-        .get()
-        .then((value) {
-      setState(() {
-        _fruitlist.add(Fruit.fromSnapshot(value));
-      });
-    });
-  }
-
   getfoodcart() async {
-    print('get food cart');
     if (isFetching) return;
+    print('get food cart');
     errorMessage = '';
     isFetching = true;
     try {
@@ -65,6 +75,7 @@ class _FoodCartState extends State<FoodCart> {
           .collection('users')
           .doc(FirebaseAuth.instance.currentUser?.uid)
           .collection('foodeaten')
+          .orderBy('date', descending: true)
           .limit(documentLimit);
       final startAfter = _allresultList.isNotEmpty ? _allresultList.last : null;
       var data;
@@ -73,17 +84,15 @@ class _FoodCartState extends State<FoodCart> {
       } else {
         data = await fcart.startAfterDocument(startAfter).get();
       }
-      for (DocumentSnapshot Snapshot in data.docs) {
-        await frlistadd(FoodCartItem.fromSnapshot(Snapshot).foodid);
-      }
-      print('successful');
       setState(() {
+        gotdata = true;
         _allresultList.addAll(data.docs);
+        print('get _allresultList successful');
         for (DocumentSnapshot Snapshot in data.docs) {
           _listfoodcartitem.add(FoodCartItem.fromSnapshot(Snapshot));
+          //print(FoodCartItem.fromSnapshot(Snapshot).foodname);
         }
       });
-
       if (data.docs.length < documentLimit)
         setState(() {
           hasNext = false;
@@ -122,7 +131,7 @@ class _FoodCartState extends State<FoodCart> {
                 ],
               ),
             ),
-            _allresultList.length != 0
+            _allresultList.length != 0 && gotdata
                 ? SingleChildScrollView(
                     physics: NeverScrollableScrollPhysics(),
                     child: Container(
@@ -175,78 +184,151 @@ class _FoodCartState extends State<FoodCart> {
                                             );
                                           }
                                         } else
-                                          return Container(
-                                            margin: EdgeInsets.only(top: 20),
-                                            width: 302,
-                                            height: 101,
-                                            decoration: new BoxDecoration(
-                                              color: white,
-                                              borderRadius:
-                                                  BorderRadius.circular(5),
-                                              boxShadow: [
-                                                BoxShadow(
-                                                  color: Color(0x19000000),
-                                                  offset: Offset(0, 2),
-                                                  blurRadius: 10,
-                                                  spreadRadius: 0,
-                                                )
-                                              ],
-                                            ),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              children: [
-                                                Container(
-                                                  margin: EdgeInsets.all(5),
-                                                  width: 81,
-                                                  height: 77,
-                                                  decoration: new BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            12.007169723510742),
-                                                  ),
-                                                  child: Image.asset(
-                                                      'assets/images/fruit.jpg'),
-                                                ),
-                                                Container(
-                                                  margin: EdgeInsets.all(10),
-                                                  child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      Text(
-                                                        _fruitlist
-                                                            .elementAt(index)
-                                                            .name,
+                                          return Column(
+                                            children: [
+                                              if (index == 0 ||
+                                                  !compareDate(
+                                                      _listfoodcartitem
+                                                          .elementAt(index)
+                                                          .date
+                                                          .toDate(),
+                                                      _listfoodcartitem
+                                                          .elementAt(index - 1)
+                                                          .date
+                                                          .toDate()))
+                                                Row(
+                                                  children: [
+                                                    Expanded(
+                                                        child: Divider(
+                                                      color: black,
+                                                    )),
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              8.0),
+                                                      child: Text(
+                                                        convertToDayAgo(
+                                                            _listfoodcartitem
+                                                                .elementAt(
+                                                                    index)
+                                                                .date
+                                                                .toDate()),
                                                         style: TextStyle(
                                                           fontFamily: 'Poppins',
-                                                          color: darkgreyblue,
-                                                          fontSize: 18,
                                                           fontWeight:
-                                                              FontWeight.w600,
-                                                          fontStyle:
-                                                              FontStyle.normal,
+                                                              FontWeight.w500,
+                                                          fontSize: 18,
+                                                          color: darkgreyblue,
                                                         ),
                                                       ),
-                                                      Row(
+                                                    ),
+                                                    Expanded(
+                                                        child: Divider(
+                                                            color: black)),
+                                                  ],
+                                                ),
+                                              Container(
+                                                margin:
+                                                    EdgeInsets.only(top: 15),
+                                                width: 402,
+                                                height: 101,
+                                                decoration: new BoxDecoration(
+                                                  color: white,
+                                                  borderRadius:
+                                                      BorderRadius.circular(5),
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                      color: Color(0x19000000),
+                                                      offset: Offset(0, 2),
+                                                      blurRadius: 10,
+                                                      spreadRadius: 0,
+                                                    )
+                                                  ],
+                                                ),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  children: [
+                                                    Container(
+                                                      margin: EdgeInsets.all(5),
+                                                      width: 81,
+                                                      height: 77,
+                                                      decoration:
+                                                          new BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                                12.007169723510742),
+                                                      ),
+                                                      child: Image.asset(
+                                                          'assets/images/fruit.jpg'),
+                                                    ),
+                                                    Container(
+                                                      width: 185,
+                                                      margin:
+                                                          EdgeInsets.all(10),
+                                                      child: Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
                                                         children: [
                                                           Text(
-                                                              'Your serving size:   '),
-                                                          Text('150g'),
+                                                            _listfoodcartitem
+                                                                .elementAt(
+                                                                    index)
+                                                                .foodname,
+                                                            style: TextStyle(
+                                                              fontFamily:
+                                                                  'Poppins',
+                                                              color:
+                                                                  darkgreyblue,
+                                                              fontSize: 18,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600,
+                                                              fontStyle:
+                                                                  FontStyle
+                                                                      .normal,
+                                                            ),
+                                                          ),
+                                                          Row(
+                                                            children: [
+                                                              Text(
+                                                                  'Your serving size:   '),
+                                                              Text(_listfoodcartitem
+                                                                      .elementAt(
+                                                                          index)
+                                                                      .foodweight
+                                                                      .toString() +
+                                                                  'g'),
+                                                            ],
+                                                          ),
+                                                          Text(_listfoodcartitem
+                                                                  .elementAt(
+                                                                      index)
+                                                                  .date
+                                                                  .toDate()
+                                                                  .hour
+                                                                  .toString() +
+                                                              ':' +
+                                                              _listfoodcartitem
+                                                                  .elementAt(
+                                                                      index)
+                                                                  .date
+                                                                  .toDate()
+                                                                  .minute
+                                                                  .toString()),
                                                         ],
                                                       ),
-                                                      Text('9:00'),
-                                                    ],
-                                                  ),
+                                                    ),
+                                                  ],
                                                 ),
-                                              ],
-                                            ),
+                                              ),
+                                            ],
                                           );
                                       }),
                                 )
@@ -262,9 +344,11 @@ class _FoodCartState extends State<FoodCart> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        CircularProgressIndicator(
-                          color: dullgreen,
-                        ),
+                        !gotdata
+                            ? CircularProgressIndicator(
+                                color: dullgreen,
+                              )
+                            : Text('No result'),
                       ],
                     ),
                   ),
