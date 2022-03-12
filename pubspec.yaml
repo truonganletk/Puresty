@@ -38,6 +38,8 @@ dependencies:
   flutter_svg: ^1.0.3
   fluttertoast: ^8.0.9
   flutter_native_splash: ^2.1.0
+  firebase_storage: ^10.2.9
+  firebase_app_check: ^0.0.6+7
 
 dev_dependencies:
   flutter_test:
@@ -56,6 +58,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
+    - assets/images/fruit.jpg
     - assets/logo/PurestyLogo.svg
     - assets/logo/PurestyLogo2.svg
     - assets/logo/PurestyWhiteLogo.svg
