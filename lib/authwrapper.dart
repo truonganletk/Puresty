@@ -5,6 +5,7 @@ import 'package:puresty/screens/auth_screens/loading_screen.dart';
 import 'package:puresty/screens/auth_screens/log_in_screen/log_in_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:puresty/screens/main_screens/main_screen.dart';
+import 'package:puresty/screens/welcome_screen/welcome_screen.dart';
 import 'package:puresty/services/firebase_auth.dart';
 
 class AuthenticationWrapper extends StatelessWidget {
