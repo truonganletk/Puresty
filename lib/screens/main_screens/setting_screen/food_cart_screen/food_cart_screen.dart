@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
 import 'package:puresty/constants/app_colors.dart';
 import 'package:puresty/models/foodcart.dart';
+import 'package:puresty/services/firebase_storage.dart';
 
 class FoodCart extends StatefulWidget {
   @override
@@ -84,10 +86,11 @@ class _FoodCartState extends State<FoodCart> {
       } else {
         data = await fcart.startAfterDocument(startAfter).get();
       }
+
       setState(() {
         gotdata = true;
         _allresultList.addAll(data.docs);
-        print('get _allresultList successful');
+        //print('get _allresultList successful');
         for (DocumentSnapshot Snapshot in data.docs) {
           _listfoodcartitem.add(FoodCartItem.fromSnapshot(Snapshot));
           //print(FoodCartItem.fromSnapshot(Snapshot).foodname);
@@ -98,6 +101,7 @@ class _FoodCartState extends State<FoodCart> {
           hasNext = false;
         });
       print('get foodcart successful');
+      //print(data.docs.length);
     } catch (error) {
       errorMessage = error.toString();
     }
@@ -261,8 +265,47 @@ class _FoodCartState extends State<FoodCart> {
                                                             BorderRadius.circular(
                                                                 12.007169723510742),
                                                       ),
-                                                      child: Image.asset(
-                                                          'assets/images/fruit.jpg'),
+                                                      child: FutureBuilder(
+                                                        future: Storage
+                                                            .downloadURLExample(
+                                                                _listfoodcartitem
+                                                                    .elementAt(
+                                                                        index)
+                                                                    .foodname),
+                                                        builder: (BuildContext
+                                                                context,
+                                                            AsyncSnapshot<
+                                                                    String>
+                                                                snapshot) {
+                                                          if (snapshot.connectionState ==
+                                                                  ConnectionState
+                                                                      .done &&
+                                                              snapshot.hasData)
+                                                            return Image
+                                                                .network(
+                                                              snapshot.data!,
+                                                              fit: BoxFit.cover,
+                                                            );
+                                                          else if (snapshot
+                                                                      .connectionState ==
+                                                                  ConnectionState
+                                                                      .waiting ||
+                                                              !snapshot.hasData)
+                                                            return Container(
+                                                                width: 10,
+                                                                height: 10,
+                                                                child: Center(
+                                                                  child:
+                                                                      CircularProgressIndicator(
+                                                                    color:
+                                                                        dullgreen,
+                                                                  ),
+                                                                ));
+                                                          else
+                                                            return Image.asset(
+                                                                'assets/images/fruit.jpg');
+                                                        },
+                                                      ),
                                                     ),
                                                     Container(
                                                       width: 185,

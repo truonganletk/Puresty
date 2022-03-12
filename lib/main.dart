@@ -8,15 +8,26 @@ import 'package:provider/provider.dart';
 import 'package:puresty/authwrapper.dart';
 import 'package:puresty/services/firebase_auth.dart';
 import 'services/firebase_options.dart';
+import 'package:firebase_app_check/firebase_app_check.dart';
 
-void main() async {
+Future<void> main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   Provider.debugCheckInvalidValueType = null;
   WidgetsFlutterBinding.ensureInitialized();
+  //FirebaseAppCheck appCheck = FirebaseAppCheck.instance;
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  // String token = await FirebaseAppCheck.instance.getToken();
+  // print("hello " + token);
+
+  // FirebaseAppCheck.instance.onTokenChange.listen((token) {
+  //   print("hello" + token);
+  // });
+  // await FirebaseAppCheck.instance.setTokenAutoRefreshEnabled(true);
+  await FirebaseAppCheck.instance.activate();
   runApp(MyApp());
 }
 
