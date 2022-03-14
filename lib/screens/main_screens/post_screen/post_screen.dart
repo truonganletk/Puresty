@@ -46,9 +46,9 @@ class _PostScreenState extends State<PostScreen> {
       }
       setState(() {
         _allresultList.addAll(data.docs);
-        for (DocumentSnapshot Snapshot in data.docs) {
+        for (DocumentSnapshot snapshot in data.docs) {
           Post temp = Post.empty();
-          temp.fromSnapshot(Snapshot);
+          temp.fromSnapshot(snapshot);
           _listpost.add(temp);
         }
       });
@@ -67,70 +67,129 @@ class _PostScreenState extends State<PostScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: SingleChildScrollView(
-        physics: NeverScrollableScrollPhysics(),
-        child: Container(
-          child: Column(
-            children: [
-              Container(
-                alignment: Alignment.center,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Post",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: black,
-                        fontSize: 40.0,
-                        fontWeight: FontWeight.w900,
+      body: Container(
+        padding: EdgeInsets.all(20),
+        child: SingleChildScrollView(
+          physics: NeverScrollableScrollPhysics(),
+          child: Container(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Post",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: black,
+                          fontSize: 40.0,
+                          fontWeight: FontWeight.w900,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                width: 300,
-                alignment: Alignment.center,
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(15),
-                    topRight: Radius.circular(15),
+                    ],
                   ),
                 ),
-                child: Column(
-                  children: [
-                    Container(
-                      width: 300,
-                      height: 500,
-                      child: ListView.builder(
-                          padding: const EdgeInsets.all(8),
-                          controller: scrollController,
-                          itemCount: _allresultList.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => PostDetailScreen(
-                                          post: _listpost.elementAt(index))),
-                                );
-                              },
-                              child: Container(
-                                width: 300,
-                                height: 100,
-                                color: Colors.pinkAccent,
-                                child: Center(child: Text('<3')),
-                              ),
-                            );
-                          }),
-                    )
-                  ],
+                Container(
+                  width: double.infinity,
+                  child: Column(
+                    children: [
+                      Container(
+                        width: double.infinity,
+                        height: 630,
+                        child: ListView.builder(
+                            controller: scrollController,
+                            itemCount: _allresultList.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => PostDetailScreen(
+                                            post: _listpost.elementAt(index))),
+                                  );
+                                },
+                                child: Stack(
+                                  children: [
+                                    Card(
+                                      margin:
+                                          EdgeInsets.symmetric(vertical: 10),
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(15.0)),
+                                        child: ShaderMask(
+                                          shaderCallback: (rect) =>
+                                              LinearGradient(
+                                            begin: Alignment.bottomCenter,
+                                            end: Alignment.center,
+                                            colors: [
+                                              Color.fromARGB(255, 58, 58, 58),
+                                              Colors.transparent,
+                                            ],
+                                          ).createShader(rect),
+                                          blendMode: BlendMode.darken,
+                                          child: Container(
+                                            height: 229,
+                                            width: double.infinity,
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(15.0),
+                                                image: DecorationImage(
+                                                  fit: BoxFit.cover,
+                                                  image: AssetImage(
+                                                      'assets/images/posttemplateimage.jpg'),
+                                                  colorFilter: ColorFilter.mode(
+                                                      Colors.black26,
+                                                      BlendMode.darken),
+                                                )),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Positioned(
+                                      bottom: 20,
+                                      left: 15,
+                                      child: Container(
+                                        padding:
+                                            EdgeInsets.symmetric(horizontal: 7),
+                                        width: 300,
+                                        child: Row(
+                                          children: [
+                                            Expanded(
+                                              child: Text(
+                                                  _listpost
+                                                      .elementAt(index)
+                                                      .title,
+                                                  style: TextStyle(
+                                                    fontFamily: 'Poppins',
+                                                    color: white,
+                                                    fontSize: 24,
+                                                    fontWeight: FontWeight.w700,
+                                                    fontStyle: FontStyle.normal,
+                                                  )),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                // Container(
+                                //   width: 300,
+                                //   height: 100,
+                                //   color: Colors.pinkAccent,
+                                // child: Center(child: Text('<3')),
+                                //),
+                              );
+                            }),
+                      )
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

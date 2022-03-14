@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+//import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:puresty/constants/app_colors.dart';
 import 'package:puresty/models/post.dart';
 
@@ -80,16 +81,16 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
               ),
               Column(
                 children: [
-                  Container(
-                      child: Text(post.content,
-                          textAlign: TextAlign.justify,
-                          style: TextStyle(
-                            fontFamily: 'Poppins',
-                            color: black,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w300,
-                            fontStyle: FontStyle.normal,
-                          ))),
+                  //Container(child: HtmlWidget(post.content)),
+                  Text(post.content,
+                      textAlign: TextAlign.justify,
+                      style: TextStyle(
+                        fontFamily: 'Poppins',
+                        color: black,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w300,
+                        fontStyle: FontStyle.normal,
+                      )),
                 ],
               )
             ],
