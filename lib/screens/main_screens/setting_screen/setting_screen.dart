@@ -100,8 +100,102 @@ class SettingScreen extends StatelessWidget {
             child: ElevatedButton(
                 style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(white)),
-                onPressed: () {
-                  context.read<FirebaseAuthentication>().signOut();
+                onPressed: () async {
+                  bool result = await showDialog(
+                    context: context,
+                    builder: (context) {
+                      return Dialog(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12.0)),
+                        child: Container(
+                          width: 362.4,
+                          height: 187,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(top: 15.0),
+                                child: Text('Log out',
+                                    style: TextStyle(
+                                      fontFamily: 'Poppins',
+                                      color: black,
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.w500,
+                                      fontStyle: FontStyle.normal,
+                                    )),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(25.0),
+                                child: Text('Are you sure to log out?',
+                                    style: TextStyle(
+                                      fontFamily: 'Poppins',
+                                      color: black,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400,
+                                      fontStyle: FontStyle.normal,
+                                    )),
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    width: 80.15,
+                                    height: 39,
+                                    decoration: new BoxDecoration(
+                                        borderRadius: BorderRadius.circular(
+                                            2.457749843597412)),
+                                    margin: EdgeInsets.symmetric(horizontal: 5),
+                                    child: ElevatedButton(
+                                      style: ButtonStyle(
+                                          backgroundColor:
+                                              MaterialStateProperty.all(white)),
+                                      onPressed: () {
+                                        Navigator.of(context,
+                                                rootNavigator: true)
+                                            .pop(
+                                                false); // dismisses only the dialog and returns false
+                                      },
+                                      child: Text('Cancel',
+                                          style: TextStyle(
+                                            fontFamily: 'Poppins',
+                                            color: dullgreen,
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.w500,
+                                            fontStyle: FontStyle.normal,
+                                          )),
+                                    ),
+                                  ),
+                                  Container(
+                                    width: 80.15,
+                                    height: 39,
+                                    decoration: new BoxDecoration(
+                                        borderRadius: BorderRadius.circular(
+                                            2.457749843597412)),
+                                    margin: EdgeInsets.symmetric(horizontal: 5),
+                                    child: ElevatedButton(
+                                      style: ButtonStyle(
+                                          backgroundColor:
+                                              MaterialStateProperty.all(
+                                                  dullgreen)),
+                                      onPressed: () {
+                                        Navigator.of(context,
+                                                rootNavigator: true)
+                                            .pop(
+                                                true); // dismisses only the dialog and returns true
+                                      },
+                                      child: Text('Log out'),
+                                    ),
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                  if (result) context.read<FirebaseAuthentication>().signOut();
                 },
                 child: Container(
                   padding: EdgeInsets.all(10),
