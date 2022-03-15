@@ -232,6 +232,36 @@ class _LoginScreenState extends State<LoginScreen> {
                           ],
                         ))),
               ),
+              Container(
+                padding: EdgeInsets.only(top: 15),
+                decoration:
+                    BoxDecoration(borderRadius: BorderRadius.circular(7)),
+                child: ElevatedButton(
+                    style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(white)),
+                    onPressed: () {
+                      context.read<FirebaseAuthentication>().signInAnonymous();
+                    },
+                    child: Container(
+                        padding: EdgeInsets.all(10),
+                        width: 395,
+                        height: 45,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Use Puresty as a guest",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontFamily: 'Poppins',
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                                color: darkgreyblue,
+                              ),
+                            ),
+                          ],
+                        ))),
+              ),
             ],
           ),
         ),

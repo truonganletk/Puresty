@@ -74,6 +74,29 @@ class FirebaseAuthentication extends ChangeNotifier {
     return err;
   }
 
+  Future signInAnonymous() async {
+    isSigningIn = true;
+    try {
+      await FirebaseAuth.instance.signInAnonymously();
+      print('signInAnonymously successful');
+      isSigningIn = false;
+    } on FirebaseAuthException catch (e) {
+      Fluttertoast.showToast(
+        msg: e.code,
+        backgroundColor: pastelred,
+        textColor: white,
+        gravity: ToastGravity.TOP,
+      );
+      print(e);
+      if (e.code == 'user-not-found') {
+        print('No user found for that email.');
+      } else if (e.code == 'wrong-password') {
+        print('Wrong password provided for that user.');
+      }
+    }
+    isSigningIn = false;
+  }
+
   Future signIn(String user, String password) async {
     isSigningIn = true;
     try {
@@ -116,6 +139,22 @@ class FirebaseAuthentication extends ChangeNotifier {
       );
       // Once signed in, return the UserCredential
       await FirebaseAuth.instance.signInWithCredential(credential);
+      var userinfo = FirebaseAuth.instance.currentUser;
+      var users =
+          FirebaseFirestore.instance.collection('users').doc(userinfo?.uid);
+      users
+          .set({
+            'id': userinfo?.uid,
+            'fullname': userinfo?.displayName,
+            'username': userinfo?.email,
+            'age': 100,
+            'email': userinfo?.email,
+            'sex': null,
+            'height': null,
+            'weight': null,
+          })
+          .then((value) => print("User Added"))
+          .catchError((error) => print("Failed to add user: $error"));
       isSigningIn = false;
     }
   }
