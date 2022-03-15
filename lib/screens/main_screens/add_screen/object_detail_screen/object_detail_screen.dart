@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:puresty/constants/app_colors.dart';
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:puresty/main.dart';
 import 'package:puresty/models/fruit.dart';
 import 'package:puresty/services/firebase_auth.dart';
@@ -19,12 +21,37 @@ class _ObjectDetailState extends State<ObjectDetail> {
   String errorMessage = '';
   Fruit fr = Fruit.empty();
   bool? isAnony = FirebaseAuth.instance.currentUser?.isAnonymous;
+
+  bool isNumeric(String str) {
+    try {
+      // ignore: unused_local_variable
+      var value = double.parse(str);
+    } on FormatException {
+      return false;
+    }
+    return true;
+  }
+
+  void _showToast(String text) {
+    Fluttertoast.showToast(
+      msg: text,
+      backgroundColor: pastelred,
+      textColor: white,
+      gravity: ToastGravity.TOP,
+      toastLength: Toast.LENGTH_SHORT,
+    );
+  }
+
   _addfood(String fweight) {
     CollectionReference foodeaten = FirebaseFirestore.instance
         .collection('users')
         .doc(FirebaseAuth.instance.currentUser?.uid)
         .collection('foodeaten');
-    print(FirebaseAuth.instance.currentUser?.uid);
+    //print(FirebaseAuth.instance.currentUser?.uid);
+    if (!isNumeric(fweight)) {
+      _showToast('Dữ liệu không hợp lệ');
+      return;
+    }
     foodeaten
         .add({
           'date': Timestamp.now(),
@@ -374,9 +401,10 @@ class _ObjectDetailState extends State<ObjectDetail> {
                             backgroundColor:
                                 MaterialStateProperty.all(dullgreen)),
                         onPressed: () {
-                          if (isAnony != null && !isAnony!)
+                          if (isAnony != null && !isAnony!) {
                             _addfood(foodweightcontroller.text);
-                          else {
+                            Navigator.pop(context);
+                          } else {
                             context.read<FirebaseAuthentication>().signOut();
                             Navigator.pushAndRemoveUntil(
                               context,
