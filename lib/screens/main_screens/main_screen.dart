@@ -5,8 +5,6 @@ import 'package:puresty/screens/main_screens/notification_screen/notification_sc
 import 'package:puresty/screens/main_screens/post_screen/post_screen.dart';
 import 'package:puresty/screens/main_screens/report_screen/report_screen.dart';
 import 'package:puresty/screens/main_screens/setting_screen/setting_screen.dart';
-import 'package:puresty/screens/main_screens/setting_screen/profile_screen/profile_screen.dart';
-import 'package:puresty/screens/welcome_screen/welcome_screen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -23,8 +21,6 @@ class _MainScreenState extends State<MainScreen> {
     AddScreen(),
     NotificationScreen(),
     SettingScreen(),
-    ProfileScreen(),
-    WelcomeScreen(),
   ];
 
   void _onItemTapped(int index) {
@@ -81,7 +77,6 @@ class _MainScreenState extends State<MainScreen> {
             label: 'Settings',
             backgroundColor: white,
           ),
-          
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: dullgreen,
