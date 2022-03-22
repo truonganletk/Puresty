@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:provider/provider.dart';
 import 'package:puresty/constants/app_colors.dart';
-import 'package:puresty/services/firebase_auth.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
-enum Gender { female, male}  
+enum Gender { female, male }
 
 class _ProfileScreenState extends State<ProfileScreen> {
   final TextEditingController emailController = TextEditingController();
@@ -18,181 +16,214 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final TextEditingController heightController = TextEditingController();
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  Gender? _sex = Gender.female;  
+  Gender? _sex = Gender.female;
   bool showPassword = false;
-  bool _value = false;
   int val = -1;
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Profile',
-      home: Scaffold(
-        body: Column(
-          children: [
-            Container(
-              width: 100,
-              height: 100,
-              child: SvgPicture.asset(
-                  'assets/images/undraw_my_personal_files_re_3q0p.svg')),
-            Container(
-            height: 50.0,
-            child: Center(
-                child: Text(
-                  "Username",
-                  style: TextStyle(
-                      fontFamily: "SanFrancisco",
-                      fontSize: 30.0,
-                      fontWeight: FontWeight.w500),
-            )),
-            ),
-            Row(
-              children : [
-                Container(
-                  height : 50.0,
-                  width : 100.0,
-                ),
-              Column( children: [
-              Container(
-              height: 35.0,
-                child: Center(
-                    child: Text(
-                      "WEIGHT",
-                      style: TextStyle(
-                          fontFamily: "SanFrancisco",
-                          fontSize: 15.0,
-                          fontWeight: FontWeight.w500),
-                    )
-                ),
-              ),
-              Container(
-              height: 40.0,
-                
-                    child: Text(
-                      "xx",
-                      style: TextStyle(
-                          fontFamily: "SanFrancisco",
-                          fontSize: 15.0,
-                          fontWeight: FontWeight.w300),
-                    )
-                
-              ),
-              ],
-              ),
-              Container(
-                  height : 80.0,
-                  width : 100.0,
-                ),
-              Column( children: [
-              Container(
-              height: 35.0,
-                child: Center(
-                    child: Text(
-                      "HEIGHT",
-                      style: TextStyle(
-                          fontFamily: "SanFrancisco",
-                          fontSize: 15.0,
-                          fontWeight: FontWeight.w500),
-                    )
-                ),
-              ),
-              Container(
-              height: 40.0,
-                
-                    child: Text(
-                      "yy",
-                      style: TextStyle(
-                          fontFamily: "SanFrancisco",
-                          fontSize: 15.0,
-                          fontWeight: FontWeight.w300),
-                    )
-              ),
-              ],
-              ),
-              ]
-            ),
-            Column(
-              children: [
-                Row(
+    return Scaffold(
+      body: Container(
+        padding: EdgeInsets.all(20),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Row(
                 children: [
-                  Text(
-                    'Fullname',
-                    style: TextStyle(
-                      fontFamily: 'Poppins',
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14,
-                      color: darkgreyblue,
+                  Container(
+                    margin: EdgeInsets.only(top: 20),
+                    child: GestureDetector(
+                        onTap: () => {Navigator.pop(context)},
+                        child: Icon(
+                          Icons.arrow_back_ios,
+                          size: 30,
+                        )),
+                  ),
+                ],
+              ),
+              Container(
+                  width: 100,
+                  height: 100,
+                  child: SvgPicture.asset(
+                      'assets/images/undraw_my_personal_files_re_3q0p.svg')),
+              Text("Fullname",
+                  style: TextStyle(
+                    fontFamily: 'Poppins',
+                    color: darkgreyblue,
+                    fontSize: 24,
+                    fontWeight: FontWeight.w600,
+                    fontStyle: FontStyle.normal,
+                  )),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: 20),
+                    child: Column(
+                      children: [
+                        Container(
+                          height: 35.0,
+                          child: Center(
+                            child: Text(
+                              "WEIGHT",
+                              style: TextStyle(
+                                fontFamily: 'Poppins',
+                                color: darkgreyblue,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                                fontStyle: FontStyle.normal,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Container(
+                          height: 40.0,
+                          child: Text(
+                            "69Kg",
+                            style: TextStyle(
+                              fontFamily: 'Poppins',
+                              color: darkgreyblue,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w200,
+                              fontStyle: FontStyle.normal,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: 20),
+                    child: Column(
+                      children: [
+                        Container(
+                          height: 35.0,
+                          child: Center(
+                              child: Text(
+                            "HEIGHT",
+                            style: TextStyle(
+                              fontFamily: 'Poppins',
+                              color: darkgreyblue,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                              fontStyle: FontStyle.normal,
+                            ),
+                          )),
+                        ),
+                        Container(
+                          height: 40.0,
+                          child: Text(
+                            "196cm",
+                            style: TextStyle(
+                              fontFamily: 'Poppins',
+                              color: darkgreyblue,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w200,
+                              fontStyle: FontStyle.normal,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
               ),
-                Container(
-                padding: EdgeInsets.only(top: 5, bottom: 15),
-                child: TextField(
-                  controller: fullnameController,
-                  decoration: InputDecoration(
-                    contentPadding: EdgeInsets.all(10),
-                    labelStyle: TextStyle(
-                      fontFamily: 'Poppins',
-                    ),
-                    border: OutlineInputBorder(),
-                    counterText: "",
-                    hintText: 'Fullname',
-                  ),
-                ),
-              ),
-                Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Expanded(
-                    child: ListTile(
-                      title: const Text(
-                        'Female',
+              Column(
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        'Fullname',
                         style: TextStyle(
                           fontFamily: 'Poppins',
-                          fontWeight: FontWeight.w400,
+                          fontWeight: FontWeight.w600,
                           fontSize: 14,
                           color: darkgreyblue,
                         ),
                       ),
-                      leading: Radio<Gender>(
-                        value: Gender.female,
-                        groupValue: _sex,
-                        onChanged: (Gender? value) {
-                          setState(() {
-                            _sex = value;
-                          });
-                        },
+                    ],
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(top: 5, bottom: 15),
+                    child: TextField(
+                      controller: fullnameController,
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.all(10),
+                        labelStyle: TextStyle(
+                          fontFamily: 'Poppins',
+                        ),
+                        border: OutlineInputBorder(),
+                        counterText: "",
+                        hintText: 'Fullname',
                       ),
                     ),
                   ),
-                  Expanded(
-                    child: ListTile(
-                      title: const Text(
-                        'Male',
+                  Row(
+                    children: [
+                      Text(
+                        'Sex',
                         style: TextStyle(
                           fontFamily: 'Poppins',
-                          fontWeight: FontWeight.w400,
+                          fontWeight: FontWeight.w600,
                           fontSize: 14,
                           color: darkgreyblue,
                         ),
                       ),
-                      leading: Radio<Gender>(
-                        value: Gender.male,
-                        groupValue: _sex,
-                        onChanged: (Gender? value) {
-                          setState(() {
-                            _sex = value;
-                          });
-                        },
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Expanded(
+                        child: ListTile(
+                          title: const Text(
+                            'Female',
+                            style: TextStyle(
+                              fontFamily: 'Poppins',
+                              fontWeight: FontWeight.w400,
+                              fontSize: 14,
+                              color: darkgreyblue,
+                            ),
+                          ),
+                          leading: Radio<Gender>(
+                            value: Gender.female,
+                            groupValue: _sex,
+                            onChanged: (Gender? value) {
+                              setState(() {
+                                _sex = value;
+                              });
+                            },
+                          ),
+                        ),
                       ),
-                    ),
+                      Expanded(
+                        child: ListTile(
+                          title: const Text(
+                            'Male',
+                            style: TextStyle(
+                              fontFamily: 'Poppins',
+                              fontWeight: FontWeight.w400,
+                              fontSize: 14,
+                              color: darkgreyblue,
+                            ),
+                          ),
+                          leading: Radio<Gender>(
+                            value: Gender.male,
+                            groupValue: _sex,
+                            onChanged: (Gender? value) {
+                              setState(() {
+                                _sex = value;
+                              });
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
-              ],
-            ),
-            Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Expanded(
@@ -272,7 +303,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 ],
               ),
-            Row(
+              Row(
                 children: [
                   Text(
                     'Email',
@@ -288,6 +319,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               Container(
                 padding: EdgeInsets.only(top: 5, bottom: 15),
                 child: TextField(
+                  enabled: false,
                   controller: emailController,
                   decoration: InputDecoration(
                     contentPadding: EdgeInsets.all(10),
@@ -316,6 +348,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               Container(
                 padding: EdgeInsets.only(top: 5, bottom: 15),
                 child: TextField(
+                  enabled: false,
                   controller: usernameController,
                   decoration: InputDecoration(
                     contentPadding: EdgeInsets.all(10),
@@ -344,6 +377,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               Container(
                 padding: EdgeInsets.only(top: 5, bottom: 15),
                 child: TextField(
+                  enabled: false,
                   controller: passwordController,
                   decoration: InputDecoration(
                     suffixIcon: GestureDetector(
@@ -367,16 +401,38 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   obscureText: !showPassword,
                 ),
               ),
-            FlatButton (
-              child: Text("       Udpate        "),
-              onPressed: () {},
-              color: Colors.green,
-              textColor: Colors.white,
-            )
-          ]
+              Container(
+                padding: EdgeInsets.only(top: 15),
+                decoration:
+                    BoxDecoration(borderRadius: BorderRadius.circular(7)),
+                child: ElevatedButton(
+                    style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(dullgreen)),
+                    onPressed: () {},
+                    child: Container(
+                        padding: EdgeInsets.all(10),
+                        width: 395,
+                        height: 45,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Update",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontFamily: 'Poppins',
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                                color: white,
+                              ),
+                            ),
+                          ],
+                        ))),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 }
-
