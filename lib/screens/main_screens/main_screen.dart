@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:puresty/constants/app_colors.dart';
-import 'package:puresty/screens/main_screens/add_screen/add_screen.dart';
+import 'package:puresty/screens/main_screens/add_screen/search_screen.dart';
 import 'package:puresty/screens/main_screens/notification_screen/notification_screen.dart';
 import 'package:puresty/screens/main_screens/post_screen/post_screen.dart';
 import 'package:puresty/screens/main_screens/report_screen/report_screen.dart';
@@ -18,7 +18,7 @@ class _MainScreenState extends State<MainScreen> {
   static List<Widget> _widgetOptions = <Widget>[
     PostScreen(),
     ReportScreen(),
-    AddScreen(),
+    SearchScreen(),
     NotificationScreen(),
     SettingScreen(),
   ];
@@ -55,10 +55,10 @@ class _MainScreenState extends State<MainScreen> {
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.add_circle,
+              Icons.search_rounded,
               color: _selectedIndex == 2 ? dullgreen : black,
             ),
-            label: 'Add',
+            label: 'Search',
             backgroundColor: white,
           ),
           BottomNavigationBarItem(

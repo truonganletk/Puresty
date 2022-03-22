@@ -44,3 +44,7 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Unused file
+lib/screens/main_screens/add_screen/add_screen.dart
+lib/screens/main_screens/add_screen/scan_screen.dart
