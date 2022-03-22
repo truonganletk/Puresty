@@ -145,7 +145,7 @@ class _ObjectDetailState extends State<ObjectDetail> {
                         Row(
                           children: [
                             Container(
-                                child: Text(fr.name,
+                                child: Text(fr.name.toUpperCase(),
                                     style: TextStyle(
                                       fontFamily: 'Poppins',
                                       color: darkgreyblue,
@@ -186,7 +186,8 @@ class _ObjectDetailState extends State<ObjectDetail> {
                           ],
                         ),
                         Text(
-                          "provides a healthy dose of mono-unsaturated fats, which may be helpful in lowering bad cholesterol",
+                          fr.description,
+                          textAlign: TextAlign.justify,
                           style: TextStyle(
                             fontFamily: 'Poppins',
                             color: Color(0xb2000000),
