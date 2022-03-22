@@ -8,6 +8,7 @@ import 'package:puresty/constants/app_colors.dart';
 import 'package:puresty/main.dart';
 import 'package:puresty/models/fruit.dart';
 import 'package:puresty/services/firebase_auth.dart';
+import 'package:puresty/services/firebase_firestore.dart';
 
 class ObjectDetail extends StatefulWidget {
   final Fruit fr;
@@ -66,6 +67,12 @@ class _ObjectDetailState extends State<ObjectDetail> {
         })
         .then((value) => print("Foodeaten Added"))
         .catchError((error) => print("Failed to add user: $error"));
+    FirestoreNotification().createNotif(
+      'Add food successfully',
+      'Add ' + fr.name + ' to food cart',
+      'none',
+      DateTime.now(),
+    );
   }
 
   @override
