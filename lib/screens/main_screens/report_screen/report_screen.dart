@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:puresty/constants/app_colors.dart';
 import 'package:puresty/models/foodcart.dart';
+import 'package:puresty/services/firebase_auth.dart';
 
 enum StateView { Daily, Monthly }
 final now = new DateTime.now();
@@ -78,6 +80,7 @@ class _ReportScreenState extends State<ReportScreen> {
   double totalFibre = 0.0;
   int totalItems = 0;
   double totalWeight = 0.0;
+  bool? isAnony = FirebaseAuth.instance.currentUser?.isAnonymous;
 
   @override
   void initState() {
@@ -162,13 +165,13 @@ class _ReportScreenState extends State<ReportScreen> {
       }
     }
     setState(() {
-      totalCal = tempCal;
-      totalFats = tempFats;
-      totalCarbs = tempCarbs;
-      totalProtein = tempProtein;
-      totalFibre = tempFibre;
+      totalCal = tempCal / 100;
+      totalFats = tempFats / 100;
+      totalCarbs = tempCarbs / 100;
+      totalProtein = tempProtein / 100;
+      totalFibre = tempFibre / 100;
       totalItems = tempItems;
-      totalWeight = tempWeight;
+      totalWeight = tempWeight / 100;
     });
   }
 
@@ -268,231 +271,270 @@ class _ReportScreenState extends State<ReportScreen> {
                     fontStyle: FontStyle.normal,
                   )),
             ),
-            Container(
-              margin: EdgeInsets.only(top: 20, bottom: 50),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    width: 90.15,
-                    height: 39,
-                    decoration: new BoxDecoration(
-                        borderRadius: BorderRadius.circular(2.457749843597412)),
-                    margin: EdgeInsets.symmetric(horizontal: 5),
-                    child: ElevatedButton(
-                      style: ButtonStyle(
-                          backgroundColor: _stateView == StateView.Daily
-                              ? MaterialStateProperty.all(dullgreen)
-                              : MaterialStateProperty.all(white)),
-                      onPressed: () {
-                        setState(() {
-                          _stateView = StateView.Daily;
-                          currentDay = now.day;
-                          currentYear = now.year;
-                          currentMonth = now.month;
-                          _refreshdata();
-                        });
-                      },
-                      child: Text('Daily',
-                          style: TextStyle(
-                            fontFamily: 'Poppins',
-                            color: _stateView == StateView.Daily
-                                ? white
-                                : dullgreen,
-                            fontSize: 13,
-                            fontWeight: FontWeight.w500,
-                            fontStyle: FontStyle.normal,
-                          )),
-                    ),
-                  ),
-                  Container(
-                    width: 90.15,
-                    height: 39,
-                    decoration: new BoxDecoration(
-                        borderRadius: BorderRadius.circular(2.457749843597412)),
-                    margin: EdgeInsets.symmetric(horizontal: 5),
-                    child: ElevatedButton(
-                      style: ButtonStyle(
-                          backgroundColor: _stateView == StateView.Monthly
-                              ? MaterialStateProperty.all(dullgreen)
-                              : MaterialStateProperty.all(white)),
-                      onPressed: () {
-                        setState(() {
-                          _stateView = StateView.Monthly;
-                          currentDay = now.day;
-                          currentYear = now.year;
-                          currentMonth = now.month;
-                          _refreshdata();
-                        });
-                      },
-                      child: Text('Monthly',
-                          style: TextStyle(
-                            fontFamily: 'Poppins',
-                            color: _stateView == StateView.Monthly
-                                ? white
-                                : dullgreen,
-                            fontSize: 13,
-                            fontWeight: FontWeight.w500,
-                            fontStyle: FontStyle.normal,
-                          )),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            gotdata
-                ? Container(
-                    height: 250,
-                    child: Column(
-                      children: [
-                        Row(
+            !isAnony!
+                ? Column(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(top: 20, bottom: 50),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Expanded(
-                                child: Divider(
-                              color: black,
-                            )),
+                            Container(
+                              width: 90.15,
+                              height: 39,
+                              decoration: new BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.circular(2.457749843597412)),
+                              margin: EdgeInsets.symmetric(horizontal: 5),
+                              child: ElevatedButton(
+                                style: ButtonStyle(
+                                    backgroundColor: _stateView ==
+                                            StateView.Daily
+                                        ? MaterialStateProperty.all(dullgreen)
+                                        : MaterialStateProperty.all(white)),
+                                onPressed: () {
+                                  setState(() {
+                                    _stateView = StateView.Daily;
+                                    currentDay = now.day;
+                                    currentYear = now.year;
+                                    currentMonth = now.month;
+                                    _refreshdata();
+                                  });
+                                },
+                                child: Text('Daily',
+                                    style: TextStyle(
+                                      fontFamily: 'Poppins',
+                                      color: _stateView == StateView.Daily
+                                          ? white
+                                          : dullgreen,
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w500,
+                                      fontStyle: FontStyle.normal,
+                                    )),
+                              ),
+                            ),
+                            Container(
+                              width: 90.15,
+                              height: 39,
+                              decoration: new BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.circular(2.457749843597412)),
+                              margin: EdgeInsets.symmetric(horizontal: 5),
+                              child: ElevatedButton(
+                                style: ButtonStyle(
+                                    backgroundColor: _stateView ==
+                                            StateView.Monthly
+                                        ? MaterialStateProperty.all(dullgreen)
+                                        : MaterialStateProperty.all(white)),
+                                onPressed: () {
+                                  setState(() {
+                                    _stateView = StateView.Monthly;
+                                    currentDay = now.day;
+                                    currentYear = now.year;
+                                    currentMonth = now.month;
+                                    _refreshdata();
+                                  });
+                                },
+                                child: Text('Monthly',
+                                    style: TextStyle(
+                                      fontFamily: 'Poppins',
+                                      color: _stateView == StateView.Monthly
+                                          ? white
+                                          : dullgreen,
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w500,
+                                      fontStyle: FontStyle.normal,
+                                    )),
+                              ),
+                            ),
                           ],
                         ),
-                        Container(
-                          margin: EdgeInsets.symmetric(vertical: 10),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
+                      ),
+                      gotdata
+                          ? Container(
+                              height: 250,
+                              child: Column(
                                 children: [
-                                  Column(
+                                  Row(
                                     children: [
-                                      Text('Total'),
+                                      Expanded(
+                                          child: Divider(
+                                        color: black,
+                                      )),
                                     ],
                                   ),
-                                  SizedBox(width: 55),
-                                  Column(
-                                    children: [
-                                      Text(totalItems.toString() + ' items'),
-                                    ],
+                                  Container(
+                                    margin: EdgeInsets.symmetric(vertical: 10),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Column(
+                                              children: [
+                                                Text('Total'),
+                                              ],
+                                            ),
+                                            SizedBox(width: 55),
+                                            Column(
+                                              children: [
+                                                Text(totalItems.toString() +
+                                                    ' items'),
+                                              ],
+                                            ),
+                                            SizedBox(width: 55),
+                                            Column(
+                                              children: [
+                                                Text(totalWeight
+                                                        .toStringAsFixed(2) +
+                                                    ' g'),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                  SizedBox(width: 55),
-                                  Column(
+                                  Container(
+                                    margin: EdgeInsets.symmetric(vertical: 10),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Column(
+                                              children: [
+                                                Text('Cal'),
+                                                SizedBox(height: 15),
+                                                Text('Fats'),
+                                                SizedBox(height: 15),
+                                                Text('Carbs'),
+                                                SizedBox(height: 15),
+                                                Text('Protein'),
+                                                SizedBox(height: 15),
+                                                Text('Fibre'),
+                                              ],
+                                            ),
+                                            SizedBox(width: 55),
+                                            Column(
+                                              children: [
+                                                Text(totalCal
+                                                        .toStringAsFixed(2) +
+                                                    ' kCal'),
+                                                SizedBox(height: 15),
+                                                Text(totalFats
+                                                        .toStringAsFixed(2) +
+                                                    ' g'),
+                                                SizedBox(height: 15),
+                                                Text(totalCarbs
+                                                        .toStringAsFixed(2) +
+                                                    ' g'),
+                                                SizedBox(height: 15),
+                                                Text(totalProtein
+                                                        .toStringAsFixed(2) +
+                                                    ' g'),
+                                                SizedBox(height: 15),
+                                                Text(totalFibre
+                                                        .toStringAsFixed(2) +
+                                                    ' g'),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Row(
                                     children: [
-                                      Text(totalWeight.toStringAsFixed(2) +
-                                          ' g'),
+                                      Expanded(
+                                          child: Divider(
+                                        color: black,
+                                      )),
                                     ],
                                   ),
                                 ],
                               ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.symmetric(vertical: 10),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
+                            )
+                          : Container(
+                              height: 250,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Column(
-                                    children: [
-                                      Text('Cal'),
-                                      SizedBox(height: 15),
-                                      Text('Fats'),
-                                      SizedBox(height: 15),
-                                      Text('Carbs'),
-                                      SizedBox(height: 15),
-                                      Text('Protein'),
-                                      SizedBox(height: 15),
-                                      Text('Fibre'),
-                                    ],
-                                  ),
-                                  SizedBox(width: 55),
-                                  Column(
-                                    children: [
-                                      Text(totalCal.toStringAsFixed(2) +
-                                          ' kCal'),
-                                      SizedBox(height: 15),
-                                      Text(totalFats.toStringAsFixed(2) + ' g'),
-                                      SizedBox(height: 15),
-                                      Text(
-                                          totalCarbs.toStringAsFixed(2) + ' g'),
-                                      SizedBox(height: 15),
-                                      Text(totalProtein.toStringAsFixed(2) +
-                                          ' g'),
-                                      SizedBox(height: 15),
-                                      Text(
-                                          totalFibre.toStringAsFixed(2) + ' g'),
-                                    ],
+                                  Center(
+                                    child: CircularProgressIndicator(
+                                      color: dullgreen,
+                                    ),
                                   ),
                                 ],
                               ),
-                            ],
+                            ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          IconButton(
+                            onPressed: () {
+                              _stateView == StateView.Daily
+                                  ? _previousDay()
+                                  : _previousMonth();
+                            },
+                            icon: Icon(
+                              Icons.arrow_left,
+                              color: darkgreyblue,
+                              size: 40,
+                            ),
                           ),
-                        ),
-                        Row(
-                          children: [
-                            Expanded(
-                                child: Divider(
-                              color: black,
-                            )),
-                          ],
-                        ),
-                      ],
-                    ),
+                          Text(
+                            listOfMonths[currentMonth - 1] +
+                                (_stateView == StateView.Daily
+                                    ? ' ' + listOfDays[currentDay - 1] + ', '
+                                    : ' ') +
+                                currentYear.toString(),
+                            style: TextStyle(
+                              color: darkgreyblue,
+                              fontSize: 24,
+                              fontFamily: 'SegoeUI',
+                              fontWeight: FontWeight.w900,
+                            ),
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              _stateView == StateView.Daily
+                                  ? _nextDay()
+                                  : _nextMonth();
+                            },
+                            icon: Icon(
+                              Icons.arrow_right,
+                              color: darkgreyblue,
+                              size: 40,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   )
                 : Container(
-                    height: 250,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Center(
-                          child: CircularProgressIndicator(
-                            color: dullgreen,
-                          ),
-                        ),
-                      ],
+                    width: 80.15,
+                    height: 39,
+                    decoration: new BoxDecoration(
+                        borderRadius: BorderRadius.circular(2.457749843597412)),
+                    margin: EdgeInsets.symmetric(horizontal: 5),
+                    child: ElevatedButton(
+                      style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all(dullgreen)),
+                      onPressed: () {
+                        context.read<FirebaseAuthentication>().signOut();
+                      },
+                      child: Text('Sign In'),
                     ),
                   ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                IconButton(
-                  onPressed: () {
-                    _stateView == StateView.Daily
-                        ? _previousDay()
-                        : _previousMonth();
-                  },
-                  icon: Icon(
-                    Icons.arrow_left,
-                    color: darkgreyblue,
-                    size: 40,
-                  ),
-                ),
-                Text(
-                  listOfMonths[currentMonth - 1] +
-                      (_stateView == StateView.Daily
-                          ? ' ' + listOfDays[currentDay - 1] + ', '
-                          : ' ') +
-                      currentYear.toString(),
-                  style: TextStyle(
-                    color: darkgreyblue,
-                    fontSize: 24,
-                    fontFamily: 'SegoeUI',
-                    fontWeight: FontWeight.w900,
-                  ),
-                ),
-                IconButton(
-                  onPressed: () {
-                    _stateView == StateView.Daily ? _nextDay() : _nextMonth();
-                  },
-                  icon: Icon(
-                    Icons.arrow_right,
-                    color: darkgreyblue,
-                    size: 40,
-                  ),
-                ),
-              ],
-            ),
           ],
         ),
       ),
