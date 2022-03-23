@@ -5,6 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:puresty/constants/app_colors.dart';
+import 'package:puresty/models/user.dart';
 
 class FirebaseAuthentication extends ChangeNotifier {
   final FirebaseAuth _auth;
@@ -19,6 +20,33 @@ class FirebaseAuthentication extends ChangeNotifier {
   set isSigningIn(bool isSigningIn) {
     _isSigningIn = isSigningIn;
     notifyListeners();
+  }
+
+  static Future<UserInf> getUserInfo() async {
+    UserInf userInf = UserInf.empty();
+    var users = FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser?.uid);
+    await users.get().then((value) {
+      userInf = UserInf.fromSnapshot(value);
+    });
+    return userInf;
+  }
+
+  static void updateInfo(
+      String fullname, String sex, String height, String weight) async {
+    var users = FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser?.uid);
+    await users
+        .update({
+          'fullname': fullname,
+          'sex': sex,
+          'height': int.parse(height),
+          'weight': int.parse(weight),
+        })
+        .then((value) => print("User Updated"))
+        .catchError((error) => print("Failed to add user: $error"));
   }
 
   Future<String> signUp(String email, String password, String fullname,
