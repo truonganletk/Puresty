@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:puresty/constants/app_colors.dart';
 import 'package:puresty/models/fruit.dart';
 import 'package:puresty/screens/main_screens/add_screen/object_detail_screen/object_detail_screen.dart';
@@ -104,11 +103,14 @@ class _SearchScreenState extends State<SearchScreen> {
               children: [
                 Center(
                   child: Container(
-                      child:
-                          SvgPicture.asset('assets/logo/PurestyWhiteLogo.svg')),
+                      margin: EdgeInsets.symmetric(vertical: 10),
+                      width: 220,
+                      child: FittedBox(
+                          child:
+                              Image.asset('assets/logo/PurestyLogoText.png'))),
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: 20, bottom: 20),
+                  margin: EdgeInsets.only(top: 5, bottom: 20),
                   child: TextField(
                     controller: searchController,
                     decoration: InputDecoration(

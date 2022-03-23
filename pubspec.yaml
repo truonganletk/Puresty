@@ -65,6 +65,7 @@ flutter:
     - assets/images/fruit.jpg
     - assets/images/avatar.png
     - assets/images/posttemplateimage.jpg
+    - assets/logo/PurestyLogoText.png
     - assets/logo/PurestyLogo.svg
     - assets/logo/PurestyLogo2.svg
     - assets/logo/PurestyWhiteLogo.svg
