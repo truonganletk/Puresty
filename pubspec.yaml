@@ -70,6 +70,51 @@ flutter:
     - assets/logo/PurestyWhiteLogo.svg
     - assets/images/undraw_my_personal_files_re_3q0p.svg
     - assets/images/undraw_healthy_options_sdo3.svg
+    - assets/images/fruits/acerola.jpg
+    - assets/images/fruits/ambarella.jpg
+    - assets/images/fruits/applefuji.jpg
+    - assets/images/fruits/applegrannysmith.jpg
+    - assets/images/fruits/applereddelicious.jpg
+    - assets/images/fruits/apple.jpg
+    - assets/images/fruits/asianpear.jpg
+    - assets/images/fruits/avocado.jpg
+    - assets/images/fruits/banana.jpg
+    - assets/images/fruits/breadfruit.jpg
+    - assets/images/fruits/cantaloupe.jpg
+    - assets/images/fruits/coconut.jpg
+    - assets/images/fruits/diospyroskaki.jpg
+    - assets/images/fruits/dragonfruit.jpg
+    - assets/images/fruits/durian.jpg
+    - assets/images/fruits/grapefruit.jpg
+    - assets/images/fruits/guava.jpg
+    - assets/images/fruits/jackfruit.jpg
+    - assets/images/fruits/kiwi.jpg
+    - assets/images/fruits/langsat.jpg
+    - assets/images/fruits/lemon.jpg
+    - assets/images/fruits/lime.jpg
+    - assets/images/fruits/longan.jpg
+    - assets/images/fruits/lychee.jpg
+    - assets/images/fruits/mango.jpg
+    - assets/images/fruits/mangosteen.jpg
+    - assets/images/fruits/melon.jpg
+    - assets/images/fruits/orange.jpg
+    - assets/images/fruits/papaya.jpg
+    - assets/images/fruits/passionfruit.jpg
+    - assets/images/fruits/peach.jpg
+    - assets/images/fruits/pear.jpg
+    - assets/images/fruits/pineapple.jpg
+    - assets/images/fruits/plum.jpg
+    - assets/images/fruits/pomegranate.jpg
+    - assets/images/fruits/pomelo.jpg
+    - assets/images/fruits/prunuspersica.jpg
+    - assets/images/fruits/rambutan.jpg
+    - assets/images/fruits/starapple.jpg
+    - assets/images/fruits/starfruit.jpg
+    - assets/images/fruits/strawberry.jpg
+    - assets/images/fruits/sweetsop.jpg
+    - assets/images/fruits/tamarind.jpg
+    - assets/images/fruits/tangerine.jpg
+    - assets/images/fruits/watermelon.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

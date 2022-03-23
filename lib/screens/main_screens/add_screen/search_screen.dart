@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:puresty/constants/app_colors.dart';
 import 'package:puresty/models/fruit.dart';
 import 'package:puresty/screens/main_screens/add_screen/object_detail_screen/object_detail_screen.dart';
-import 'package:puresty/services/firebase_storage.dart';
 
 class SearchScreen extends StatefulWidget {
   @override
@@ -15,9 +15,11 @@ class _SearchScreenState extends State<SearchScreen> {
   final scrollController = ScrollController();
   String errorMessage = '';
   bool isFetching = false;
+  bool gotdata = false;
   List _allresultList = [];
   List _resultList = [];
   List _fruitlist = [];
+
   @override
   void initState() {
     super.initState();
@@ -43,10 +45,10 @@ class _SearchScreenState extends State<SearchScreen> {
     var fResults = [];
 
     if (searchController.text != "") {
-      for (var Snapshot in _allresultList) {
-        var fruitname = Fruit.fromSnapshot(Snapshot).name.toLowerCase();
+      for (var snapShot in _allresultList) {
+        var fruitname = Fruit.fromSnapshot(snapShot).name.toLowerCase();
         if (fruitname.contains(searchController.text.toLowerCase())) {
-          showResults.add(Snapshot);
+          showResults.add(snapShot);
         }
       }
     } else {
@@ -66,16 +68,18 @@ class _SearchScreenState extends State<SearchScreen> {
     //if (isFetching) return;
     errorMessage = '';
     isFetching = true;
+    print('get all fruits');
     try {
       var posts = FirebaseFirestore.instance.collection('fruits');
       var data;
       data = await posts.get();
       setState(() {
+        gotdata = true;
         _allresultList.addAll(data.docs);
         _resultList.addAll(data.docs);
         for (var snapshot in _resultList) {
-          print(snapshot.get('name'));
-          print(snapshot.get('id'));
+          //print(snapshot.get('name'));
+          //print(snapshot.get('id'));
           _fruitlist.add(Fruit.fromSnapshot(snapshot));
         }
       });
@@ -98,21 +102,10 @@ class _SearchScreenState extends State<SearchScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Row(
-                  children: [
-                    Container(
-                      child: GestureDetector(
-                        onTap: () => {Navigator.pop(context)},
-                        child: Text(
-                          '< Back',
-                          style: TextStyle(
-                            fontSize: 28.0,
-                            fontWeight: FontWeight.w900,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
+                Center(
+                  child: Container(
+                      child:
+                          SvgPicture.asset('assets/logo/PurestyWhiteLogo.svg')),
                 ),
                 Container(
                   margin: EdgeInsets.only(top: 20, bottom: 20),
@@ -130,9 +123,8 @@ class _SearchScreenState extends State<SearchScreen> {
                   ),
                 ),
                 Container(
-                  width: 500,
+                  width: 550,
                   alignment: Alignment.center,
-                  padding: EdgeInsets.symmetric(horizontal: 20),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(15),
@@ -142,93 +134,138 @@ class _SearchScreenState extends State<SearchScreen> {
                   child: Column(
                     children: [
                       Container(
-                        width: 500,
+                        width: 550,
                         height: 600,
-                        child: ListView.builder(
-                            controller: scrollController,
-                            padding: const EdgeInsets.all(8),
-                            itemCount: _resultList.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => ObjectDetail(
-                                            fr: _fruitlist.elementAt(index))),
-                                  );
-                                },
-                                child: Container(
-                                  margin: EdgeInsets.only(top: 15),
-                                  width: 500,
-                                  height: 101,
-                                  decoration: new BoxDecoration(
-                                    color: white,
-                                    borderRadius: BorderRadius.circular(5),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Color(0x19000000),
-                                        offset: Offset(0, 2),
-                                        blurRadius: 10,
-                                        spreadRadius: 0,
-                                      )
-                                    ],
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        margin: EdgeInsets.all(5),
-                                        width: 81,
-                                        height: 77,
-                                        decoration: new BoxDecoration(
-                                          borderRadius: BorderRadius.circular(
-                                              12.007169723510742),
-                                        ),
-                                        child: FutureBuilder(
-                                          future: Storage.downloadURLExample(
-                                              _fruitlist.elementAt(index).name),
-                                          builder: (BuildContext context,
-                                              AsyncSnapshot<String> snapshot) {
-                                            if (snapshot.connectionState ==
-                                                    ConnectionState.done &&
-                                                snapshot.hasData)
-                                              return Image.network(
-                                                snapshot.data!,
-                                                fit: BoxFit.cover,
-                                              );
-                                            else if (snapshot.connectionState ==
-                                                    ConnectionState.waiting ||
-                                                !snapshot.hasData)
-                                              return Container(
-                                                  width: 10,
-                                                  height: 10,
-                                                  child: Center(
-                                                    child:
-                                                        CircularProgressIndicator(
-                                                      color: dullgreen,
+                        child: _allresultList.length != 0 && gotdata
+                            ? ListView.builder(
+                                controller: scrollController,
+                                padding: const EdgeInsets.all(8),
+                                itemCount: _resultList.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => ObjectDetail(
+                                                fr: _fruitlist
+                                                    .elementAt(index))),
+                                      );
+                                    },
+                                    child: Container(
+                                      margin: EdgeInsets.only(top: 15),
+                                      width: 550,
+                                      height: 131,
+                                      decoration: new BoxDecoration(
+                                        color: white,
+                                        borderRadius: BorderRadius.circular(15),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Color(0x19000000),
+                                            offset: Offset(0, 2),
+                                            blurRadius: 10,
+                                            spreadRadius: 0,
+                                          )
+                                        ],
+                                      ),
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            margin: EdgeInsets.symmetric(
+                                                horizontal: 20),
+                                            width: 81,
+                                            height: 77,
+                                            decoration: new BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                      12.007169723510742),
+                                            ),
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(10.0),
+                                              child: FittedBox(
+                                                child: Image.asset(
+                                                    'assets/images/fruits/' +
+                                                        _fruitlist
+                                                            .elementAt(index)
+                                                            .name
+                                                            .replaceAll(
+                                                                ' ', '') +
+                                                        '.jpg',
+                                                    errorBuilder: (context,
+                                                        error, stackTrace) {
+                                                  return Image.asset(
+                                                      'assets/images/fruit.jpg');
+                                                }),
+                                                fit: BoxFit.fill,
+                                              ),
+                                            ),
+                                          ),
+                                          Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Container(
+                                                width: 200,
+                                                child: Text(
+                                                  _fruitlist
+                                                      .elementAt(index)
+                                                      .name
+                                                      .toUpperCase(),
+                                                  style: TextStyle(
+                                                    fontFamily: 'Poppins',
+                                                    color: darkgreyblue,
+                                                    fontSize: 18,
+                                                    fontWeight: FontWeight.w600,
+                                                    fontStyle: FontStyle.normal,
+                                                  ),
+                                                ),
+                                              ),
+                                              Container(
+                                                width: 210,
+                                                child: Expanded(
+                                                  child: Text(
+                                                    _fruitlist
+                                                        .elementAt(index)
+                                                        .description,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    maxLines: 3,
+                                                    softWrap: true,
+                                                    style: TextStyle(
+                                                      fontFamily: 'Poppins',
+                                                      color: darkgreyblue,
+                                                      fontSize: 12,
+                                                      fontStyle:
+                                                          FontStyle.normal,
                                                     ),
-                                                  ));
-                                            else
-                                              return Image.asset(
-                                                  'assets/images/fruit.jpg');
-                                          },
-                                        ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
                                       ),
-                                      Text(
-                                        _fruitlist.elementAt(index).name,
-                                        style: TextStyle(
-                                          fontFamily: 'Poppins',
-                                          color: darkgreyblue,
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w600,
-                                          fontStyle: FontStyle.normal,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                                    ),
+                                  );
+                                })
+                            : Container(
+                                height: 600,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    !gotdata
+                                        ? Center(
+                                            child: CircularProgressIndicator(
+                                              color: dullgreen,
+                                            ),
+                                          )
+                                        : Text('No result'),
+                                  ],
                                 ),
-                              );
-                            }),
+                              ),
                       )
                     ],
                   ),
