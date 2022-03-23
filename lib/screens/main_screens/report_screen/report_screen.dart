@@ -71,6 +71,12 @@ class _ReportScreenState extends State<ReportScreen> {
   bool isFetching = false;
   bool hasNext = true;
   bool gotdata = false;
+  bool hasPrevTime = false;
+  int prevCal = 0;
+  int prevFats = 0;
+  int prevCarbs = 0;
+  int prevProtein = 0;
+  int prevFibre = 0;
   List _allresultList = [];
   List _listfoodcartitem = [];
   double totalCal = 0.0;
@@ -127,29 +133,25 @@ class _ReportScreenState extends State<ReportScreen> {
     double tempCarbs = 0.0;
     double tempProtein = 0.0;
     double tempFibre = 0.0;
+    double tempPrevCal = 0.0;
+    double tempPrevFats = 0.0;
+    double tempPrevCarbs = 0.0;
+    double tempPrevProtein = 0.0;
+    double tempPrevFibre = 0.0;
     int tempItems = 0;
     double tempWeight = 0.0;
+    bool temphasPrevTime = false;
     for (FoodCartItem item in _listfoodcartitem) {
       DateTime itemTime = item.date.toDate();
-      if (_stateView == StateView.Daily &&
-          itemTime.year == currentYear &&
-          itemTime.month == currentMonth &&
-          itemTime.day == currentDay) {
-        tempCal += double.parse(item.cal.toString()) *
-            double.parse(item.foodweight.toString());
-        tempFats += double.parse(item.fats.toString()) *
-            double.parse(item.foodweight.toString());
-        tempCarbs += double.parse(item.carbs.toString()) *
-            double.parse(item.foodweight.toString());
-        tempProtein += double.parse(item.protein.toString()) *
-            double.parse(item.foodweight.toString());
-        tempFibre += double.parse(item.fibre.toString()) *
-            double.parse(item.foodweight.toString());
-        tempItems++;
-        tempWeight += double.parse(item.foodweight.toString());
-      } else if (_stateView == StateView.Monthly &&
-          itemTime.year == currentYear &&
-          itemTime.month == currentMonth) {
+      DateTime prevDay = DateTime(currentYear, currentMonth, currentDay - 1);
+      DateTime prevMonth = DateTime(currentYear, currentMonth - 1);
+      if ((_stateView == StateView.Daily &&
+              itemTime.year == currentYear &&
+              itemTime.month == currentMonth &&
+              itemTime.day == currentDay) ||
+          (_stateView == StateView.Monthly &&
+              itemTime.year == currentYear &&
+              itemTime.month == currentMonth)) {
         tempCal += double.parse(item.cal.toString()) *
             double.parse(item.foodweight.toString());
         tempFats += double.parse(item.fats.toString()) *
@@ -163,6 +165,25 @@ class _ReportScreenState extends State<ReportScreen> {
         tempItems++;
         tempWeight += double.parse(item.foodweight.toString());
       }
+      if ((_stateView == StateView.Daily &&
+              itemTime.year == prevDay.year &&
+              itemTime.month == prevDay.month &&
+              itemTime.day == prevDay.day) ||
+          (_stateView == StateView.Monthly &&
+              itemTime.year == prevMonth.year &&
+              itemTime.month == prevMonth.month)) {
+        temphasPrevTime = true;
+        tempPrevCal += double.parse(item.cal.toString()) *
+            double.parse(item.foodweight.toString());
+        tempPrevFats += double.parse(item.fats.toString()) *
+            double.parse(item.foodweight.toString());
+        tempPrevCarbs += double.parse(item.carbs.toString()) *
+            double.parse(item.foodweight.toString());
+        tempPrevProtein += double.parse(item.protein.toString()) *
+            double.parse(item.foodweight.toString());
+        tempPrevFibre += double.parse(item.fibre.toString()) *
+            double.parse(item.foodweight.toString());
+      }
     }
     setState(() {
       totalCal = tempCal / 100;
@@ -172,6 +193,12 @@ class _ReportScreenState extends State<ReportScreen> {
       totalFibre = tempFibre / 100;
       totalItems = tempItems;
       totalWeight = tempWeight / 100;
+      hasPrevTime = temphasPrevTime;
+      prevCal = totalCal.compareTo(tempPrevCal);
+      prevFats = totalFats.compareTo(tempPrevFats);
+      prevCarbs = totalCarbs.compareTo(tempPrevCarbs);
+      prevProtein = totalProtein.compareTo(tempPrevProtein);
+      prevFibre = totalFibre.compareTo(tempPrevFibre);
     });
   }
 
@@ -353,7 +380,7 @@ class _ReportScreenState extends State<ReportScreen> {
                       ),
                       gotdata
                           ? Container(
-                              height: 250,
+                              height: 300,
                               child: Column(
                                 children: [
                                   Row(
@@ -411,39 +438,225 @@ class _ReportScreenState extends State<ReportScreen> {
                                           children: [
                                             Column(
                                               children: [
-                                                Text('Cal'),
-                                                SizedBox(height: 15),
-                                                Text('Fats'),
-                                                SizedBox(height: 15),
-                                                Text('Carbs'),
-                                                SizedBox(height: 15),
-                                                Text('Protein'),
-                                                SizedBox(height: 15),
-                                                Text('Fibre'),
+                                                Container(
+                                                    margin:
+                                                        EdgeInsets.symmetric(
+                                                            vertical: 7),
+                                                    padding: EdgeInsets.all(5),
+                                                    child: Text('Cal')),
+                                                Container(
+                                                    margin:
+                                                        EdgeInsets.symmetric(
+                                                            vertical: 7),
+                                                    padding: EdgeInsets.all(5),
+                                                    child: Text('Fats')),
+                                                Container(
+                                                    margin:
+                                                        EdgeInsets.symmetric(
+                                                            vertical: 7),
+                                                    padding: EdgeInsets.all(5),
+                                                    child: Text('Carbs')),
+                                                Container(
+                                                    margin:
+                                                        EdgeInsets.symmetric(
+                                                            vertical: 7),
+                                                    padding: EdgeInsets.all(5),
+                                                    child: Text('Protein')),
+                                                Container(
+                                                    margin:
+                                                        EdgeInsets.symmetric(
+                                                            vertical: 7),
+                                                    padding: EdgeInsets.all(5),
+                                                    child: Text('Fibre')),
                                               ],
                                             ),
                                             SizedBox(width: 55),
                                             Column(
                                               children: [
-                                                Text(totalCal
-                                                        .toStringAsFixed(2) +
-                                                    ' kCal'),
-                                                SizedBox(height: 15),
-                                                Text(totalFats
-                                                        .toStringAsFixed(2) +
-                                                    ' g'),
-                                                SizedBox(height: 15),
-                                                Text(totalCarbs
-                                                        .toStringAsFixed(2) +
-                                                    ' g'),
-                                                SizedBox(height: 15),
-                                                Text(totalProtein
-                                                        .toStringAsFixed(2) +
-                                                    ' g'),
-                                                SizedBox(height: 15),
-                                                Text(totalFibre
-                                                        .toStringAsFixed(2) +
-                                                    ' g'),
+                                                Container(
+                                                  margin: EdgeInsets.symmetric(
+                                                      vertical: 7),
+                                                  padding: EdgeInsets.all(5),
+                                                  child: Text(totalCal
+                                                          .toStringAsFixed(2) +
+                                                      ' kCal'),
+                                                ),
+                                                Container(
+                                                  margin: EdgeInsets.symmetric(
+                                                      vertical: 7),
+                                                  padding: EdgeInsets.all(5),
+                                                  child: Text(totalFats
+                                                          .toStringAsFixed(2) +
+                                                      ' g'),
+                                                ),
+                                                Container(
+                                                  margin: EdgeInsets.symmetric(
+                                                      vertical: 7),
+                                                  padding: EdgeInsets.all(5),
+                                                  child: Text(totalCarbs
+                                                          .toStringAsFixed(2) +
+                                                      ' g'),
+                                                ),
+                                                Container(
+                                                  margin: EdgeInsets.symmetric(
+                                                      vertical: 7),
+                                                  padding: EdgeInsets.all(5),
+                                                  child: Text(totalProtein
+                                                          .toStringAsFixed(2) +
+                                                      ' g'),
+                                                ),
+                                                Container(
+                                                  margin: EdgeInsets.symmetric(
+                                                      vertical: 7),
+                                                  padding: EdgeInsets.all(5),
+                                                  child: Text(totalFibre
+                                                          .toStringAsFixed(2) +
+                                                      ' g'),
+                                                ),
+                                              ],
+                                            ),
+                                            Column(
+                                              children: [
+                                                Container(
+                                                  margin: EdgeInsets.symmetric(
+                                                      vertical: 7),
+                                                  padding: EdgeInsets.all(5),
+                                                  child: CircleAvatar(
+                                                    radius: 10,
+                                                    backgroundColor:
+                                                        (totalCal >= 630 &&
+                                                                totalCal <= 700)
+                                                            ? softgreen
+                                                            : (totalCal > 700
+                                                                ? pastelred
+                                                                : dustyorange),
+                                                    child: Icon(
+                                                      (prevCal == 0)
+                                                          ? Icons
+                                                              .horizontal_rule
+                                                          : (prevCal == 1)
+                                                              ? Icons
+                                                                  .keyboard_arrow_up
+                                                              : Icons
+                                                                  .keyboard_arrow_down,
+                                                      size: 15,
+                                                      color: white,
+                                                    ),
+                                                  ),
+                                                ),
+                                                Container(
+                                                  margin: EdgeInsets.symmetric(
+                                                      vertical: 7),
+                                                  padding: EdgeInsets.all(3),
+                                                  child: CircleAvatar(
+                                                    radius: 10,
+                                                    backgroundColor:
+                                                        (totalFats >= 630 &&
+                                                                totalFats <=
+                                                                    700)
+                                                            ? softgreen
+                                                            : (totalFats > 700
+                                                                ? pastelred
+                                                                : dustyorange),
+                                                    child: Icon(
+                                                      (prevFats == 0)
+                                                          ? Icons
+                                                              .horizontal_rule
+                                                          : (prevFats == 1)
+                                                              ? Icons
+                                                                  .keyboard_arrow_up
+                                                              : Icons
+                                                                  .keyboard_arrow_down,
+                                                      size: 15,
+                                                      color: white,
+                                                    ),
+                                                  ),
+                                                ),
+                                                Container(
+                                                  margin: EdgeInsets.symmetric(
+                                                      vertical: 7),
+                                                  padding: EdgeInsets.all(3),
+                                                  child: CircleAvatar(
+                                                    radius: 10,
+                                                    backgroundColor:
+                                                        (totalCarbs >= 630 &&
+                                                                totalCarbs <=
+                                                                    700)
+                                                            ? softgreen
+                                                            : (totalCarbs > 700
+                                                                ? pastelred
+                                                                : dustyorange),
+                                                    child: Icon(
+                                                      (prevCarbs == 0)
+                                                          ? Icons
+                                                              .horizontal_rule
+                                                          : (prevCarbs == 1)
+                                                              ? Icons
+                                                                  .keyboard_arrow_up
+                                                              : Icons
+                                                                  .keyboard_arrow_down,
+                                                      size: 15,
+                                                      color: white,
+                                                    ),
+                                                  ),
+                                                ),
+                                                Container(
+                                                  margin: EdgeInsets.symmetric(
+                                                      vertical: 7),
+                                                  padding: EdgeInsets.all(3),
+                                                  child: CircleAvatar(
+                                                    radius: 10,
+                                                    backgroundColor:
+                                                        (totalProtein >= 630 &&
+                                                                totalProtein <=
+                                                                    700)
+                                                            ? softgreen
+                                                            : (totalProtein >
+                                                                    700
+                                                                ? pastelred
+                                                                : dustyorange),
+                                                    child: Icon(
+                                                      (prevProtein == 0)
+                                                          ? Icons
+                                                              .horizontal_rule
+                                                          : (prevProtein == 1)
+                                                              ? Icons
+                                                                  .keyboard_arrow_up
+                                                              : Icons
+                                                                  .keyboard_arrow_down,
+                                                      size: 15,
+                                                      color: white,
+                                                    ),
+                                                  ),
+                                                ),
+                                                Container(
+                                                  margin: EdgeInsets.symmetric(
+                                                      vertical: 7),
+                                                  padding: EdgeInsets.all(3),
+                                                  child: CircleAvatar(
+                                                    radius: 10,
+                                                    backgroundColor:
+                                                        (totalFibre >= 630 &&
+                                                                totalFibre <=
+                                                                    700)
+                                                            ? softgreen
+                                                            : (totalFibre > 700
+                                                                ? pastelred
+                                                                : dustyorange),
+                                                    child: Icon(
+                                                      (prevFibre == 0)
+                                                          ? Icons
+                                                              .horizontal_rule
+                                                          : (prevFibre == 1)
+                                                              ? Icons
+                                                                  .keyboard_arrow_up
+                                                              : Icons
+                                                                  .keyboard_arrow_down,
+                                                      size: 15,
+                                                      color: white,
+                                                    ),
+                                                  ),
+                                                ),
                                               ],
                                             ),
                                           ],
@@ -463,7 +676,7 @@ class _ReportScreenState extends State<ReportScreen> {
                               ),
                             )
                           : Container(
-                              height: 250,
+                              height: 300,
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
