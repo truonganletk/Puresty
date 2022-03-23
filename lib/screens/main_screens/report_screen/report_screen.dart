@@ -68,8 +68,16 @@ class _ReportScreenState extends State<ReportScreen> {
   String errorMessage = '';
   bool isFetching = false;
   bool hasNext = true;
+  bool gotdata = false;
   List _allresultList = [];
   List _listfoodcartitem = [];
+  double totalCal = 0.0;
+  double totalFats = 0.0;
+  double totalCarbs = 0.0;
+  double totalProtein = 0.0;
+  double totalFibre = 0.0;
+  int totalItems = 0;
+  double totalWeight = 0.0;
 
   @override
   void initState() {
@@ -95,20 +103,74 @@ class _ReportScreenState extends State<ReportScreen> {
           .orderBy('date', descending: true);
       var data = await fcart.get();
       setState(() {
+        gotdata = true;
         _allresultList.addAll(data.docs);
         for (DocumentSnapshot snapshot in data.docs) {
           _listfoodcartitem.add(FoodCartItem.fromSnapshot(snapshot));
-          //print(FoodCartItem.fromSnapshot(Snapshot).foodname);
+          //print(FoodCartItem.fromSnapshot(snapshot).date.toDate());
         }
       });
       print('get foodcart successful');
+      _refreshdata();
     } catch (error) {
       errorMessage = error.toString();
     }
     isFetching = false;
   }
 
-  void _refreshdata() {}
+  void _refreshdata() {
+    double tempCal = 0.0;
+    double tempFats = 0.0;
+    double tempCarbs = 0.0;
+    double tempProtein = 0.0;
+    double tempFibre = 0.0;
+    int tempItems = 0;
+    double tempWeight = 0.0;
+    for (FoodCartItem item in _listfoodcartitem) {
+      DateTime itemTime = item.date.toDate();
+      if (_stateView == StateView.Daily &&
+          itemTime.year == currentYear &&
+          itemTime.month == currentMonth &&
+          itemTime.day == currentDay) {
+        tempCal += double.parse(item.cal.toString()) *
+            double.parse(item.foodweight.toString());
+        tempFats += double.parse(item.fats.toString()) *
+            double.parse(item.foodweight.toString());
+        tempCarbs += double.parse(item.carbs.toString()) *
+            double.parse(item.foodweight.toString());
+        tempProtein += double.parse(item.protein.toString()) *
+            double.parse(item.foodweight.toString());
+        tempFibre += double.parse(item.fibre.toString()) *
+            double.parse(item.foodweight.toString());
+        tempItems++;
+        tempWeight += double.parse(item.foodweight.toString());
+      } else if (_stateView == StateView.Monthly &&
+          itemTime.year == currentYear &&
+          itemTime.month == currentMonth) {
+        tempCal += double.parse(item.cal.toString()) *
+            double.parse(item.foodweight.toString());
+        tempFats += double.parse(item.fats.toString()) *
+            double.parse(item.foodweight.toString());
+        tempCarbs += double.parse(item.carbs.toString()) *
+            double.parse(item.foodweight.toString());
+        tempProtein += double.parse(item.protein.toString()) *
+            double.parse(item.foodweight.toString());
+        tempFibre += double.parse(item.fibre.toString()) *
+            double.parse(item.foodweight.toString());
+        tempItems++;
+        tempWeight += double.parse(item.foodweight.toString());
+      }
+    }
+    setState(() {
+      totalCal = tempCal;
+      totalFats = tempFats;
+      totalCarbs = tempCarbs;
+      totalProtein = tempProtein;
+      totalFibre = tempFibre;
+      totalItems = tempItems;
+      totalWeight = tempWeight;
+    });
+  }
 
   void _previousDay() {
     setState(() {
@@ -183,20 +245,21 @@ class _ReportScreenState extends State<ReportScreen> {
             Row(
               children: [
                 Container(
-                  child: Text('Report',
-                      style: TextStyle(
-                        fontFamily: 'Poppins',
-                        color: black,
-                        fontSize: 30,
-                        fontWeight: FontWeight.w600,
-                        fontStyle: FontStyle.normal,
-                      )),
+                  child: Text(
+                    'Report',
+                    style: TextStyle(
+                      color: black,
+                      fontSize: 40.0,
+                      fontWeight: FontWeight.w900,
+                    ),
+                  ),
                 ),
               ],
             ),
             Container(
+              margin: EdgeInsets.symmetric(vertical: 10),
               child: Text(
-                  'Lorem ipsum dolor sit amet, consectetur  incididunt ut labore et dolore magna aliqua. ',
+                  'How it goes? This is a report on the nutrition you got into the body based on what you ate.',
                   style: TextStyle(
                     fontFamily: 'Poppins',
                     color: darkgreyblue,
@@ -278,82 +341,118 @@ class _ReportScreenState extends State<ReportScreen> {
                 ],
               ),
             ),
-            Row(
-              children: [
-                Expanded(
-                    child: Divider(
-                  color: black,
-                )),
-              ],
-            ),
-            Container(
-              margin: EdgeInsets.symmetric(vertical: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Column(
-                        children: [
-                          Text('Total'),
-                          SizedBox(height: 15),
-                          Text('Cal'),
-                          SizedBox(height: 15),
-                          Text('Fats'),
-                          SizedBox(height: 15),
-                          Text('Carbs'),
-                          SizedBox(height: 15),
-                          Text('Protein'),
-                          SizedBox(height: 15),
-                          Text('Fibre'),
-                        ],
-                      ),
-                      SizedBox(width: 55),
-                      Column(
-                        children: [
-                          Text('10 items'),
-                          SizedBox(height: 15),
-                          Text('xxx kCal'),
-                          SizedBox(height: 15),
-                          Text('xxx g'),
-                          SizedBox(height: 15),
-                          Text('xxx g'),
-                          SizedBox(height: 15),
-                          Text('xxx g'),
-                          SizedBox(height: 15),
-                          Text('xxx g'),
-                        ],
-                      ),
-                      SizedBox(width: 55),
-                      Column(
-                        children: [
-                          Text('xxx g'),
-                          SizedBox(height: 15),
-                          Text('xxx kCal'),
-                          SizedBox(height: 15),
-                          Text('xxx g'),
-                          SizedBox(height: 15),
-                          Text('xxx g'),
-                          SizedBox(height: 15),
-                          Text('xxx g'),
-                          SizedBox(height: 15),
-                          Text('xxx g'),
-                        ],
-                      ),
-                    ],
+            gotdata
+                ? Container(
+                    height: 250,
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Expanded(
+                                child: Divider(
+                              color: black,
+                            )),
+                          ],
+                        ),
+                        Container(
+                          margin: EdgeInsets.symmetric(vertical: 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Column(
+                                    children: [
+                                      Text('Total'),
+                                    ],
+                                  ),
+                                  SizedBox(width: 55),
+                                  Column(
+                                    children: [
+                                      Text(totalItems.toString() + ' items'),
+                                    ],
+                                  ),
+                                  SizedBox(width: 55),
+                                  Column(
+                                    children: [
+                                      Text(totalWeight.toStringAsFixed(2) +
+                                          ' g'),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.symmetric(vertical: 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Column(
+                                    children: [
+                                      Text('Cal'),
+                                      SizedBox(height: 15),
+                                      Text('Fats'),
+                                      SizedBox(height: 15),
+                                      Text('Carbs'),
+                                      SizedBox(height: 15),
+                                      Text('Protein'),
+                                      SizedBox(height: 15),
+                                      Text('Fibre'),
+                                    ],
+                                  ),
+                                  SizedBox(width: 55),
+                                  Column(
+                                    children: [
+                                      Text(totalCal.toStringAsFixed(2) +
+                                          ' kCal'),
+                                      SizedBox(height: 15),
+                                      Text(totalFats.toStringAsFixed(2) + ' g'),
+                                      SizedBox(height: 15),
+                                      Text(
+                                          totalCarbs.toStringAsFixed(2) + ' g'),
+                                      SizedBox(height: 15),
+                                      Text(totalProtein.toStringAsFixed(2) +
+                                          ' g'),
+                                      SizedBox(height: 15),
+                                      Text(
+                                          totalFibre.toStringAsFixed(2) + ' g'),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                                child: Divider(
+                              color: black,
+                            )),
+                          ],
+                        ),
+                      ],
+                    ),
+                  )
+                : Container(
+                    height: 250,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Center(
+                          child: CircularProgressIndicator(
+                            color: dullgreen,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ],
-              ),
-            ),
-            Row(
-              children: [
-                Expanded(
-                    child: Divider(
-                  color: black,
-                )),
-              ],
-            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
