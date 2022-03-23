@@ -93,9 +93,11 @@ class _SearchScreenState extends State<SearchScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
+        height: 700,
         padding: EdgeInsets.all(20),
         child: SingleChildScrollView(
           child: Container(
+            width: 600,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -103,6 +105,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   child: Container(
                       margin: EdgeInsets.symmetric(vertical: 10),
                       width: 220,
+                      height: 70,
                       child: FittedBox(
                           child:
                               Image.asset('assets/logo/PurestyLogoText.png'))),
