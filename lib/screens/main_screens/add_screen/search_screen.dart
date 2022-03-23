@@ -92,11 +92,9 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       body: Container(
         padding: EdgeInsets.all(20),
         child: SingleChildScrollView(
-          physics: NeverScrollableScrollPhysics(),
           child: Container(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -137,7 +135,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     children: [
                       Container(
                         width: 550,
-                        height: 600,
+                        height: 480,
                         child: _allresultList.length != 0 && gotdata
                             ? ListView.builder(
                                 controller: scrollController,
@@ -227,22 +225,19 @@ class _SearchScreenState extends State<SearchScreen> {
                                               ),
                                               Container(
                                                 width: 210,
-                                                child: Expanded(
-                                                  child: Text(
-                                                    _fruitlist
-                                                        .elementAt(index)
-                                                        .description,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    maxLines: 3,
-                                                    softWrap: true,
-                                                    style: TextStyle(
-                                                      fontFamily: 'Poppins',
-                                                      color: darkgreyblue,
-                                                      fontSize: 12,
-                                                      fontStyle:
-                                                          FontStyle.normal,
-                                                    ),
+                                                child: Text(
+                                                  _fruitlist
+                                                      .elementAt(index)
+                                                      .description,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  maxLines: 3,
+                                                  softWrap: true,
+                                                  style: TextStyle(
+                                                    fontFamily: 'Poppins',
+                                                    color: darkgreyblue,
+                                                    fontSize: 12,
+                                                    fontStyle: FontStyle.normal,
                                                   ),
                                                 ),
                                               ),

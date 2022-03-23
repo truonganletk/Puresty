@@ -86,10 +86,10 @@ flutter:
     - assets/images/fruits/diospyroskaki.jpg
     - assets/images/fruits/dragonfruit.jpg
     - assets/images/fruits/durian.jpg
-    - assets/images/fruits/grapefruit.jpg
+    - assets/images/fruits/redgrapefruit.jpg
     - assets/images/fruits/guava.jpg
     - assets/images/fruits/jackfruit.jpg
-    - assets/images/fruits/kiwi.jpg
+    - assets/images/fruits/kiwifruit.jpg
     - assets/images/fruits/langsat.jpg
     - assets/images/fruits/lemon.jpg
     - assets/images/fruits/lime.jpg
@@ -101,17 +101,17 @@ flutter:
     - assets/images/fruits/orange.jpg
     - assets/images/fruits/papaya.jpg
     - assets/images/fruits/passionfruit.jpg
-    - assets/images/fruits/peach.jpg
+    - assets/images/fruits/peaches.jpg
     - assets/images/fruits/pear.jpg
     - assets/images/fruits/pineapple.jpg
     - assets/images/fruits/plum.jpg
-    - assets/images/fruits/pomegranate.jpg
+    - assets/images/fruits/pomegranates.jpg
     - assets/images/fruits/pomelo.jpg
     - assets/images/fruits/prunuspersica.jpg
     - assets/images/fruits/rambutan.jpg
     - assets/images/fruits/starapple.jpg
     - assets/images/fruits/starfruit.jpg
-    - assets/images/fruits/strawberry.jpg
+    - assets/images/fruits/strawberries.jpg
     - assets/images/fruits/sweetsop.jpg
     - assets/images/fruits/tamarind.jpg
     - assets/images/fruits/tangerine.jpg
