@@ -162,6 +162,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       ],
                     ),
                     Container(
+                      width: 100 * SizeConfig.widthMultiplier,
+                      height: 5.93 * SizeConfig.heightMultiplier,
                       margin: EdgeInsets.only(top: 20, bottom: 15),
                       decoration:
                           BoxDecoration(borderRadius: BorderRadius.circular(7)),
@@ -174,19 +176,16 @@ class _LoginScreenState extends State<LoginScreen> {
                                 emailController.text, passwordController.text);
                           },
                           child: Container(
-                              padding: EdgeInsets.all(15),
-                              width: 100 * SizeConfig.widthMultiplier,
-                              height: 5.93 * SizeConfig.heightMultiplier,
                               child: Text(
-                                "Login",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontFamily: 'Poppins',
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18,
-                                  color: white,
-                                ),
-                              ))),
+                            "Login",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontFamily: 'Poppins',
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                              color: white,
+                            ),
+                          ))),
                     ),
                     Row(
                       children: [
