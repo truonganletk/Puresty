@@ -3,8 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
 import 'package:puresty/constants/app_colors.dart';
+import 'package:puresty/constants/size_config.dart';
 import 'package:puresty/models/foodcart.dart';
-import 'package:puresty/services/firebase_storage.dart';
 
 class FoodCart extends StatefulWidget {
   @override
@@ -91,8 +91,8 @@ class _FoodCartState extends State<FoodCart> {
         gotdata = true;
         _allresultList.addAll(data.docs);
         //print('get _allresultList successful');
-        for (DocumentSnapshot Snapshot in data.docs) {
-          _listfoodcartitem.add(FoodCartItem.fromSnapshot(Snapshot));
+        for (DocumentSnapshot snapshot in data.docs) {
+          _listfoodcartitem.add(FoodCartItem.fromSnapshot(snapshot));
           //print(FoodCartItem.fromSnapshot(Snapshot).foodname);
         }
       });
@@ -110,294 +110,318 @@ class _FoodCartState extends State<FoodCart> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        padding: EdgeInsets.all(20),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
-              margin: EdgeInsets.only(bottom: 10),
-              child: Row(
-                children: [
-                  GestureDetector(
-                    onTap: () => {Navigator.pop(context)},
-                    child: Text(
-                      '< What you ate',
-                      style: TextStyle(
-                          fontFamily: 'Poppins',
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                          color: black),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            _allresultList.length != 0 && gotdata
-                ? SingleChildScrollView(
-                    physics: NeverScrollableScrollPhysics(),
-                    child: Container(
-                      child: Column(
-                        children: [
-                          Container(
-                            width: 500,
-                            alignment: Alignment.center,
-                            padding: EdgeInsets.symmetric(horizontal: 20),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(15),
-                                topRight: Radius.circular(15),
+    return LayoutBuilder(builder: (context, constraints) {
+      return OrientationBuilder(builder: (context, orientation) {
+        SizeConfig().init(constraints, orientation);
+        return Scaffold(
+          body: Container(
+            padding: EdgeInsets.fromLTRB(
+                2.64 * SizeConfig.heightMultiplier,
+                4.64 * SizeConfig.heightMultiplier,
+                2.64 * SizeConfig.heightMultiplier,
+                2.64 * SizeConfig.heightMultiplier),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(bottom: 15),
+                      child: GestureDetector(
+                          onTap: () => {Navigator.pop(context)},
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.arrow_back_ios,
+                                size: 30,
                               ),
-                            ),
-                            child: Column(
-                              children: [
-                                Container(
-                                  width: 500,
-                                  height: 600,
-                                  child: ListView.builder(
-                                      padding: const EdgeInsets.all(8),
-                                      controller: scrollController,
-                                      itemCount: _allresultList.length + 1,
-                                      itemBuilder:
-                                          (BuildContext context, int index) {
-                                        if (index >= _allresultList.length) {
-                                          if (hasNext) {
-                                            return Center(
-                                              child: Container(
-                                                margin:
-                                                    EdgeInsets.only(top: 15),
-                                                height: 20,
-                                                width: 20,
-                                                child:
-                                                    CircularProgressIndicator(),
-                                              ),
-                                            );
-                                          } else {
-                                            return Center(
-                                              child: Container(
-                                                margin:
-                                                    EdgeInsets.only(top: 15),
-                                                child: Text(
-                                                  'No more Result',
-                                                  style: TextStyle(
-                                                      color: Colors.black),
-                                                ),
-                                              ),
-                                            );
-                                          }
-                                        } else
-                                          return Column(
-                                            children: [
-                                              if (index == 0 ||
-                                                  !compareDate(
-                                                      _listfoodcartitem
-                                                          .elementAt(index)
-                                                          .date
-                                                          .toDate(),
-                                                      _listfoodcartitem
-                                                          .elementAt(index - 1)
-                                                          .date
-                                                          .toDate()))
-                                                Row(
-                                                  children: [
-                                                    Expanded(
-                                                        child: Divider(
-                                                      color: black,
-                                                    )),
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              8.0),
-                                                      child: Text(
-                                                        convertToDayAgo(
-                                                            _listfoodcartitem
-                                                                .elementAt(
-                                                                    index)
-                                                                .date
-                                                                .toDate()),
-                                                        style: TextStyle(
-                                                          fontFamily: 'Poppins',
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                          fontSize: 18,
-                                                          color: darkgreyblue,
-                                                        ),
-                                                      ),
+                              Text("What you ate",
+                                  style: TextStyle(
+                                    fontFamily: 'Poppins',
+                                    color: black,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w500,
+                                    fontStyle: FontStyle.normal,
+                                  ))
+                            ],
+                          )),
+                    ),
+                  ],
+                ),
+                _allresultList.length != 0 && gotdata
+                    ? SingleChildScrollView(
+                        physics: NeverScrollableScrollPhysics(),
+                        child: Container(
+                          child: Column(
+                            children: [
+                              Container(
+                                width: 127.55 * SizeConfig.widthMultiplier,
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      width:
+                                          127.55 * SizeConfig.widthMultiplier,
+                                      height:
+                                          79.05 * SizeConfig.heightMultiplier,
+                                      child: ListView.builder(
+                                          padding: const EdgeInsets.all(8),
+                                          controller: scrollController,
+                                          itemCount: _allresultList.length + 1,
+                                          itemBuilder: (BuildContext context,
+                                              int index) {
+                                            if (index >=
+                                                _allresultList.length) {
+                                              if (hasNext) {
+                                                return Center(
+                                                  child: Container(
+                                                    margin: EdgeInsets.only(
+                                                        top: 15),
+                                                    height: 20,
+                                                    width: 20,
+                                                    child:
+                                                        CircularProgressIndicator(),
+                                                  ),
+                                                );
+                                              } else {
+                                                return Center(
+                                                  child: Container(
+                                                    margin: EdgeInsets.only(
+                                                        top: 15),
+                                                    child: Text(
+                                                      'No more Result',
+                                                      style: TextStyle(
+                                                          color: Colors.black),
                                                     ),
-                                                    Expanded(
-                                                        child: Divider(
-                                                            color: black)),
-                                                  ],
-                                                ),
-                                              Container(
-                                                margin:
-                                                    EdgeInsets.only(top: 15),
-                                                width: 402,
-                                                height: 101,
-                                                decoration: new BoxDecoration(
-                                                  color: white,
-                                                  borderRadius:
-                                                      BorderRadius.circular(5),
-                                                  boxShadow: [
-                                                    BoxShadow(
-                                                      color: Color(0x19000000),
-                                                      offset: Offset(0, 2),
-                                                      blurRadius: 10,
-                                                      spreadRadius: 0,
-                                                    )
-                                                  ],
-                                                ),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
-                                                  children: [
+                                                  ),
+                                                );
+                                              }
+                                            } else
+                                              return Column(
+                                                children: [
+                                                  if (index == 0 ||
+                                                      !compareDate(
+                                                          _listfoodcartitem
+                                                              .elementAt(index)
+                                                              .date
+                                                              .toDate(),
+                                                          _listfoodcartitem
+                                                              .elementAt(
+                                                                  index - 1)
+                                                              .date
+                                                              .toDate()))
                                                     Container(
-                                                      margin: EdgeInsets.all(5),
-                                                      width: 81,
-                                                      height: 77,
-                                                      decoration:
-                                                          new BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadius.circular(
-                                                                12.007169723510742),
-                                                      ),
-                                                      child: FutureBuilder(
-                                                        future: Storage
-                                                            .downloadURLExample(
-                                                                _listfoodcartitem
-                                                                    .elementAt(
-                                                                        index)
-                                                                    .foodname),
-                                                        builder: (BuildContext
-                                                                context,
-                                                            AsyncSnapshot<
-                                                                    String>
-                                                                snapshot) {
-                                                          if (snapshot.connectionState ==
-                                                                  ConnectionState
-                                                                      .done &&
-                                                              snapshot.hasData)
-                                                            return Image
-                                                                .network(
-                                                              snapshot.data!,
-                                                              fit: BoxFit.cover,
-                                                            );
-                                                          else if (snapshot
-                                                                      .connectionState ==
-                                                                  ConnectionState
-                                                                      .waiting ||
-                                                              !snapshot.hasData)
-                                                            return Container(
-                                                                width: 10,
-                                                                height: 10,
-                                                                child: Center(
-                                                                  child:
-                                                                      CircularProgressIndicator(
-                                                                    color:
-                                                                        dullgreen,
-                                                                  ),
-                                                                ));
-                                                          else
-                                                            return Image.asset(
-                                                                'assets/images/fruit.jpg');
-                                                        },
-                                                      ),
-                                                    ),
-                                                    Container(
-                                                      width: 185,
-                                                      margin:
-                                                          EdgeInsets.all(10),
-                                                      child: Column(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
+                                                      margin: EdgeInsets.only(
+                                                          top: 10),
+                                                      child: Row(
                                                         children: [
-                                                          Text(
-                                                            _listfoodcartitem
-                                                                .elementAt(
-                                                                    index)
-                                                                .foodname,
-                                                            style: TextStyle(
-                                                              fontFamily:
-                                                                  'Poppins',
-                                                              color:
-                                                                  darkgreyblue,
-                                                              fontSize: 18,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w600,
-                                                              fontStyle:
-                                                                  FontStyle
-                                                                      .normal,
-                                                            ),
-                                                          ),
-                                                          Row(
-                                                            children: [
-                                                              Text(
-                                                                  'Your serving size:   '),
-                                                              Text(_listfoodcartitem
+                                                          Expanded(
+                                                              child: Divider(
+                                                            color: black,
+                                                          )),
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(8.0),
+                                                            child: Text(
+                                                              convertToDayAgo(
+                                                                  _listfoodcartitem
                                                                       .elementAt(
                                                                           index)
-                                                                      .foodweight
-                                                                      .toString() +
-                                                                  'g'),
-                                                            ],
+                                                                      .date
+                                                                      .toDate()),
+                                                              style: TextStyle(
+                                                                fontFamily:
+                                                                    'Poppins',
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                                fontSize: 18,
+                                                                color:
+                                                                    darkgreyblue,
+                                                              ),
+                                                            ),
                                                           ),
-                                                          Text(_listfoodcartitem
-                                                                  .elementAt(
-                                                                      index)
-                                                                  .date
-                                                                  .toDate()
-                                                                  .hour
-                                                                  .toString() +
-                                                              ':' +
-                                                              _listfoodcartitem
-                                                                  .elementAt(
-                                                                      index)
-                                                                  .date
-                                                                  .toDate()
-                                                                  .minute
-                                                                  .toString()),
+                                                          Expanded(
+                                                              child: Divider(
+                                                                  color:
+                                                                      black)),
                                                         ],
                                                       ),
                                                     ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
-                                          );
-                                      }),
-                                )
-                              ],
-                            ),
+                                                  Container(
+                                                    margin: EdgeInsets.only(
+                                                        top: 15),
+                                                    width: 102.55 *
+                                                        SizeConfig
+                                                            .widthMultiplier,
+                                                    height: 15.15 *
+                                                        SizeConfig
+                                                            .heightMultiplier,
+                                                    decoration:
+                                                        new BoxDecoration(
+                                                      color: white,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              5),
+                                                      boxShadow: [
+                                                        BoxShadow(
+                                                          color:
+                                                              Color(0x19000000),
+                                                          offset: Offset(0, 2),
+                                                          blurRadius: 10,
+                                                          spreadRadius: 0,
+                                                        )
+                                                      ],
+                                                    ),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        Container(
+                                                          margin:
+                                                              EdgeInsets.all(5),
+                                                          width: 20.61 *
+                                                              SizeConfig
+                                                                  .widthMultiplier,
+                                                          height: 10.15 *
+                                                              SizeConfig
+                                                                  .heightMultiplier,
+                                                          decoration:
+                                                              new BoxDecoration(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        12.007169723510742),
+                                                          ),
+                                                          child: ClipRRect(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        10.0),
+                                                            child: FittedBox(
+                                                              child: Image.asset(
+                                                                  'assets/images/fruits/' +
+                                                                      _listfoodcartitem
+                                                                          .elementAt(
+                                                                              index)
+                                                                          .foodname
+                                                                          .replaceAll(
+                                                                              ' ',
+                                                                              '') +
+                                                                      '.jpg',
+                                                                  errorBuilder:
+                                                                      (context,
+                                                                          error,
+                                                                          stackTrace) {
+                                                                return Image.asset(
+                                                                    'assets/images/fruit.jpg');
+                                                              }),
+                                                              fit: BoxFit.fill,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        Container(
+                                                          width: 47.19 *
+                                                              SizeConfig
+                                                                  .widthMultiplier,
+                                                          margin:
+                                                              EdgeInsets.all(
+                                                                  10),
+                                                          child: Column(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            children: [
+                                                              Text(
+                                                                _listfoodcartitem
+                                                                    .elementAt(
+                                                                        index)
+                                                                    .foodname,
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontFamily:
+                                                                      'Poppins',
+                                                                  color:
+                                                                      darkgreyblue,
+                                                                  fontSize: 18,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                  fontStyle:
+                                                                      FontStyle
+                                                                          .normal,
+                                                                ),
+                                                              ),
+                                                              Row(
+                                                                children: [
+                                                                  Text(
+                                                                      'Your serving size:   '),
+                                                                  Text(_listfoodcartitem
+                                                                          .elementAt(
+                                                                              index)
+                                                                          .foodweight
+                                                                          .toString() +
+                                                                      'g'),
+                                                                ],
+                                                              ),
+                                                              Text(_listfoodcartitem
+                                                                      .elementAt(
+                                                                          index)
+                                                                      .date
+                                                                      .toDate()
+                                                                      .hour
+                                                                      .toString() +
+                                                                  ':' +
+                                                                  _listfoodcartitem
+                                                                      .elementAt(
+                                                                          index)
+                                                                      .date
+                                                                      .toDate()
+                                                                      .minute
+                                                                      .toString()),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
+                                              );
+                                          }),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
+                        ),
+                      )
+                    : Container(
+                        height: 79.05 * SizeConfig.heightMultiplier,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            !gotdata
+                                ? CircularProgressIndicator(
+                                    color: dullgreen,
+                                  )
+                                : Text('No result'),
+                          ],
+                        ),
                       ),
-                    ),
-                  )
-                : Container(
-                    height: 600,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        !gotdata
-                            ? CircularProgressIndicator(
-                                color: dullgreen,
-                              )
-                            : Text('No result'),
-                      ],
-                    ),
-                  ),
-          ],
-        ),
-      ),
-    );
+              ],
+            ),
+          ),
+        );
+      });
+    });
   }
 }
