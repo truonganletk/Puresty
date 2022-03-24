@@ -140,7 +140,7 @@ class _SearchScreenState extends State<SearchScreen> {
                         children: [
                           Container(
                             width: 152.67 * SizeConfig.widthMultiplier,
-                            height: 68.27 * SizeConfig.heightMultiplier,
+                            height: 71.27 * SizeConfig.heightMultiplier,
                             child: _allresultList.length != 0 && gotdata
                                 ? ListView.builder(
                                     controller: scrollController,
