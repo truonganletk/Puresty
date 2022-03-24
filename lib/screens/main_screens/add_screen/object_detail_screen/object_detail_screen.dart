@@ -50,7 +50,7 @@ class _ObjectDetailState extends State<ObjectDetail> {
         .collection('foodeaten');
     //print(FirebaseAuth.instance.currentUser?.uid);
     if (!isNumeric(fweight)) {
-      _showToast('Dữ liệu không hợp lệ');
+      _showToast('Serving size has to be a number!');
       return;
     }
     foodeaten
@@ -136,7 +136,7 @@ class _ObjectDetailState extends State<ObjectDetail> {
             Positioned(
               top: 200,
               width: MediaQuery.of(context).size.width,
-              height: 440,
+              height: 700,
               child: Container(
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
@@ -228,8 +228,9 @@ class _ObjectDetailState extends State<ObjectDetail> {
                           padding: EdgeInsets.fromLTRB(0, 0, 30, 0),
                           child: GridView.count(
                             primary: false,
+                            childAspectRatio: 3 / 2,
                             crossAxisCount: 3,
-                            crossAxisSpacing: 30,
+                            crossAxisSpacing: 5,
                             children: <Widget>[
                               Column(
                                 children: [
@@ -358,6 +359,7 @@ class _ObjectDetailState extends State<ObjectDetail> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Container(
               margin: EdgeInsets.symmetric(vertical: 15),
@@ -380,6 +382,7 @@ class _ObjectDetailState extends State<ObjectDetail> {
               width: 350,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Container(
                     width: 200,
