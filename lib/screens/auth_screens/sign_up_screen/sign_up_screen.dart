@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:puresty/constants/app_colors.dart';
+import 'package:puresty/constants/size_config.dart';
 import 'package:puresty/services/firebase_auth.dart';
 
 enum Sex { Female, Male }
@@ -43,356 +44,382 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: Container(
-          padding: EdgeInsets.all(20.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Row(
+    return LayoutBuilder(builder: (context, constraints) {
+      return OrientationBuilder(builder: (context, orientation) {
+        SizeConfig().init(constraints, orientation);
+        return Scaffold(
+          body: SingleChildScrollView(
+            child: Container(
+              padding: EdgeInsets.fromLTRB(
+                  2.64 * SizeConfig.heightMultiplier,
+                  4.64 * SizeConfig.heightMultiplier,
+                  2.64 * SizeConfig.heightMultiplier,
+                  2.64 * SizeConfig.heightMultiplier),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text(
-                    'Sign up',
-                    style: TextStyle(
-                      fontFamily: 'Poppins',
-                      fontWeight: FontWeight.bold,
-                      fontSize: 30,
-                      color: darkgreyblue,
-                    ),
-                  ),
-                ],
-              ),
-              Container(
-                padding: EdgeInsets.only(top: 10, bottom: 15),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Already have an account? ',
-                      style: TextStyle(
-                        fontFamily: 'Poppins',
-                        fontWeight: FontWeight.w400,
-                        fontSize: 14,
-                        color: darkgreyblue,
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () => {Navigator.pop(context)},
-                      child: Text(
-                        'Log in',
-                        style: TextStyle(
-                            fontFamily: 'Poppins',
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14,
-                            color: dullgreen),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-              Row(
-                children: [
-                  Text(
-                    'Fullname',
-                    style: TextStyle(
-                      fontFamily: 'Poppins',
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14,
-                      color: darkgreyblue,
-                    ),
-                  ),
-                ],
-              ),
-              Container(
-                padding: EdgeInsets.only(top: 5, bottom: 15),
-                child: TextField(
-                  controller: fullnameController,
-                  decoration: InputDecoration(
-                    contentPadding: EdgeInsets.all(10),
-                    labelStyle: TextStyle(
-                      fontFamily: 'Poppins',
-                    ),
-                    border: OutlineInputBorder(),
-                    counterText: "",
-                    hintText: 'Enter your Fullname',
-                  ),
-                ),
-              ),
-              Row(
-                children: [
-                  Text(
-                    'Sex',
-                    style: TextStyle(
-                      fontFamily: 'Poppins',
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14,
-                      color: darkgreyblue,
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Expanded(
-                    child: ListTile(
-                      title: const Text(
-                        'Female',
+                  Row(
+                    children: [
+                      Text(
+                        'Sign up',
                         style: TextStyle(
                           fontFamily: 'Poppins',
-                          fontWeight: FontWeight.w400,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 30,
+                          color: darkgreyblue,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(top: 10, bottom: 15),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Already have an account? ',
+                          style: TextStyle(
+                            fontFamily: 'Poppins',
+                            fontWeight: FontWeight.w400,
+                            fontSize: 14,
+                            color: darkgreyblue,
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () => {Navigator.pop(context)},
+                          child: Text(
+                            'Log in',
+                            style: TextStyle(
+                                fontFamily: 'Poppins',
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                                color: dullgreen),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      Text(
+                        'Fullname',
+                        style: TextStyle(
+                          fontFamily: 'Poppins',
+                          fontWeight: FontWeight.w600,
                           fontSize: 14,
                           color: darkgreyblue,
                         ),
                       ),
-                      leading: Radio<Sex>(
-                        value: Sex.Female,
-                        groupValue: _sex,
-                        onChanged: (Sex? value) {
-                          setState(() {
-                            _sex = value;
-                          });
-                        },
+                    ],
+                  ),
+                  Container(
+                    width: 100 * SizeConfig.widthMultiplier,
+                    height: 5.93 * SizeConfig.heightMultiplier,
+                    margin: EdgeInsets.only(top: 5, bottom: 15),
+                    child: TextField(
+                      controller: fullnameController,
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.all(10),
+                        labelStyle: TextStyle(
+                          fontFamily: 'Poppins',
+                        ),
+                        border: OutlineInputBorder(),
+                        counterText: "",
+                        hintText: 'Enter your Fullname',
                       ),
                     ),
                   ),
-                  Expanded(
-                    child: ListTile(
-                      title: const Text(
-                        'Male',
+                  Row(
+                    children: [
+                      Text(
+                        'Sex',
+                        style: TextStyle(
+                          fontFamily: 'Poppins',
+                          fontWeight: FontWeight.w600,
+                          fontSize: 14,
+                          color: darkgreyblue,
+                        ),
                       ),
-                      leading: Radio<Sex>(
-                        value: Sex.Male,
-                        groupValue: _sex,
-                        onChanged: (Sex? value) {
-                          setState(() {
-                            _sex = value;
-                          });
-                        },
-                      ),
-                    ),
+                    ],
                   ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: Column(
-                      children: [
-                        Row(
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      Row(children: [
+                        Radio<Sex>(
+                          value: Sex.Female,
+                          groupValue: _sex,
+                          onChanged: (Sex? value) {
+                            setState(() {
+                              _sex = value;
+                            });
+                          },
+                        ),
+                        Text(
+                          'Female',
+                          style: TextStyle(
+                            fontFamily: 'Poppins',
+                            fontWeight: FontWeight.w400,
+                            fontSize: 14,
+                            color: darkgreyblue,
+                          ),
+                        ),
+                      ]),
+                      Row(
+                        children: [
+                          Radio<Sex>(
+                            value: Sex.Male,
+                            groupValue: _sex,
+                            onChanged: (Sex? value) {
+                              setState(() {
+                                _sex = value;
+                              });
+                            },
+                          ),
+                          Text(
+                            'Male',
+                            style: TextStyle(
+                              fontFamily: 'Poppins',
+                              fontWeight: FontWeight.w400,
+                              fontSize: 14,
+                              color: darkgreyblue,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              'Weight',
-                              style: TextStyle(
-                                fontFamily: 'Poppins',
-                                fontWeight: FontWeight.w600,
-                                fontSize: 14,
-                                color: darkgreyblue,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Weight',
+                                  style: TextStyle(
+                                    fontFamily: 'Poppins',
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 14,
+                                    color: darkgreyblue,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Container(
+                              height: 5.93 * SizeConfig.heightMultiplier,
+                              width: 45 * SizeConfig.widthMultiplier,
+                              margin: EdgeInsets.only(top: 5, bottom: 15),
+                              child: TextField(
+                                controller: weightController,
+                                decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.all(10),
+                                  labelStyle: TextStyle(
+                                    fontFamily: 'Poppins',
+                                  ),
+                                  border: OutlineInputBorder(),
+                                  counterText: "",
+                                  hintText: 'Enter your Weight',
+                                ),
                               ),
                             ),
                           ],
                         ),
-                        Container(
-                          width: 165,
-                          padding: EdgeInsets.only(top: 5, bottom: 15),
-                          child: TextField(
-                            controller: weightController,
-                            decoration: InputDecoration(
-                              contentPadding: EdgeInsets.all(10),
-                              labelStyle: TextStyle(
-                                fontFamily: 'Poppins',
-                              ),
-                              border: OutlineInputBorder(),
-                              counterText: "",
-                              hintText: 'Enter your Weight',
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    width: 20,
-                  ),
-                  Expanded(
-                    child: Column(
-                      children: [
-                        Row(
+                      ),
+                      SizedBox(
+                        width: 20,
+                      ),
+                      Expanded(
+                        child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              'Height',
-                              style: TextStyle(
-                                fontFamily: 'Poppins',
-                                fontWeight: FontWeight.w600,
-                                fontSize: 14,
-                                color: darkgreyblue,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Height',
+                                  style: TextStyle(
+                                    fontFamily: 'Poppins',
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 14,
+                                    color: darkgreyblue,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Container(
+                              width: 45 * SizeConfig.widthMultiplier,
+                              height: 5.93 * SizeConfig.heightMultiplier,
+                              margin: EdgeInsets.only(top: 5, bottom: 15),
+                              child: TextField(
+                                controller: heightController,
+                                decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.all(10),
+                                  labelStyle: TextStyle(
+                                    fontFamily: 'Poppins',
+                                  ),
+                                  border: OutlineInputBorder(),
+                                  counterText: "",
+                                  hintText: 'Enter your Height',
+                                ),
                               ),
                             ),
                           ],
                         ),
-                        Container(
-                          width: 165,
-                          padding: EdgeInsets.only(top: 5, bottom: 15),
-                          child: TextField(
-                            controller: heightController,
-                            decoration: InputDecoration(
-                              contentPadding: EdgeInsets.all(10),
-                              labelStyle: TextStyle(
-                                fontFamily: 'Poppins',
-                              ),
-                              border: OutlineInputBorder(),
-                              counterText: "",
-                              hintText: 'Enter your Height',
-                            ),
-                          ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Text(
+                        'Email',
+                        style: TextStyle(
+                          fontFamily: 'Poppins',
+                          fontWeight: FontWeight.w600,
+                          fontSize: 14,
+                          color: darkgreyblue,
                         ),
-                      ],
+                      ),
+                    ],
+                  ),
+                  Container(
+                    width: 100 * SizeConfig.widthMultiplier,
+                    height: 5.93 * SizeConfig.heightMultiplier,
+                    margin: EdgeInsets.only(top: 5, bottom: 15),
+                    child: TextField(
+                      controller: emailController,
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.all(10),
+                        labelStyle: TextStyle(
+                          fontFamily: 'Poppins',
+                        ),
+                        border: OutlineInputBorder(),
+                        counterText: "",
+                        hintText: 'Enter your Email',
+                      ),
                     ),
                   ),
-                ],
-              ),
-              Row(
-                children: [
-                  Text(
-                    'Email',
-                    style: TextStyle(
-                      fontFamily: 'Poppins',
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14,
-                      color: darkgreyblue,
+                  Row(
+                    children: [
+                      Text(
+                        'Username',
+                        style: TextStyle(
+                          fontFamily: 'Poppins',
+                          fontWeight: FontWeight.w600,
+                          fontSize: 14,
+                          color: darkgreyblue,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Container(
+                    width: 100 * SizeConfig.widthMultiplier,
+                    height: 5.93 * SizeConfig.heightMultiplier,
+                    margin: EdgeInsets.only(top: 5, bottom: 15),
+                    child: TextField(
+                      controller: usernameController,
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.all(10),
+                        labelStyle: TextStyle(
+                          fontFamily: 'Poppins',
+                        ),
+                        border: OutlineInputBorder(),
+                        counterText: "",
+                        hintText: 'Enter your Username',
+                      ),
                     ),
                   ),
-                ],
-              ),
-              Container(
-                padding: EdgeInsets.only(top: 5, bottom: 15),
-                child: TextField(
-                  controller: emailController,
-                  decoration: InputDecoration(
-                    contentPadding: EdgeInsets.all(10),
-                    labelStyle: TextStyle(
-                      fontFamily: 'Poppins',
-                    ),
-                    border: OutlineInputBorder(),
-                    counterText: "",
-                    hintText: 'Enter your Email',
+                  Row(
+                    children: [
+                      Text(
+                        'Password',
+                        style: TextStyle(
+                          fontFamily: 'Poppins',
+                          fontWeight: FontWeight.w600,
+                          fontSize: 14,
+                          color: darkgreyblue,
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              ),
-              Row(
-                children: [
-                  Text(
-                    'Username',
-                    style: TextStyle(
-                      fontFamily: 'Poppins',
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14,
-                      color: darkgreyblue,
-                    ),
-                  ),
-                ],
-              ),
-              Container(
-                padding: EdgeInsets.only(top: 5, bottom: 15),
-                child: TextField(
-                  controller: usernameController,
-                  decoration: InputDecoration(
-                    contentPadding: EdgeInsets.all(10),
-                    labelStyle: TextStyle(
-                      fontFamily: 'Poppins',
-                    ),
-                    border: OutlineInputBorder(),
-                    counterText: "",
-                    hintText: 'Enter your Username',
-                  ),
-                ),
-              ),
-              Row(
-                children: [
-                  Text(
-                    'Password',
-                    style: TextStyle(
-                      fontFamily: 'Poppins',
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14,
-                      color: darkgreyblue,
+                  Container(
+                    width: 100 * SizeConfig.widthMultiplier,
+                    height: 5.93 * SizeConfig.heightMultiplier,
+                    margin: EdgeInsets.only(top: 5, bottom: 15),
+                    child: TextField(
+                      controller: passwordController,
+                      decoration: InputDecoration(
+                        suffixIcon: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              showPassword = !showPassword;
+                            });
+                          },
+                          child: Icon(showPassword
+                              ? Icons.visibility
+                              : Icons.visibility_off),
+                        ),
+                        contentPadding: EdgeInsets.all(10),
+                        labelStyle: TextStyle(
+                          fontFamily: 'Poppins',
+                        ),
+                        border: OutlineInputBorder(),
+                        counterText: "",
+                        hintText: 'Enter your Password',
+                      ),
+                      obscureText: !showPassword,
                     ),
                   ),
-                ],
-              ),
-              Container(
-                padding: EdgeInsets.only(top: 5, bottom: 15),
-                child: TextField(
-                  controller: passwordController,
-                  decoration: InputDecoration(
-                    suffixIcon: GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          showPassword = !showPassword;
-                        });
-                      },
-                      child: Icon(showPassword
-                          ? Icons.visibility
-                          : Icons.visibility_off),
-                    ),
-                    contentPadding: EdgeInsets.all(10),
-                    labelStyle: TextStyle(
-                      fontFamily: 'Poppins',
-                    ),
-                    border: OutlineInputBorder(),
-                    counterText: "",
-                    hintText: 'Enter your Password',
-                  ),
-                  obscureText: !showPassword,
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.only(top: 20, bottom: 15),
-                decoration:
-                    BoxDecoration(borderRadius: BorderRadius.circular(7)),
-                child: ElevatedButton(
-                    style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(dullgreen)),
-                    onPressed: () {
-                      if (fullnameController.text == '' ||
-                          weightController.text == '' ||
-                          heightController.text == '' ||
-                          emailController.text == '' ||
-                          usernameController.text == '' ||
-                          passwordController.text == '') {
-                        _showToast("Chưa nhập đủ thông tin");
-                      } else if (!emailController.text.contains('@')) {
-                        _showToast("Cần nhập đúng email");
-                      } else if (!isNumeric(weightController.text)) {
-                        _showToast("Weight là 1 số");
-                      } else if (!isNumeric(heightController.text)) {
-                        _showToast("Height là 1 số");
-                      } else {
-                        context
-                            .read<FirebaseAuthentication>()
-                            .signUp(
-                                emailController.text,
-                                passwordController.text,
-                                fullnameController.text,
-                                usernameController.text,
-                                _sex.toString(),
-                                heightController.text,
-                                weightController.text)
-                            .then((value) =>
-                                {if (value == '') Navigator.pop(context)});
-                      }
-                    },
-                    child: Container(
-                        padding: EdgeInsets.all(10),
-                        width: 395,
-                        height: 45,
-                        child: Text(
+                  Container(
+                    width: 100 * SizeConfig.widthMultiplier,
+                    height: 5.93 * SizeConfig.heightMultiplier,
+                    margin: EdgeInsets.only(top: 15, bottom: 15),
+                    decoration:
+                        BoxDecoration(borderRadius: BorderRadius.circular(7)),
+                    child: ElevatedButton(
+                        style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(dullgreen)),
+                        onPressed: () {
+                          if (fullnameController.text == '' ||
+                              weightController.text == '' ||
+                              heightController.text == '' ||
+                              emailController.text == '' ||
+                              usernameController.text == '' ||
+                              passwordController.text == '') {
+                            _showToast("This information need to be filled.");
+                          } else if (!emailController.text.contains('@')) {
+                            _showToast("Your email address is invalid.");
+                          } else if (!isNumeric(weightController.text)) {
+                            _showToast("Weight has to be a number!");
+                          } else if (!isNumeric(heightController.text)) {
+                            _showToast("Height has to be a number!");
+                          } else if (usernameController.text.contains(' ')) {
+                            _showToast("Username must not contain spaces.");
+                          } else {
+                            context
+                                .read<FirebaseAuthentication>()
+                                .signUp(
+                                    emailController.text,
+                                    passwordController.text,
+                                    fullnameController.text,
+                                    usernameController.text,
+                                    _sex.toString(),
+                                    heightController.text,
+                                    weightController.text)
+                                .then((value) =>
+                                    {if (value == '') Navigator.pop(context)});
+                          }
+                        },
+                        child: Container(
+                            child: Text(
                           "Create account",
                           textAlign: TextAlign.center,
                           style: TextStyle(
@@ -402,11 +429,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             color: white,
                           ),
                         ))),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
-      ),
-    );
+        );
+      });
+    });
   }
 }
