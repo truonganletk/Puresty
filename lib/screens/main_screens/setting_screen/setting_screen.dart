@@ -473,8 +473,8 @@ class _SettingScreenState extends State<SettingScreen> {
               ),
               Container(
                   margin: EdgeInsets.all(10),
-                  width: 76.34 * SizeConfig.widthMultiplier,
-                  height: 76.34 * SizeConfig.widthMultiplier,
+                  width: 60.34 * SizeConfig.widthMultiplier,
+                  height: 60.34 * SizeConfig.widthMultiplier,
                   child: SvgPicture.asset(
                       'assets/images/undraw_my_personal_files_re_3q0p.svg')),
             ],
