@@ -6,6 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:puresty/constants/app_colors.dart';
 import 'package:puresty/models/user.dart';
+import 'package:puresty/services/firebase_firestore.dart';
 
 class FirebaseAuthentication extends ChangeNotifier {
   final FirebaseAuth _auth;
@@ -47,6 +48,12 @@ class FirebaseAuthentication extends ChangeNotifier {
         })
         .then((value) => print("User Updated"))
         .catchError((error) => print("Failed to add user: $error"));
+    FirestoreNotification().createNotif(
+      'Profile updated!',
+      'Profile update successful',
+      'none',
+      DateTime.now(),
+    );
   }
 
   Future<String> signUp(String email, String password, String fullname,
