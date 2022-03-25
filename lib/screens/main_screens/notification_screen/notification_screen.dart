@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:puresty/constants/app_colors.dart';
+import 'package:puresty/constants/size_config.dart';
 import 'package:puresty/models/notification.dart';
 
 class NotificationScreen extends StatefulWidget {
@@ -28,7 +29,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
   bool isFetching = false;
   bool hasNext = true;
   bool gotdata = false;
-  int documentLimit = 5;
+  int documentLimit = 10;
   List _allresultList = [];
   List _listnotif = [];
 
@@ -128,272 +129,305 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        padding: EdgeInsets.all(20),
-        child: Column(
-          children: [
-            Container(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text(
-                    "Notification",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: black,
-                      fontSize: 40.0,
-                      fontWeight: FontWeight.w900,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            _allresultList.length != 0 && gotdata
-                ? SingleChildScrollView(
-                    physics: NeverScrollableScrollPhysics(),
-                    child: Container(
-                      child: Column(
-                        children: [
-                          Container(
-                            width: 550,
-                            alignment: Alignment.center,
-                            padding: EdgeInsets.symmetric(horizontal: 10),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(15),
-                                topRight: Radius.circular(15),
-                              ),
-                            ),
-                            child: Column(
-                              children: [
-                                Container(
-                                  width: 550,
-                                  height: 600,
-                                  child: ListView.builder(
-                                      padding: const EdgeInsets.all(8),
-                                      controller: scrollController,
-                                      itemCount: _allresultList.length + 1,
-                                      itemBuilder:
-                                          (BuildContext context, int index) {
-                                        if (index >= _allresultList.length) {
-                                          if (hasNext) {
-                                            return Center(
-                                              child: Container(
-                                                margin:
-                                                    EdgeInsets.only(top: 15),
-                                                height: 20,
-                                                width: 20,
-                                                child:
-                                                    CircularProgressIndicator(),
-                                              ),
-                                            );
-                                          } else {
-                                            return Center(
-                                              child: Container(
-                                                margin:
-                                                    EdgeInsets.only(top: 15),
-                                                child: Text(
-                                                  '',
-                                                  style: TextStyle(
-                                                      color: Colors.black),
-                                                ),
-                                              ),
-                                            );
-                                          }
-                                        } else
-                                          return Column(
-                                            children: [
-                                              if (index == 0 ||
-                                                  !compareDate(
-                                                      _listnotif
-                                                          .elementAt(index)
-                                                          .datecreate
-                                                          .toDate(),
-                                                      _listnotif
-                                                          .elementAt(index - 1)
-                                                          .datecreate
-                                                          .toDate()))
-                                                Row(
-                                                  children: [
-                                                    Expanded(
-                                                        child: Divider(
-                                                      color: black,
-                                                    )),
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              8.0),
-                                                      child: Text(
-                                                        convertToDayAgo(
-                                                            _listnotif
-                                                                .elementAt(
-                                                                    index)
-                                                                .datecreate
-                                                                .toDate()),
-                                                        style: TextStyle(
-                                                          fontFamily: 'Poppins',
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                          fontSize: 18,
-                                                          color: darkgreyblue,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    Expanded(
-                                                        child: Divider(
-                                                            color: black)),
-                                                  ],
-                                                ),
-                                              Container(
-                                                margin: EdgeInsets.symmetric(
-                                                    vertical: 7),
-                                                padding: EdgeInsets.symmetric(
-                                                    horizontal: 7),
-                                                width: 405,
-                                                height: 70,
-                                                decoration: new BoxDecoration(
-                                                  color: white,
-                                                  borderRadius:
-                                                      BorderRadius.circular(5),
-                                                ),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
-                                                  children: [
-                                                    Container(
-                                                      margin:
-                                                          EdgeInsets.symmetric(
-                                                              horizontal: 5),
-                                                      child: Icon(
-                                                        Icons
-                                                            .notifications_active,
-                                                        color: dullgreen,
-                                                        size: 50,
-                                                      ),
-                                                    ),
-                                                    Container(
-                                                      margin:
-                                                          EdgeInsets.symmetric(
-                                                              horizontal: 5),
-                                                      child: Column(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .center,
-                                                        children: [
-                                                          Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .center,
-                                                            children: [
-                                                              Text(
-                                                                _listnotif
-                                                                    .elementAt(
-                                                                        index)
-                                                                    .title,
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontFamily:
-                                                                      'Poppins',
-                                                                  color: black,
-                                                                  fontSize: 13,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w600,
-                                                                  fontStyle:
-                                                                      FontStyle
-                                                                          .normal,
-                                                                ),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                          Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .center,
-                                                            children: [
-                                                              Text(
-                                                                _listnotif
-                                                                    .elementAt(
-                                                                        index)
-                                                                    .content,
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontFamily:
-                                                                      'Poppins',
-                                                                  color: black,
-                                                                  fontSize: 12,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w300,
-                                                                  fontStyle:
-                                                                      FontStyle
-                                                                          .normal,
-                                                                ),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                    Container(
-                                                      margin:
-                                                          EdgeInsets.symmetric(
-                                                              horizontal: 5),
-                                                      child: Text(
-                                                        convertToTimeAgo(
-                                                            _listnotif
-                                                                .elementAt(
-                                                                    index)
-                                                                .datecreate
-                                                                .toDate()),
-                                                        style: TextStyle(
-                                                          fontFamily: 'Poppins',
-                                                          color: black,
-                                                          fontSize: 9,
-                                                          fontWeight:
-                                                              FontWeight.w300,
-                                                          fontStyle:
-                                                              FontStyle.normal,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
-                                          );
-                                      }),
-                                )
-                              ],
-                            ),
-                          ),
-                        ],
+    return LayoutBuilder(builder: (context, constraints) {
+      return OrientationBuilder(builder: (context, orientation) {
+        SizeConfig().init(constraints, orientation);
+        return Scaffold(
+          body: Container(
+            padding: EdgeInsets.fromLTRB(
+                2.64 * SizeConfig.heightMultiplier,
+                4.64 * SizeConfig.heightMultiplier,
+                2.64 * SizeConfig.heightMultiplier,
+                2.64 * SizeConfig.heightMultiplier),
+            child: Column(
+              children: [
+                Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Notification",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: black,
+                          fontSize: 40.0,
+                          fontWeight: FontWeight.w900,
+                        ),
                       ),
-                    ),
-                  )
-                : Container(
-                    height: 600,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        !gotdata
-                            ? CircularProgressIndicator(
-                                color: dullgreen,
-                              )
-                            : Text('No result'),
-                      ],
-                    ),
+                    ],
                   ),
-          ],
-        ),
-      ),
-    );
+                ),
+                _allresultList.length != 0 && gotdata
+                    ? SingleChildScrollView(
+                        physics: NeverScrollableScrollPhysics(),
+                        child: Container(
+                          child: Column(
+                            children: [
+                              Container(
+                                width: 139.95 * SizeConfig.widthMultiplier,
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      width:
+                                          139.95 * SizeConfig.widthMultiplier,
+                                      height:
+                                          85.77 * SizeConfig.heightMultiplier,
+                                      child: ListView.builder(
+                                          //padding: const EdgeInsets.all(8),
+                                          controller: scrollController,
+                                          itemCount: _allresultList.length + 1,
+                                          itemBuilder: (BuildContext context,
+                                              int index) {
+                                            if (index >=
+                                                _allresultList.length) {
+                                              if (hasNext) {
+                                                return Center(
+                                                  child: Container(
+                                                    margin: EdgeInsets.only(
+                                                        top: 15),
+                                                    height: 20,
+                                                    width: 20,
+                                                    child:
+                                                        CircularProgressIndicator(),
+                                                  ),
+                                                );
+                                              } else {
+                                                return Center(
+                                                  child: Container(
+                                                    margin: EdgeInsets.only(
+                                                        top: 15),
+                                                    child: Text(
+                                                      '',
+                                                      style: TextStyle(
+                                                          color: Colors.black),
+                                                    ),
+                                                  ),
+                                                );
+                                              }
+                                            } else
+                                              return Column(
+                                                children: [
+                                                  if (index == 0 ||
+                                                      !compareDate(
+                                                          _listnotif
+                                                              .elementAt(index)
+                                                              .datecreate
+                                                              .toDate(),
+                                                          _listnotif
+                                                              .elementAt(
+                                                                  index - 1)
+                                                              .datecreate
+                                                              .toDate()))
+                                                    Row(
+                                                      children: [
+                                                        Expanded(
+                                                            child: Divider(
+                                                          color: black,
+                                                        )),
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(8.0),
+                                                          child: Text(
+                                                            convertToDayAgo(
+                                                                _listnotif
+                                                                    .elementAt(
+                                                                        index)
+                                                                    .datecreate
+                                                                    .toDate()),
+                                                            style: TextStyle(
+                                                              fontFamily:
+                                                                  'Poppins',
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
+                                                              fontSize: 18,
+                                                              color:
+                                                                  darkgreyblue,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        Expanded(
+                                                            child: Divider(
+                                                                color: black)),
+                                                      ],
+                                                    ),
+                                                  Container(
+                                                    margin:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal: 7,
+                                                            vertical: 7),
+                                                    width: 103.05 *
+                                                        SizeConfig
+                                                            .widthMultiplier,
+                                                    height: 11.38 *
+                                                        SizeConfig
+                                                            .heightMultiplier,
+                                                    decoration:
+                                                        new BoxDecoration(
+                                                            color: white,
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        7),
+                                                            boxShadow: [
+                                                          BoxShadow(
+                                                            color: Color(
+                                                                0x19000000),
+                                                            offset:
+                                                                Offset(0, 2),
+                                                            blurRadius: 10,
+                                                            spreadRadius: 0,
+                                                          ),
+                                                        ]),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        Container(
+                                                          margin: EdgeInsets
+                                                              .symmetric(
+                                                                  horizontal:
+                                                                      15,
+                                                                  vertical: 7),
+                                                          child: Icon(
+                                                            Icons
+                                                                .notifications_active,
+                                                            color: dullgreen,
+                                                            size: 50,
+                                                          ),
+                                                        ),
+                                                        Container(
+                                                          child: Column(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              Row(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  Text(
+                                                                    _listnotif
+                                                                        .elementAt(
+                                                                            index)
+                                                                        .title,
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontFamily:
+                                                                          'Poppins',
+                                                                      color:
+                                                                          black,
+                                                                      fontSize:
+                                                                          13,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w600,
+                                                                      fontStyle:
+                                                                          FontStyle
+                                                                              .normal,
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                              Container(
+                                                                width: 63.61 *
+                                                                    SizeConfig
+                                                                        .widthMultiplier,
+                                                                child: Text(
+                                                                  _listnotif
+                                                                      .elementAt(
+                                                                          index)
+                                                                      .content,
+                                                                  overflow:
+                                                                      TextOverflow
+                                                                          .ellipsis,
+                                                                  maxLines: 1,
+                                                                  softWrap:
+                                                                      true,
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontFamily:
+                                                                        'Poppins',
+                                                                    color:
+                                                                        black,
+                                                                    fontSize:
+                                                                        12,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w300,
+                                                                    fontStyle:
+                                                                        FontStyle
+                                                                            .normal,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                              Container(
+                                                                child: Text(
+                                                                  convertToTimeAgo(_listnotif
+                                                                      .elementAt(
+                                                                          index)
+                                                                      .datecreate
+                                                                      .toDate()),
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontFamily:
+                                                                        'Poppins',
+                                                                    color:
+                                                                        black,
+                                                                    fontSize: 9,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w300,
+                                                                    fontStyle:
+                                                                        FontStyle
+                                                                            .normal,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
+                                              );
+                                          }),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                    : Container(
+                        height: 85.77 * SizeConfig.heightMultiplier,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            !gotdata
+                                ? CircularProgressIndicator(
+                                    color: dullgreen,
+                                  )
+                                : Text('No result'),
+                          ],
+                        ),
+                      ),
+              ],
+            ),
+          ),
+        );
+      });
+    });
   }
 }
