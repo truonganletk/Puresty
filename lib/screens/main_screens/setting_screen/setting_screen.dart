@@ -98,7 +98,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                       children: [
                                         Container(
                                           width:
-                                              20.4 * SizeConfig.widthMultiplier,
+                                              21.4 * SizeConfig.widthMultiplier,
                                           height: 5.55 *
                                               SizeConfig.heightMultiplier,
                                           decoration: new BoxDecoration(
@@ -130,7 +130,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                         ),
                                         Container(
                                           width:
-                                              20.4 * SizeConfig.widthMultiplier,
+                                              21.4 * SizeConfig.widthMultiplier,
                                           height: 5.55 *
                                               SizeConfig.heightMultiplier,
                                           decoration: new BoxDecoration(
@@ -245,7 +245,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                       children: [
                                         Container(
                                           width:
-                                              20.4 * SizeConfig.widthMultiplier,
+                                              21.4 * SizeConfig.widthMultiplier,
                                           height: 5.55 *
                                               SizeConfig.heightMultiplier,
                                           decoration: new BoxDecoration(
@@ -277,7 +277,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                         ),
                                         Container(
                                           width:
-                                              20.4 * SizeConfig.widthMultiplier,
+                                              21.4 * SizeConfig.widthMultiplier,
                                           height: 5.55 *
                                               SizeConfig.heightMultiplier,
                                           decoration: new BoxDecoration(
@@ -383,7 +383,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                     children: [
                                       Container(
                                         width:
-                                            20.4 * SizeConfig.widthMultiplier,
+                                            21.4 * SizeConfig.widthMultiplier,
                                         height:
                                             5.55 * SizeConfig.heightMultiplier,
                                         decoration: new BoxDecoration(
@@ -414,7 +414,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                       ),
                                       Container(
                                         width:
-                                            20.4 * SizeConfig.widthMultiplier,
+                                            21.4 * SizeConfig.widthMultiplier,
                                         height:
                                             5.55 * SizeConfig.heightMultiplier,
                                         decoration: new BoxDecoration(
