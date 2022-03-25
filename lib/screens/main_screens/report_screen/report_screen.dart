@@ -142,6 +142,7 @@ class _ReportScreenState extends State<ReportScreen> {
     int tempItems = 0;
     double tempWeight = 0.0;
     bool temphasPrevTime = false;
+    List daysofmonth = [];
     for (FoodCartItem item in _listfoodcartitem) {
       DateTime itemTime = item.date.toDate();
       DateTime prevDay = DateTime(currentYear, currentMonth, currentDay - 1);
@@ -153,6 +154,7 @@ class _ReportScreenState extends State<ReportScreen> {
           (_stateView == StateView.Monthly &&
               itemTime.year == currentYear &&
               itemTime.month == currentMonth)) {
+        if (!daysofmonth.contains(itemTime.day)) daysofmonth.add(itemTime.day);
         tempCal += double.parse(item.cal.toString()) *
             double.parse(item.foodweight.toString());
         tempFats += double.parse(item.fats.toString()) *
@@ -187,19 +189,29 @@ class _ReportScreenState extends State<ReportScreen> {
       }
     }
     setState(() {
-      totalCal = tempCal / 100;
-      totalFats = tempFats / 100;
-      totalCarbs = tempCarbs / 100;
-      totalProtein = tempProtein / 100;
-      totalFibre = tempFibre / 100;
+      totalCal = tempCal /
+          100 /
+          ((_stateView == StateView.Monthly) ? daysofmonth.length : 1);
+      totalFats = tempFats /
+          100 /
+          ((_stateView == StateView.Monthly) ? daysofmonth.length : 1);
+      totalCarbs = tempCarbs /
+          100 /
+          ((_stateView == StateView.Monthly) ? daysofmonth.length : 1);
+      totalProtein = tempProtein /
+          100 /
+          ((_stateView == StateView.Monthly) ? daysofmonth.length : 1);
+      totalFibre = tempFibre /
+          100 /
+          ((_stateView == StateView.Monthly) ? daysofmonth.length : 1);
       totalItems = tempItems;
       totalWeight = tempWeight / 100;
       hasPrevTime = temphasPrevTime;
-      prevCal = totalCal.compareTo(tempPrevCal);
-      prevFats = totalFats.compareTo(tempPrevFats);
-      prevCarbs = totalCarbs.compareTo(tempPrevCarbs);
-      prevProtein = totalProtein.compareTo(tempPrevProtein);
-      prevFibre = totalFibre.compareTo(tempPrevFibre);
+      prevCal = tempCal.compareTo(tempPrevCal);
+      prevFats = tempFats.compareTo(tempPrevFats);
+      prevCarbs = tempCarbs.compareTo(tempPrevCarbs);
+      prevProtein = tempProtein.compareTo(tempPrevProtein);
+      prevFibre = tempFibre.compareTo(tempPrevFibre);
     });
   }
 
