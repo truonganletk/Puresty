@@ -136,167 +136,162 @@ class _SearchScreenState extends State<SearchScreen> {
                         ),
                       ),
                     ),
-                    Center(
-                      child: Container(
-                        width: 152.67 * SizeConfig.widthMultiplier,
-                        child: Column(
-                          children: [
-                            Container(
-                              width: 152.67 * SizeConfig.widthMultiplier,
-                              height: 71.27 * SizeConfig.heightMultiplier,
-                              child: _allresultList.length != 0 && gotdata
-                                  ? ListView.builder(
-                                      controller: scrollController,
-                                      padding: const EdgeInsets.all(8),
-                                      itemCount: _resultList.length,
-                                      itemBuilder:
-                                          (BuildContext context, int index) {
-                                        return GestureDetector(
-                                          onTap: () {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      ObjectDetail(
-                                                          fr: _fruitlist
-                                                              .elementAt(
-                                                                  index))),
-                                            );
-                                          },
-                                          child: Container(
-                                            margin: EdgeInsets.only(top: 15),
-                                            width: 152.67 *
-                                                SizeConfig.widthMultiplier,
-                                            height: 18.63 *
-                                                SizeConfig.heightMultiplier,
-                                            decoration: new BoxDecoration(
-                                              color: white,
-                                              borderRadius:
-                                                  BorderRadius.circular(15),
-                                              boxShadow: [
-                                                BoxShadow(
-                                                  color: Color(0x19000000),
-                                                  offset: Offset(0, 2),
-                                                  blurRadius: 10,
-                                                  spreadRadius: 0,
-                                                )
-                                              ],
-                                            ),
-                                            child: Row(
-                                              children: [
-                                                Container(
-                                                  margin: EdgeInsets.symmetric(
-                                                      horizontal: 20),
-                                                  width: 20.61 *
-                                                      SizeConfig
-                                                          .widthMultiplier,
-                                                  height: 10.95 *
-                                                      SizeConfig
-                                                          .heightMultiplier,
-                                                  decoration: new BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            12.007169723510742),
-                                                  ),
-                                                  child: ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10.0),
-                                                    child: FittedBox(
-                                                      child: Image.asset(
-                                                          'assets/images/fruits/' +
-                                                              _fruitlist
-                                                                  .elementAt(
-                                                                      index)
-                                                                  .name
-                                                                  .replaceAll(
-                                                                      ' ', '') +
-                                                              '.jpg',
-                                                          errorBuilder:
-                                                              (context, error,
-                                                                  stackTrace) {
-                                                        return Image.asset(
-                                                            'assets/images/fruit.jpg');
-                                                      }),
-                                                      fit: BoxFit.fill,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Container(
-                                                      width: 53.44 *
-                                                          SizeConfig
-                                                              .widthMultiplier,
-                                                      child: Text(
-                                                        _fruitlist
-                                                            .elementAt(index)
-                                                            .name
-                                                            .toUpperCase(),
-                                                        style: TextStyle(
-                                                          fontFamily: 'Poppins',
-                                                          color: darkgreyblue,
-                                                          fontSize: 18,
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                          fontStyle:
-                                                              FontStyle.normal,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    Container(
-                                                      width: 53.44 *
-                                                          SizeConfig
-                                                              .widthMultiplier,
-                                                      child: Text(
-                                                        _fruitlist
-                                                            .elementAt(index)
-                                                            .description,
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
-                                                        maxLines: 3,
-                                                        softWrap: true,
-                                                        style: TextStyle(
-                                                          fontFamily: 'Poppins',
-                                                          color: darkgreyblue,
-                                                          fontSize: 12,
-                                                          fontStyle:
-                                                              FontStyle.normal,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
+                    Container(
+                      width: 152.67 * SizeConfig.widthMultiplier,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: 152.67 * SizeConfig.widthMultiplier,
+                            height: 71.27 * SizeConfig.heightMultiplier,
+                            child: _allresultList.length != 0 && gotdata
+                                ? ListView.builder(
+                                    controller: scrollController,
+                                    padding: const EdgeInsets.all(8),
+                                    itemCount: _resultList.length,
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      return GestureDetector(
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ObjectDetail(
+                                                        fr: _fruitlist
+                                                            .elementAt(index))),
+                                          );
+                                        },
+                                        child: Container(
+                                          margin: EdgeInsets.only(top: 15),
+                                          width: 152.67 *
+                                              SizeConfig.widthMultiplier,
+                                          height: 18.63 *
+                                              SizeConfig.heightMultiplier,
+                                          decoration: new BoxDecoration(
+                                            color: white,
+                                            borderRadius:
+                                                BorderRadius.circular(15),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Color(0x19000000),
+                                                offset: Offset(0, 2),
+                                                blurRadius: 10,
+                                                spreadRadius: 0,
+                                              )
+                                            ],
                                           ),
-                                        );
-                                      })
-                                  : Container(
-                                      height:
-                                          71.27 * SizeConfig.heightMultiplier,
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          !gotdata
-                                              ? Center(
-                                                  child:
-                                                      CircularProgressIndicator(
-                                                    color: dullgreen,
+                                          child: Row(
+                                            children: [
+                                              Container(
+                                                margin: EdgeInsets.symmetric(
+                                                    horizontal: 20),
+                                                width: 20.61 *
+                                                    SizeConfig.widthMultiplier,
+                                                height: 10.95 *
+                                                    SizeConfig.heightMultiplier,
+                                                decoration: new BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          12.007169723510742),
+                                                ),
+                                                child: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          10.0),
+                                                  child: FittedBox(
+                                                    child: Image.asset(
+                                                        'assets/images/fruits/' +
+                                                            _fruitlist
+                                                                .elementAt(
+                                                                    index)
+                                                                .name
+                                                                .replaceAll(
+                                                                    ' ', '') +
+                                                            '.jpg',
+                                                        errorBuilder: (context,
+                                                            error, stackTrace) {
+                                                      return Image.asset(
+                                                          'assets/images/fruit.jpg');
+                                                    }),
+                                                    fit: BoxFit.fill,
                                                   ),
-                                                )
-                                              : Text('No result'),
-                                        ],
-                                      ),
+                                                ),
+                                              ),
+                                              Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Container(
+                                                    width: 53.44 *
+                                                        SizeConfig
+                                                            .widthMultiplier,
+                                                    child: Text(
+                                                      _fruitlist
+                                                          .elementAt(index)
+                                                          .name
+                                                          .toUpperCase(),
+                                                      style: TextStyle(
+                                                        fontFamily: 'Poppins',
+                                                        color: darkgreyblue,
+                                                        fontSize: 18,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        fontStyle:
+                                                            FontStyle.normal,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    width: 53.44 *
+                                                        SizeConfig
+                                                            .widthMultiplier,
+                                                    child: Text(
+                                                      _fruitlist
+                                                          .elementAt(index)
+                                                          .description,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      maxLines: 3,
+                                                      softWrap: true,
+                                                      style: TextStyle(
+                                                        fontFamily: 'Poppins',
+                                                        color: darkgreyblue,
+                                                        fontSize: 12,
+                                                        fontStyle:
+                                                            FontStyle.normal,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    })
+                                : Container(
+                                    height: 71.27 * SizeConfig.heightMultiplier,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        !gotdata
+                                            ? Center(
+                                                child:
+                                                    CircularProgressIndicator(
+                                                  color: dullgreen,
+                                                ),
+                                              )
+                                            : Text('No result'),
+                                      ],
                                     ),
-                            )
-                          ],
-                        ),
+                                  ),
+                          )
+                        ],
                       ),
                     ),
                   ],

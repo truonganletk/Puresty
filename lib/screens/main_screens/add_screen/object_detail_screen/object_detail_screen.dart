@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:puresty/constants/app_colors.dart';
+import 'package:puresty/constants/size_config.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:puresty/main.dart';
 import 'package:puresty/models/fruit.dart';
@@ -88,84 +89,125 @@ class _ObjectDetailState extends State<ObjectDetail> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        constraints: BoxConstraints.expand(),
-        child: Stack(
-          children: [
-            Positioned(
-              child: Container(
-                width: double.infinity,
-                child: ClipRRect(
-                  child: ShaderMask(
-                    shaderCallback: (rect) => LinearGradient(
-                      begin: Alignment.bottomCenter,
-                      end: Alignment.center,
-                      colors: [
-                        Color.fromARGB(255, 58, 58, 58),
-                        Colors.transparent,
-                      ],
-                    ).createShader(rect),
-                    blendMode: BlendMode.darken,
-                    child: Container(
-                      height: 229,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                          image: DecorationImage(
-                        fit: BoxFit.fill,
-                        image:
-                            AssetImage('assets/images/posttemplateimage.jpg'),
-                        colorFilter:
-                            ColorFilter.mode(Colors.black38, BlendMode.darken),
-                      )),
+    return LayoutBuilder(builder: (context, constraints) {
+      return OrientationBuilder(builder: (context, orientation) {
+        SizeConfig().init(constraints, orientation);
+        return Scaffold(
+          body: Container(
+            constraints: BoxConstraints.expand(),
+            child: Stack(
+              children: [
+                Positioned(
+                  child: Container(
+                    width: double.infinity,
+                    child: ClipRRect(
+                      child: ShaderMask(
+                        shaderCallback: (rect) => LinearGradient(
+                          begin: Alignment.bottomCenter,
+                          end: Alignment.center,
+                          colors: [
+                            Color.fromARGB(255, 58, 58, 58),
+                            Colors.transparent,
+                          ],
+                        ).createShader(rect),
+                        blendMode: BlendMode.darken,
+                        child: Container(
+                          height: 229,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                              image: DecorationImage(
+                            fit: BoxFit.fill,
+                            image: AssetImage(
+                                'assets/images/posttemplateimage.jpg'),
+                            colorFilter: ColorFilter.mode(
+                                Colors.black38, BlendMode.darken),
+                          )),
+                        ),
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.fromLTRB(30, 30, 0, 0),
-              child: GestureDetector(
-                  onTap: () => {Navigator.pop(context)},
-                  child: Icon(
-                    Icons.arrow_back_ios,
-                    size: 30,
-                    color: white,
-                  )),
-            ),
-            Positioned(
-              top: 200,
-              width: MediaQuery.of(context).size.width,
-              height: 700,
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(35.0),
-                  color: white,
+                Container(
+                  margin: EdgeInsets.fromLTRB(30, 30, 0, 0),
+                  child: GestureDetector(
+                      onTap: () => {Navigator.pop(context)},
+                      child: Icon(
+                        Icons.arrow_back_ios,
+                        size: 30,
+                        color: white,
+                      )),
                 ),
-                child: SingleChildScrollView(
+                Positioned(
+                  top: 200,
+                  width: MediaQuery.of(context).size.width,
+                  height: 100 * SizeConfig.heightMultiplier,
                   child: Container(
-                    padding: EdgeInsets.all(20),
                     width: MediaQuery.of(context).size.width,
-                    child: Column(
-                      children: [
-                        Row(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(35.0),
+                      color: white,
+                    ),
+                    child: SingleChildScrollView(
+                      child: Container(
+                        padding: EdgeInsets.fromLTRB(
+                            4.64 * SizeConfig.heightMultiplier,
+                            4.64 * SizeConfig.heightMultiplier,
+                            4.64 * SizeConfig.heightMultiplier,
+                            2.64 * SizeConfig.heightMultiplier),
+                        width: MediaQuery.of(context).size.width,
+                        child: Column(
                           children: [
-                            Container(
-                                child: Text(fr.name.toUpperCase(),
+                            Row(
+                              children: [
+                                Container(
+                                    width: MediaQuery.of(context).size.width -
+                                        10 * SizeConfig.heightMultiplier,
+                                    child: Text(fr.name.toUpperCase(),
+                                        softWrap: true,
+                                        maxLines: 3,
+                                        //overflow: TextOverflow.visible,
+                                        style: TextStyle(
+                                          fontFamily: 'Poppins',
+                                          color: darkgreyblue,
+                                          fontSize: 30,
+                                          fontWeight: FontWeight.w600,
+                                          fontStyle: FontStyle.normal,
+                                        ))),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Text(
+                                  "Serving size 1 avocado   ",
+                                  style: TextStyle(
+                                    fontFamily: 'Poppins',
+                                    color: Color(0xb2000000),
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w400,
+                                    fontStyle: FontStyle.normal,
+                                  ),
+                                ),
+                                Text("100g",
                                     style: TextStyle(
                                       fontFamily: 'Poppins',
-                                      color: darkgreyblue,
-                                      fontSize: 30,
+                                      color: black,
+                                      fontSize: 14,
                                       fontWeight: FontWeight.w600,
                                       fontStyle: FontStyle.normal,
-                                    ))),
-                          ],
-                        ),
-                        Row(
-                          children: [
+                                    ))
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Expanded(
+                                    child: Divider(
+                                  color: black,
+                                )),
+                              ],
+                            ),
                             Text(
-                              "Serving size 1 avocado   ",
+                              fr.description,
+                              textAlign: TextAlign.justify,
                               style: TextStyle(
                                 fontFamily: 'Poppins',
                                 color: Color(0xb2000000),
@@ -174,267 +216,250 @@ class _ObjectDetailState extends State<ObjectDetail> {
                                 fontStyle: FontStyle.normal,
                               ),
                             ),
-                            Text("100g",
-                                style: TextStyle(
-                                  fontFamily: 'Poppins',
+                            Row(
+                              children: [
+                                Expanded(
+                                    child: Divider(
                                   color: black,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w600,
-                                  fontStyle: FontStyle.normal,
-                                ))
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Expanded(
-                                child: Divider(
-                              color: black,
-                            )),
-                          ],
-                        ),
-                        Text(
-                          fr.description,
-                          textAlign: TextAlign.justify,
-                          style: TextStyle(
-                            fontFamily: 'Poppins',
-                            color: Color(0xb2000000),
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                            fontStyle: FontStyle.normal,
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            Expanded(
-                                child: Divider(
-                              color: black,
-                            )),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Text("Nutritions Per Serving",
-                                style: TextStyle(
-                                  fontFamily: 'Poppins',
-                                  color: darkgreyblue,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w600,
-                                  fontStyle: FontStyle.normal,
                                 )),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Text("Nutritions Per Serving",
+                                    style: TextStyle(
+                                      fontFamily: 'Poppins',
+                                      color: darkgreyblue,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w600,
+                                      fontStyle: FontStyle.normal,
+                                    )),
+                              ],
+                            ),
+                            Container(
+                              height: 200,
+                              padding: EdgeInsets.fromLTRB(0, 0, 30, 0),
+                              child: GridView.count(
+                                primary: false,
+                                childAspectRatio: 3 / 1,
+                                crossAxisCount: 3,
+                                crossAxisSpacing: 5,
+                                children: <Widget>[
+                                  Column(
+                                    children: [
+                                      Text(
+                                        "Cal",
+                                        style: TextStyle(
+                                          fontFamily: 'Poppins',
+                                          color: darkgreyblue,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w500,
+                                          fontStyle: FontStyle.normal,
+                                        ),
+                                      ),
+                                      Text(fr.cal.toString() + 'kCal',
+                                          style: TextStyle(
+                                            fontFamily: 'Poppins',
+                                            color: Color(0xb2000000),
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w400,
+                                            fontStyle: FontStyle.normal,
+                                          )),
+                                    ],
+                                  ),
+                                  Column(
+                                    children: [
+                                      Text(
+                                        "Fats",
+                                        style: TextStyle(
+                                          fontFamily: 'Poppins',
+                                          color: darkgreyblue,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w500,
+                                          fontStyle: FontStyle.normal,
+                                        ),
+                                      ),
+                                      Text(fr.fats.toString() + 'g',
+                                          style: TextStyle(
+                                            fontFamily: 'Poppins',
+                                            color: Color(0xb2000000),
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w400,
+                                            fontStyle: FontStyle.normal,
+                                          )),
+                                    ],
+                                  ),
+                                  Column(
+                                    children: [
+                                      Text(
+                                        "Carbs",
+                                        style: TextStyle(
+                                          fontFamily: 'Poppins',
+                                          color: darkgreyblue,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w500,
+                                          fontStyle: FontStyle.normal,
+                                        ),
+                                      ),
+                                      Text(fr.carbs.toString() + 'g',
+                                          style: TextStyle(
+                                            fontFamily: 'Poppins',
+                                            color: Color(0xb2000000),
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w400,
+                                            fontStyle: FontStyle.normal,
+                                          )),
+                                    ],
+                                  ),
+                                  Column(
+                                    children: [
+                                      Text(
+                                        "Protein",
+                                        style: TextStyle(
+                                          fontFamily: 'Poppins',
+                                          color: darkgreyblue,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w500,
+                                          fontStyle: FontStyle.normal,
+                                        ),
+                                      ),
+                                      Text(fr.protein.toString() + 'g',
+                                          style: TextStyle(
+                                            fontFamily: 'Poppins',
+                                            color: Color(0xb2000000),
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w400,
+                                            fontStyle: FontStyle.normal,
+                                          )),
+                                    ],
+                                  ),
+                                  Column(
+                                    children: [
+                                      Text(
+                                        "Fibre",
+                                        style: TextStyle(
+                                          fontFamily: 'Poppins',
+                                          color: darkgreyblue,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w500,
+                                          fontStyle: FontStyle.normal,
+                                        ),
+                                      ),
+                                      Text(fr.fibre.toString() + 'g',
+                                          style: TextStyle(
+                                            fontFamily: 'Poppins',
+                                            color: Color(0xb2000000),
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w400,
+                                            fontStyle: FontStyle.normal,
+                                          )),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
                           ],
                         ),
-                        Container(
-                          height: 200,
-                          padding: EdgeInsets.fromLTRB(0, 0, 30, 0),
-                          child: GridView.count(
-                            primary: false,
-                            childAspectRatio: 3 / 2,
-                            crossAxisCount: 3,
-                            crossAxisSpacing: 5,
-                            children: <Widget>[
-                              Column(
-                                children: [
-                                  Text(
-                                    "Cal",
-                                    style: TextStyle(
-                                      fontFamily: 'Poppins',
-                                      color: darkgreyblue,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w500,
-                                      fontStyle: FontStyle.normal,
-                                    ),
-                                  ),
-                                  Text(fr.cal.toString() + 'kCal',
-                                      style: TextStyle(
-                                        fontFamily: 'Poppins',
-                                        color: Color(0xb2000000),
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w400,
-                                        fontStyle: FontStyle.normal,
-                                      )),
-                                ],
-                              ),
-                              Column(
-                                children: [
-                                  Text(
-                                    "Fats",
-                                    style: TextStyle(
-                                      fontFamily: 'Poppins',
-                                      color: darkgreyblue,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w500,
-                                      fontStyle: FontStyle.normal,
-                                    ),
-                                  ),
-                                  Text(fr.fats.toString() + 'g',
-                                      style: TextStyle(
-                                        fontFamily: 'Poppins',
-                                        color: Color(0xb2000000),
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w400,
-                                        fontStyle: FontStyle.normal,
-                                      )),
-                                ],
-                              ),
-                              Column(
-                                children: [
-                                  Text(
-                                    "Carbs",
-                                    style: TextStyle(
-                                      fontFamily: 'Poppins',
-                                      color: darkgreyblue,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w500,
-                                      fontStyle: FontStyle.normal,
-                                    ),
-                                  ),
-                                  Text(fr.carbs.toString() + 'g',
-                                      style: TextStyle(
-                                        fontFamily: 'Poppins',
-                                        color: Color(0xb2000000),
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w400,
-                                        fontStyle: FontStyle.normal,
-                                      )),
-                                ],
-                              ),
-                              Column(
-                                children: [
-                                  Text(
-                                    "Protein",
-                                    style: TextStyle(
-                                      fontFamily: 'Poppins',
-                                      color: darkgreyblue,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w500,
-                                      fontStyle: FontStyle.normal,
-                                    ),
-                                  ),
-                                  Text(fr.protein.toString() + 'g',
-                                      style: TextStyle(
-                                        fontFamily: 'Poppins',
-                                        color: Color(0xb2000000),
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w400,
-                                        fontStyle: FontStyle.normal,
-                                      )),
-                                ],
-                              ),
-                              Column(
-                                children: [
-                                  Text(
-                                    "Fibre",
-                                    style: TextStyle(
-                                      fontFamily: 'Poppins',
-                                      color: darkgreyblue,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w500,
-                                      fontStyle: FontStyle.normal,
-                                    ),
-                                  ),
-                                  Text(fr.fibre.toString() + 'g',
-                                      style: TextStyle(
-                                        fontFamily: 'Poppins',
-                                        color: Color(0xb2000000),
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w400,
-                                        fontStyle: FontStyle.normal,
-                                      )),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-      bottomSheet: Container(
-        padding: EdgeInsets.all(20),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
-              margin: EdgeInsets.symmetric(vertical: 15),
-              width: 350,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('Your serving size:',
-                      style: TextStyle(
-                        fontFamily: 'Poppins',
-                        color: Color(0xb2000000),
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                        fontStyle: FontStyle.normal,
-                      )),
-                ],
-              ),
-            ),
-            Container(
-              width: 350,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    width: 200,
-                    height: 40,
-                    child: TextField(
-                      enabled: isAnony! ? false : true,
-                      controller: foodweightcontroller,
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.all(10),
-                        border: OutlineInputBorder(),
-                        counterText: "",
-                        hintText: isAnony!
-                            ? 'Wanna eat fruits healthier?'
-                            : 'eg. 250g',
                       ),
                     ),
                   ),
-                  Container(
-                    width: 94,
-                    height: 40,
-                    decoration: new BoxDecoration(
-                        color: dullgreen,
-                        borderRadius: BorderRadius.circular(3.390000104904175)),
-                    margin: EdgeInsets.only(left: 20),
-                    child: ElevatedButton(
-                        style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all(dullgreen)),
-                        onPressed: () {
-                          if (isAnony != null && !isAnony!) {
-                            _addfood(foodweightcontroller.text);
-                            Navigator.pop(context);
-                          } else {
-                            context.read<FirebaseAuthentication>().signOut();
-                            Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(
-                                builder: (BuildContext context) =>
-                                    AppProvider(),
-                              ),
-                              (route) => false,
-                            );
-                          }
-                        },
-                        child: !isAnony! ? Text('Add') : Text('Sign In')),
-                  )
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
-        ),
-      ),
-    );
+          ),
+          bottomSheet: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                padding: EdgeInsets.all(20),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      margin: EdgeInsets.symmetric(vertical: 15),
+                      width: 350,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text('Your serving size:',
+                              style: TextStyle(
+                                fontFamily: 'Poppins',
+                                color: Color(0xb2000000),
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                                fontStyle: FontStyle.normal,
+                              )),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      width: 89.05 * SizeConfig.widthMultiplier,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: 200,
+                            height: 40,
+                            child: TextField(
+                              enabled: isAnony! ? false : true,
+                              controller: foodweightcontroller,
+                              decoration: InputDecoration(
+                                contentPadding: EdgeInsets.all(10),
+                                border: OutlineInputBorder(),
+                                counterText: "",
+                                hintText: isAnony!
+                                    ? 'Wanna eat fruits healthier?'
+                                    : 'eg. 250g',
+                              ),
+                            ),
+                          ),
+                          Container(
+                            width: 94,
+                            height: 40,
+                            decoration: new BoxDecoration(
+                                color: dullgreen,
+                                borderRadius:
+                                    BorderRadius.circular(3.390000104904175)),
+                            margin: EdgeInsets.only(left: 20),
+                            child: ElevatedButton(
+                                style: ButtonStyle(
+                                    backgroundColor:
+                                        MaterialStateProperty.all(dullgreen)),
+                                onPressed: () {
+                                  if (isAnony != null && !isAnony!) {
+                                    _addfood(foodweightcontroller.text);
+                                    Navigator.pop(context);
+                                  } else {
+                                    context
+                                        .read<FirebaseAuthentication>()
+                                        .signOut();
+                                    Navigator.pushAndRemoveUntil(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (BuildContext context) =>
+                                            AppProvider(),
+                                      ),
+                                      (route) => false,
+                                    );
+                                  }
+                                },
+                                child:
+                                    !isAnony! ? Text('Add') : Text('Sign In')),
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+      });
+    });
   }
 }
