@@ -1,8 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:puresty/constants/app_colors.dart';
+import 'package:puresty/constants/size_config.dart';
 import 'package:puresty/models/foodcart.dart';
+import 'package:puresty/services/firebase_auth.dart';
 
 enum StateView { Daily, Monthly }
 final now = new DateTime.now();
@@ -69,6 +72,12 @@ class _ReportScreenState extends State<ReportScreen> {
   bool isFetching = false;
   bool hasNext = true;
   bool gotdata = false;
+  bool hasPrevTime = false;
+  int prevCal = 0;
+  int prevFats = 0;
+  int prevCarbs = 0;
+  int prevProtein = 0;
+  int prevFibre = 0;
   List _allresultList = [];
   List _listfoodcartitem = [];
   double totalCal = 0.0;
@@ -78,6 +87,7 @@ class _ReportScreenState extends State<ReportScreen> {
   double totalFibre = 0.0;
   int totalItems = 0;
   double totalWeight = 0.0;
+  bool? isAnony = FirebaseAuth.instance.currentUser?.isAnonymous;
 
   @override
   void initState() {
@@ -124,29 +134,27 @@ class _ReportScreenState extends State<ReportScreen> {
     double tempCarbs = 0.0;
     double tempProtein = 0.0;
     double tempFibre = 0.0;
+    double tempPrevCal = 0.0;
+    double tempPrevFats = 0.0;
+    double tempPrevCarbs = 0.0;
+    double tempPrevProtein = 0.0;
+    double tempPrevFibre = 0.0;
     int tempItems = 0;
     double tempWeight = 0.0;
+    bool temphasPrevTime = false;
+    List daysofmonth = [];
     for (FoodCartItem item in _listfoodcartitem) {
       DateTime itemTime = item.date.toDate();
-      if (_stateView == StateView.Daily &&
-          itemTime.year == currentYear &&
-          itemTime.month == currentMonth &&
-          itemTime.day == currentDay) {
-        tempCal += double.parse(item.cal.toString()) *
-            double.parse(item.foodweight.toString());
-        tempFats += double.parse(item.fats.toString()) *
-            double.parse(item.foodweight.toString());
-        tempCarbs += double.parse(item.carbs.toString()) *
-            double.parse(item.foodweight.toString());
-        tempProtein += double.parse(item.protein.toString()) *
-            double.parse(item.foodweight.toString());
-        tempFibre += double.parse(item.fibre.toString()) *
-            double.parse(item.foodweight.toString());
-        tempItems++;
-        tempWeight += double.parse(item.foodweight.toString());
-      } else if (_stateView == StateView.Monthly &&
-          itemTime.year == currentYear &&
-          itemTime.month == currentMonth) {
+      DateTime prevDay = DateTime(currentYear, currentMonth, currentDay - 1);
+      DateTime prevMonth = DateTime(currentYear, currentMonth - 1);
+      if ((_stateView == StateView.Daily &&
+              itemTime.year == currentYear &&
+              itemTime.month == currentMonth &&
+              itemTime.day == currentDay) ||
+          (_stateView == StateView.Monthly &&
+              itemTime.year == currentYear &&
+              itemTime.month == currentMonth)) {
+        if (!daysofmonth.contains(itemTime.day)) daysofmonth.add(itemTime.day);
         tempCal += double.parse(item.cal.toString()) *
             double.parse(item.foodweight.toString());
         tempFats += double.parse(item.fats.toString()) *
@@ -160,15 +168,50 @@ class _ReportScreenState extends State<ReportScreen> {
         tempItems++;
         tempWeight += double.parse(item.foodweight.toString());
       }
+      if ((_stateView == StateView.Daily &&
+              itemTime.year == prevDay.year &&
+              itemTime.month == prevDay.month &&
+              itemTime.day == prevDay.day) ||
+          (_stateView == StateView.Monthly &&
+              itemTime.year == prevMonth.year &&
+              itemTime.month == prevMonth.month)) {
+        temphasPrevTime = true;
+        tempPrevCal += double.parse(item.cal.toString()) *
+            double.parse(item.foodweight.toString());
+        tempPrevFats += double.parse(item.fats.toString()) *
+            double.parse(item.foodweight.toString());
+        tempPrevCarbs += double.parse(item.carbs.toString()) *
+            double.parse(item.foodweight.toString());
+        tempPrevProtein += double.parse(item.protein.toString()) *
+            double.parse(item.foodweight.toString());
+        tempPrevFibre += double.parse(item.fibre.toString()) *
+            double.parse(item.foodweight.toString());
+      }
     }
     setState(() {
-      totalCal = tempCal;
-      totalFats = tempFats;
-      totalCarbs = tempCarbs;
-      totalProtein = tempProtein;
-      totalFibre = tempFibre;
+      totalCal = tempCal /
+          100 /
+          ((_stateView == StateView.Monthly) ? daysofmonth.length : 1);
+      totalFats = tempFats /
+          100 /
+          ((_stateView == StateView.Monthly) ? daysofmonth.length : 1);
+      totalCarbs = tempCarbs /
+          100 /
+          ((_stateView == StateView.Monthly) ? daysofmonth.length : 1);
+      totalProtein = tempProtein /
+          100 /
+          ((_stateView == StateView.Monthly) ? daysofmonth.length : 1);
+      totalFibre = tempFibre /
+          100 /
+          ((_stateView == StateView.Monthly) ? daysofmonth.length : 1);
       totalItems = tempItems;
-      totalWeight = tempWeight;
+      totalWeight = tempWeight / 100;
+      hasPrevTime = temphasPrevTime;
+      prevCal = tempCal.compareTo(tempPrevCal);
+      prevFats = tempFats.compareTo(tempPrevFats);
+      prevCarbs = tempCarbs.compareTo(tempPrevCarbs);
+      prevProtein = tempProtein.compareTo(tempPrevProtein);
+      prevFibre = tempFibre.compareTo(tempPrevFibre);
     });
   }
 
@@ -237,265 +280,580 @@ class _ReportScreenState extends State<ReportScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        padding: EdgeInsets.all(20),
-        child: Column(
-          children: [
-            Row(
+    return LayoutBuilder(builder: (context, constraints) {
+      return OrientationBuilder(builder: (context, orientation) {
+        SizeConfig().init(constraints, orientation);
+        return Scaffold(
+          body: Container(
+            padding: EdgeInsets.fromLTRB(
+                2.64 * SizeConfig.heightMultiplier,
+                4.64 * SizeConfig.heightMultiplier,
+                2.64 * SizeConfig.heightMultiplier,
+                2.64 * SizeConfig.heightMultiplier),
+            child: Column(
               children: [
+                Row(
+                  children: [
+                    Container(
+                      child: Text(
+                        'Report',
+                        style: TextStyle(
+                          color: black,
+                          fontSize: 40.0,
+                          fontWeight: FontWeight.w900,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
                 Container(
+                  margin: EdgeInsets.symmetric(vertical: 10),
                   child: Text(
-                    'Report',
-                    style: TextStyle(
-                      color: black,
-                      fontSize: 40.0,
-                      fontWeight: FontWeight.w900,
-                    ),
-                  ),
+                      'How it goes? This is a report on the nutrition you got into the body based on what you ate.',
+                      style: TextStyle(
+                        fontFamily: 'Poppins',
+                        color: darkgreyblue,
+                        fontSize: 13,
+                        fontWeight: FontWeight.w400,
+                        fontStyle: FontStyle.normal,
+                      )),
                 ),
-              ],
-            ),
-            Container(
-              margin: EdgeInsets.symmetric(vertical: 10),
-              child: Text(
-                  'How it goes? This is a report on the nutrition you got into the body based on what you ate.',
-                  style: TextStyle(
-                    fontFamily: 'Poppins',
-                    color: darkgreyblue,
-                    fontSize: 13,
-                    fontWeight: FontWeight.w400,
-                    fontStyle: FontStyle.normal,
-                  )),
-            ),
-            Container(
-              margin: EdgeInsets.only(top: 20, bottom: 50),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    width: 90.15,
-                    height: 39,
-                    decoration: new BoxDecoration(
-                        borderRadius: BorderRadius.circular(2.457749843597412)),
-                    margin: EdgeInsets.symmetric(horizontal: 5),
-                    child: ElevatedButton(
-                      style: ButtonStyle(
-                          backgroundColor: _stateView == StateView.Daily
-                              ? MaterialStateProperty.all(dullgreen)
-                              : MaterialStateProperty.all(white)),
-                      onPressed: () {
-                        setState(() {
-                          _stateView = StateView.Daily;
-                          currentDay = now.day;
-                          currentYear = now.year;
-                          currentMonth = now.month;
-                          _refreshdata();
-                        });
-                      },
-                      child: Text('Daily',
-                          style: TextStyle(
-                            fontFamily: 'Poppins',
-                            color: _stateView == StateView.Daily
-                                ? white
-                                : dullgreen,
-                            fontSize: 13,
-                            fontWeight: FontWeight.w500,
-                            fontStyle: FontStyle.normal,
-                          )),
-                    ),
-                  ),
-                  Container(
-                    width: 90.15,
-                    height: 39,
-                    decoration: new BoxDecoration(
-                        borderRadius: BorderRadius.circular(2.457749843597412)),
-                    margin: EdgeInsets.symmetric(horizontal: 5),
-                    child: ElevatedButton(
-                      style: ButtonStyle(
-                          backgroundColor: _stateView == StateView.Monthly
-                              ? MaterialStateProperty.all(dullgreen)
-                              : MaterialStateProperty.all(white)),
-                      onPressed: () {
-                        setState(() {
-                          _stateView = StateView.Monthly;
-                          currentDay = now.day;
-                          currentYear = now.year;
-                          currentMonth = now.month;
-                          _refreshdata();
-                        });
-                      },
-                      child: Text('Monthly',
-                          style: TextStyle(
-                            fontFamily: 'Poppins',
-                            color: _stateView == StateView.Monthly
-                                ? white
-                                : dullgreen,
-                            fontSize: 13,
-                            fontWeight: FontWeight.w500,
-                            fontStyle: FontStyle.normal,
-                          )),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            gotdata
-                ? Container(
-                    height: 250,
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            Expanded(
-                                child: Divider(
-                              color: black,
-                            )),
-                          ],
-                        ),
-                        Container(
-                          margin: EdgeInsets.symmetric(vertical: 10),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                !isAnony!
+                    ? Column(
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(top: 20, bottom: 50),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Container(
+                                  width: 100.15,
+                                  height: 39,
+                                  decoration: new BoxDecoration(
+                                      borderRadius: BorderRadius.circular(
+                                          2.457749843597412)),
+                                  margin: EdgeInsets.symmetric(horizontal: 5),
+                                  child: ElevatedButton(
+                                    style: ButtonStyle(
+                                        backgroundColor: _stateView ==
+                                                StateView.Daily
+                                            ? MaterialStateProperty.all(
+                                                dullgreen)
+                                            : MaterialStateProperty.all(white)),
+                                    onPressed: () {
+                                      setState(() {
+                                        _stateView = StateView.Daily;
+                                        currentDay = now.day;
+                                        currentYear = now.year;
+                                        currentMonth = now.month;
+                                        _refreshdata();
+                                      });
+                                    },
+                                    child: Text('Daily',
+                                        style: TextStyle(
+                                          fontFamily: 'Poppins',
+                                          color: _stateView == StateView.Daily
+                                              ? white
+                                              : dullgreen,
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.w500,
+                                          fontStyle: FontStyle.normal,
+                                        )),
+                                  ),
+                                ),
+                                Container(
+                                  width: 100.15,
+                                  height: 39,
+                                  decoration: new BoxDecoration(
+                                      borderRadius: BorderRadius.circular(
+                                          2.457749843597412)),
+                                  margin: EdgeInsets.symmetric(horizontal: 5),
+                                  child: ElevatedButton(
+                                    style: ButtonStyle(
+                                        backgroundColor: _stateView ==
+                                                StateView.Monthly
+                                            ? MaterialStateProperty.all(
+                                                dullgreen)
+                                            : MaterialStateProperty.all(white)),
+                                    onPressed: () {
+                                      setState(() {
+                                        _stateView = StateView.Monthly;
+                                        currentDay = now.day;
+                                        currentYear = now.year;
+                                        currentMonth = now.month;
+                                        _refreshdata();
+                                      });
+                                    },
+                                    child: Text('Monthly',
+                                        style: TextStyle(
+                                          fontFamily: 'Poppins',
+                                          color: _stateView == StateView.Monthly
+                                              ? white
+                                              : dullgreen,
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.w500,
+                                          fontStyle: FontStyle.normal,
+                                        )),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          gotdata
+                              ? Container(
+                                  height: 330,
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        margin:
+                                            EdgeInsets.symmetric(vertical: 10),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              children: [
+                                                Column(
+                                                  children: [
+                                                    Text('Total',
+                                                        style: TextStyle(
+                                                          fontFamily: 'Poppins',
+                                                          color: darkgreyblue,
+                                                          fontSize: 24,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                          fontStyle:
+                                                              FontStyle.normal,
+                                                        )),
+                                                  ],
+                                                ),
+                                                SizedBox(width: 55),
+                                                Column(
+                                                  children: [
+                                                    Text(totalItems.toString() +
+                                                        ' items'),
+                                                  ],
+                                                ),
+                                                SizedBox(width: 55),
+                                                Column(
+                                                  children: [
+                                                    Text(totalWeight
+                                                            .toStringAsFixed(
+                                                                2) +
+                                                        ' g'),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                              child: Divider(
+                                            color: black,
+                                          )),
+                                        ],
+                                      ),
+                                      Container(
+                                        margin:
+                                            EdgeInsets.symmetric(vertical: 10),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              children: [
+                                                Column(
+                                                  children: [
+                                                    Container(
+                                                        margin: EdgeInsets
+                                                            .symmetric(
+                                                                vertical: 7),
+                                                        padding:
+                                                            EdgeInsets.all(5),
+                                                        child: Text('Cal')),
+                                                    Container(
+                                                        margin: EdgeInsets
+                                                            .symmetric(
+                                                                vertical: 7),
+                                                        padding:
+                                                            EdgeInsets.all(5),
+                                                        child: Text('Fats')),
+                                                    Container(
+                                                        margin: EdgeInsets
+                                                            .symmetric(
+                                                                vertical: 7),
+                                                        padding:
+                                                            EdgeInsets.all(5),
+                                                        child: Text('Carbs')),
+                                                    Container(
+                                                        margin: EdgeInsets
+                                                            .symmetric(
+                                                                vertical: 7),
+                                                        padding:
+                                                            EdgeInsets.all(5),
+                                                        child: Text('Protein')),
+                                                    Container(
+                                                        margin: EdgeInsets
+                                                            .symmetric(
+                                                                vertical: 7),
+                                                        padding:
+                                                            EdgeInsets.all(5),
+                                                        child: Text('Fibre')),
+                                                  ],
+                                                ),
+                                                SizedBox(width: 55),
+                                                Column(
+                                                  children: [
+                                                    Container(
+                                                      margin:
+                                                          EdgeInsets.symmetric(
+                                                              vertical: 7),
+                                                      padding:
+                                                          EdgeInsets.all(5),
+                                                      child: Text(totalCal
+                                                              .toStringAsFixed(
+                                                                  2) +
+                                                          ' kCal'),
+                                                    ),
+                                                    Container(
+                                                      margin:
+                                                          EdgeInsets.symmetric(
+                                                              vertical: 7),
+                                                      padding:
+                                                          EdgeInsets.all(5),
+                                                      child: Text(totalFats
+                                                              .toStringAsFixed(
+                                                                  2) +
+                                                          ' g'),
+                                                    ),
+                                                    Container(
+                                                      margin:
+                                                          EdgeInsets.symmetric(
+                                                              vertical: 7),
+                                                      padding:
+                                                          EdgeInsets.all(5),
+                                                      child: Text(totalCarbs
+                                                              .toStringAsFixed(
+                                                                  2) +
+                                                          ' g'),
+                                                    ),
+                                                    Container(
+                                                      margin:
+                                                          EdgeInsets.symmetric(
+                                                              vertical: 7),
+                                                      padding:
+                                                          EdgeInsets.all(5),
+                                                      child: Text(totalProtein
+                                                              .toStringAsFixed(
+                                                                  2) +
+                                                          ' g'),
+                                                    ),
+                                                    Container(
+                                                      margin:
+                                                          EdgeInsets.symmetric(
+                                                              vertical: 7),
+                                                      padding:
+                                                          EdgeInsets.all(5),
+                                                      child: Text(totalFibre
+                                                              .toStringAsFixed(
+                                                                  2) +
+                                                          ' g'),
+                                                    ),
+                                                  ],
+                                                ),
+                                                Column(
+                                                  children: [
+                                                    Container(
+                                                      margin:
+                                                          EdgeInsets.symmetric(
+                                                              vertical: 7),
+                                                      padding:
+                                                          EdgeInsets.all(5),
+                                                      child: CircleAvatar(
+                                                        radius: 10,
+                                                        backgroundColor:
+                                                            (totalCal >= 630 &&
+                                                                    totalCal <=
+                                                                        700)
+                                                                ? softgreen
+                                                                : (totalCal >
+                                                                        700
+                                                                    ? pastelred
+                                                                    : dustyorange),
+                                                        child: Icon(
+                                                          (prevCal == 0)
+                                                              ? Icons
+                                                                  .horizontal_rule
+                                                              : (prevCal == 1)
+                                                                  ? Icons
+                                                                      .keyboard_arrow_up
+                                                                  : Icons
+                                                                      .keyboard_arrow_down,
+                                                          size: 15,
+                                                          color: white,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Container(
+                                                      margin:
+                                                          EdgeInsets.symmetric(
+                                                              vertical: 7),
+                                                      padding:
+                                                          EdgeInsets.all(3),
+                                                      child: CircleAvatar(
+                                                        radius: 10,
+                                                        backgroundColor:
+                                                            (totalFats >= 630 &&
+                                                                    totalFats <=
+                                                                        700)
+                                                                ? softgreen
+                                                                : (totalFats >
+                                                                        700
+                                                                    ? pastelred
+                                                                    : dustyorange),
+                                                        child: Icon(
+                                                          (prevFats == 0)
+                                                              ? Icons
+                                                                  .horizontal_rule
+                                                              : (prevFats == 1)
+                                                                  ? Icons
+                                                                      .keyboard_arrow_up
+                                                                  : Icons
+                                                                      .keyboard_arrow_down,
+                                                          size: 15,
+                                                          color: white,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Container(
+                                                      margin:
+                                                          EdgeInsets.symmetric(
+                                                              vertical: 7),
+                                                      padding:
+                                                          EdgeInsets.all(3),
+                                                      child: CircleAvatar(
+                                                        radius: 10,
+                                                        backgroundColor:
+                                                            (totalCarbs >=
+                                                                        630 &&
+                                                                    totalCarbs <=
+                                                                        700)
+                                                                ? softgreen
+                                                                : (totalCarbs >
+                                                                        700
+                                                                    ? pastelred
+                                                                    : dustyorange),
+                                                        child: Icon(
+                                                          (prevCarbs == 0)
+                                                              ? Icons
+                                                                  .horizontal_rule
+                                                              : (prevCarbs == 1)
+                                                                  ? Icons
+                                                                      .keyboard_arrow_up
+                                                                  : Icons
+                                                                      .keyboard_arrow_down,
+                                                          size: 15,
+                                                          color: white,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Container(
+                                                      margin:
+                                                          EdgeInsets.symmetric(
+                                                              vertical: 7),
+                                                      padding:
+                                                          EdgeInsets.all(3),
+                                                      child: CircleAvatar(
+                                                        radius: 10,
+                                                        backgroundColor:
+                                                            (totalProtein >=
+                                                                        630 &&
+                                                                    totalProtein <=
+                                                                        700)
+                                                                ? softgreen
+                                                                : (totalProtein >
+                                                                        700
+                                                                    ? pastelred
+                                                                    : dustyorange),
+                                                        child: Icon(
+                                                          (prevProtein == 0)
+                                                              ? Icons
+                                                                  .horizontal_rule
+                                                              : (prevProtein ==
+                                                                      1)
+                                                                  ? Icons
+                                                                      .keyboard_arrow_up
+                                                                  : Icons
+                                                                      .keyboard_arrow_down,
+                                                          size: 15,
+                                                          color: white,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Container(
+                                                      margin:
+                                                          EdgeInsets.symmetric(
+                                                              vertical: 7),
+                                                      padding:
+                                                          EdgeInsets.all(3),
+                                                      child: CircleAvatar(
+                                                        radius: 10,
+                                                        backgroundColor:
+                                                            (totalFibre >=
+                                                                        630 &&
+                                                                    totalFibre <=
+                                                                        700)
+                                                                ? softgreen
+                                                                : (totalFibre >
+                                                                        700
+                                                                    ? pastelred
+                                                                    : dustyorange),
+                                                        child: Icon(
+                                                          (prevFibre == 0)
+                                                              ? Icons
+                                                                  .horizontal_rule
+                                                              : (prevFibre == 1)
+                                                                  ? Icons
+                                                                      .keyboard_arrow_up
+                                                                  : Icons
+                                                                      .keyboard_arrow_down,
+                                                          size: 15,
+                                                          color: white,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                              child: Divider(
+                                            color: black,
+                                          )),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              : Container(
+                                  height: 330,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Center(
+                                        child: CircularProgressIndicator(
+                                          color: dullgreen,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Column(
-                                    children: [
-                                      Text('Total'),
-                                    ],
-                                  ),
-                                  SizedBox(width: 55),
-                                  Column(
-                                    children: [
-                                      Text(totalItems.toString() + ' items'),
-                                    ],
-                                  ),
-                                  SizedBox(width: 55),
-                                  Column(
-                                    children: [
-                                      Text(totalWeight.toStringAsFixed(2) +
-                                          ' g'),
-                                    ],
-                                  ),
-                                ],
+                              IconButton(
+                                onPressed: () {
+                                  _stateView == StateView.Daily
+                                      ? _previousDay()
+                                      : _previousMonth();
+                                },
+                                icon: Icon(
+                                  Icons.arrow_left,
+                                  color: darkgreyblue,
+                                  size: 40,
+                                ),
+                              ),
+                              Text(
+                                listOfMonths[currentMonth - 1] +
+                                    (_stateView == StateView.Daily
+                                        ? ' ' +
+                                            listOfDays[currentDay - 1] +
+                                            ', '
+                                        : ' ') +
+                                    currentYear.toString(),
+                                style: TextStyle(
+                                  color: darkgreyblue,
+                                  fontSize: 24,
+                                  fontFamily: 'SegoeUI',
+                                  fontWeight: FontWeight.w900,
+                                ),
+                              ),
+                              IconButton(
+                                onPressed: () {
+                                  _stateView == StateView.Daily
+                                      ? _nextDay()
+                                      : _nextMonth();
+                                },
+                                icon: Icon(
+                                  Icons.arrow_right,
+                                  color: darkgreyblue,
+                                  size: 40,
+                                ),
                               ),
                             ],
                           ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.symmetric(vertical: 10),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                        ],
+                      )
+                    : Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Column(
-                                    children: [
-                                      Text('Cal'),
-                                      SizedBox(height: 15),
-                                      Text('Fats'),
-                                      SizedBox(height: 15),
-                                      Text('Carbs'),
-                                      SizedBox(height: 15),
-                                      Text('Protein'),
-                                      SizedBox(height: 15),
-                                      Text('Fibre'),
-                                    ],
-                                  ),
-                                  SizedBox(width: 55),
-                                  Column(
-                                    children: [
-                                      Text(totalCal.toStringAsFixed(2) +
-                                          ' kCal'),
-                                      SizedBox(height: 15),
-                                      Text(totalFats.toStringAsFixed(2) + ' g'),
-                                      SizedBox(height: 15),
-                                      Text(
-                                          totalCarbs.toStringAsFixed(2) + ' g'),
-                                      SizedBox(height: 15),
-                                      Text(totalProtein.toStringAsFixed(2) +
-                                          ' g'),
-                                      SizedBox(height: 15),
-                                      Text(
-                                          totalFibre.toStringAsFixed(2) + ' g'),
-                                    ],
-                                  ),
-                                ],
+                              Container(
+                                margin: EdgeInsets.symmetric(vertical: 10),
+                                child: Text(
+                                    'Please login to perform this function.',
+                                    style: TextStyle(
+                                      fontFamily: 'Poppins',
+                                      color: darkgreyblue,
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w400,
+                                      fontStyle: FontStyle.normal,
+                                    )),
+                              ),
+                              Container(
+                                width: 100,
+                                height: 39,
+                                decoration: new BoxDecoration(
+                                    borderRadius: BorderRadius.circular(
+                                        2.457749843597412)),
+                                child: ElevatedButton(
+                                  style: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStateProperty.all(dullgreen)),
+                                  onPressed: () {
+                                    context
+                                        .read<FirebaseAuthentication>()
+                                        .signOut();
+                                  },
+                                  child: Text('Sign In'),
+                                ),
                               ),
                             ],
                           ),
-                        ),
-                        Row(
-                          children: [
-                            Expanded(
-                                child: Divider(
-                              color: black,
-                            )),
-                          ],
-                        ),
-                      ],
-                    ),
-                  )
-                : Container(
-                    height: 250,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Center(
-                          child: CircularProgressIndicator(
-                            color: dullgreen,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                IconButton(
-                  onPressed: () {
-                    _stateView == StateView.Daily
-                        ? _previousDay()
-                        : _previousMonth();
-                  },
-                  icon: Icon(
-                    Icons.arrow_left,
-                    color: darkgreyblue,
-                    size: 40,
-                  ),
-                ),
-                Text(
-                  listOfMonths[currentMonth - 1] +
-                      (_stateView == StateView.Daily
-                          ? ' ' + listOfDays[currentDay - 1] + ', '
-                          : ' ') +
-                      currentYear.toString(),
-                  style: TextStyle(
-                    color: darkgreyblue,
-                    fontSize: 24,
-                    fontFamily: 'SegoeUI',
-                    fontWeight: FontWeight.w900,
-                  ),
-                ),
-                IconButton(
-                  onPressed: () {
-                    _stateView == StateView.Daily ? _nextDay() : _nextMonth();
-                  },
-                  icon: Icon(
-                    Icons.arrow_right,
-                    color: darkgreyblue,
-                    size: 40,
-                  ),
-                ),
+                        ],
+                      ),
               ],
             ),
-          ],
-        ),
-      ),
-    );
+          ),
+        );
+      });
+    });
   }
 }
