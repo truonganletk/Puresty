@@ -222,7 +222,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                 .signInWithGoogle();
                           },
                           child: Container(
-                              padding: EdgeInsets.all(15),
                               width: 100 * SizeConfig.widthMultiplier,
                               height: 5.93 * SizeConfig.heightMultiplier,
                               child: Row(
@@ -231,7 +230,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   Padding(
                                     padding: const EdgeInsets.only(right: 5),
                                     child:
-                                        Icon(Icons.face, color: darkgreyblue),
+                                        Icon(Icons.email, color: darkgreyblue),
                                   ),
                                   Text(
                                     "Login with Google",
@@ -260,12 +259,16 @@ class _LoginScreenState extends State<LoginScreen> {
                                 .signInAnonymous();
                           },
                           child: Container(
-                              padding: EdgeInsets.all(10),
                               width: 100 * SizeConfig.widthMultiplier,
                               height: 5.93 * SizeConfig.heightMultiplier,
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 5),
+                                    child:
+                                        Icon(Icons.face, color: darkgreyblue),
+                                  ),
                                   Text(
                                     "Use Puresty as a guest",
                                     textAlign: TextAlign.center,
