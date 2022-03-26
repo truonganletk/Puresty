@@ -191,19 +191,29 @@ class _ReportScreenState extends State<ReportScreen> {
     setState(() {
       totalCal = tempCal /
           100 /
-          ((_stateView == StateView.Monthly) ? daysofmonth.length : 1);
+          ((_stateView == StateView.Monthly && daysofmonth.length != 0)
+              ? daysofmonth.length
+              : 1);
       totalFats = tempFats /
           100 /
-          ((_stateView == StateView.Monthly) ? daysofmonth.length : 1);
+          ((_stateView == StateView.Monthly) && daysofmonth.length != 0
+              ? daysofmonth.length
+              : 1);
       totalCarbs = tempCarbs /
           100 /
-          ((_stateView == StateView.Monthly) ? daysofmonth.length : 1);
+          ((_stateView == StateView.Monthly) && daysofmonth.length != 0
+              ? daysofmonth.length
+              : 1);
       totalProtein = tempProtein /
           100 /
-          ((_stateView == StateView.Monthly) ? daysofmonth.length : 1);
+          ((_stateView == StateView.Monthly) && daysofmonth.length != 0
+              ? daysofmonth.length
+              : 1);
       totalFibre = tempFibre /
           100 /
-          ((_stateView == StateView.Monthly) ? daysofmonth.length : 1);
+          ((_stateView == StateView.Monthly) && daysofmonth.length != 0
+              ? daysofmonth.length
+              : 1);
       totalItems = tempItems;
       totalWeight = tempWeight / 100;
       hasPrevTime = temphasPrevTime;
@@ -291,25 +301,24 @@ class _ReportScreenState extends State<ReportScreen> {
                 2.64 * SizeConfig.heightMultiplier,
                 2.64 * SizeConfig.heightMultiplier),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  children: [
-                    Container(
-                      child: Text(
-                        'Report',
-                        style: TextStyle(
-                          color: black,
-                          fontSize: 40.0,
-                          fontWeight: FontWeight.w900,
-                        ),
-                      ),
+                Container(
+                  child: Text(
+                    'Report',
+                    style: TextStyle(
+                      color: black,
+                      fontSize: 40.0,
+                      fontWeight: FontWeight.w900,
                     ),
-                  ],
+                  ),
                 ),
                 Container(
                   margin: EdgeInsets.symmetric(vertical: 10),
                   child: Text(
                       'How it goes? This is a report on the nutrition you got into the body based on what you ate.',
+                      textAlign: TextAlign.left,
                       style: TextStyle(
                         fontFamily: 'Poppins',
                         color: darkgreyblue,
@@ -459,282 +468,484 @@ class _ReportScreenState extends State<ReportScreen> {
                                           )),
                                         ],
                                       ),
-                                      Container(
-                                        margin:
-                                            EdgeInsets.symmetric(vertical: 10),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              children: [
-                                                Column(
-                                                  children: [
-                                                    Container(
-                                                        margin: EdgeInsets
-                                                            .symmetric(
-                                                                vertical: 7),
-                                                        padding:
-                                                            EdgeInsets.all(5),
-                                                        child: Text('Cal')),
-                                                    Container(
-                                                        margin: EdgeInsets
-                                                            .symmetric(
-                                                                vertical: 7),
-                                                        padding:
-                                                            EdgeInsets.all(5),
-                                                        child: Text('Fats')),
-                                                    Container(
-                                                        margin: EdgeInsets
-                                                            .symmetric(
-                                                                vertical: 7),
-                                                        padding:
-                                                            EdgeInsets.all(5),
-                                                        child: Text('Carbs')),
-                                                    Container(
-                                                        margin: EdgeInsets
-                                                            .symmetric(
-                                                                vertical: 7),
-                                                        padding:
-                                                            EdgeInsets.all(5),
-                                                        child: Text('Protein')),
-                                                    Container(
-                                                        margin: EdgeInsets
-                                                            .symmetric(
-                                                                vertical: 7),
-                                                        padding:
-                                                            EdgeInsets.all(5),
-                                                        child: Text('Fibre')),
-                                                  ],
-                                                ),
-                                                SizedBox(width: 55),
-                                                Column(
-                                                  children: [
-                                                    Container(
+                                      GestureDetector(
+                                        onTap: () async {
+                                          await showDialog(
+                                              context: context,
+                                              builder: (context) {
+                                                return Dialog(
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              12.0)),
+                                                  child: Container(
+                                                      width: 312,
+                                                      height: 287,
+                                                      child: Column(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          Container(
+                                                            child: Text(
+                                                              'NOTE',
+                                                              style: TextStyle(
+                                                                fontFamily:
+                                                                    'Poppins',
+                                                                color: black,
+                                                                fontSize: 22,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600,
+                                                                fontStyle:
+                                                                    FontStyle
+                                                                        .normal,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            children: [
+                                                              Container(
+                                                                width: 60,
+                                                                margin: EdgeInsets
+                                                                    .symmetric(
+                                                                  vertical: 10,
+                                                                ),
+                                                                padding:
+                                                                    EdgeInsets
+                                                                        .all(3),
+                                                                child:
+                                                                    CircleAvatar(
+                                                                  radius: 15,
+                                                                  backgroundColor:
+                                                                      pastelred,
+                                                                  child: Icon(
+                                                                    Icons
+                                                                        .keyboard_arrow_up,
+                                                                    size: 20,
+                                                                    color:
+                                                                        white,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                              Container(
+                                                                width: 140,
+                                                                child: Text(
+                                                                    "Too many!",
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontFamily:
+                                                                          'Poppins',
+                                                                      color:
+                                                                          black,
+                                                                      fontSize:
+                                                                          17,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w400,
+                                                                      fontStyle:
+                                                                          FontStyle
+                                                                              .normal,
+                                                                    )),
+                                                              )
+                                                            ],
+                                                          ),
+                                                          Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            children: [
+                                                              Container(
+                                                                width: 60,
+                                                                margin: EdgeInsets
+                                                                    .symmetric(
+                                                                  vertical: 10,
+                                                                ),
+                                                                padding:
+                                                                    EdgeInsets
+                                                                        .all(3),
+                                                                child:
+                                                                    CircleAvatar(
+                                                                  radius: 15,
+                                                                  backgroundColor:
+                                                                      dustyorange,
+                                                                  child: Icon(
+                                                                    Icons
+                                                                        .keyboard_arrow_down,
+                                                                    size: 20,
+                                                                    color:
+                                                                        white,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                              Container(
+                                                                width: 140,
+                                                                child: Text(
+                                                                    "You need more!",
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontFamily:
+                                                                          'Poppins',
+                                                                      color:
+                                                                          black,
+                                                                      fontSize:
+                                                                          17,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w400,
+                                                                      fontStyle:
+                                                                          FontStyle
+                                                                              .normal,
+                                                                    )),
+                                                              )
+                                                            ],
+                                                          ),
+                                                          Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            children: [
+                                                              Container(
+                                                                width: 60,
+                                                                margin: EdgeInsets
+                                                                    .symmetric(
+                                                                  vertical: 10,
+                                                                ),
+                                                                padding:
+                                                                    EdgeInsets
+                                                                        .all(3),
+                                                                child:
+                                                                    CircleAvatar(
+                                                                  radius: 15,
+                                                                  backgroundColor:
+                                                                      softgreen,
+                                                                  child: Icon(
+                                                                    Icons
+                                                                        .horizontal_rule,
+                                                                    size: 20,
+                                                                    color:
+                                                                        white,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                              Container(
+                                                                width: 140,
+                                                                child: Text(
+                                                                    "Great!",
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontFamily:
+                                                                          'Poppins',
+                                                                      color:
+                                                                          black,
+                                                                      fontSize:
+                                                                          17,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w400,
+                                                                      fontStyle:
+                                                                          FontStyle
+                                                                              .normal,
+                                                                    )),
+                                                              )
+                                                            ],
+                                                          ),
+                                                          // Container(
+                                                          //   width: 21.4 *
+                                                          //       SizeConfig
+                                                          //           .widthMultiplier,
+                                                          //   height: 5.55 *
+                                                          //       SizeConfig
+                                                          //           .heightMultiplier,
+                                                          //   decoration: new BoxDecoration(
+                                                          //       borderRadius:
+                                                          //           BorderRadius
+                                                          //               .circular(
+                                                          //                   2.457749843597412)),
+                                                          //   margin: EdgeInsets
+                                                          //       .symmetric(
+                                                          //           horizontal:
+                                                          //               5),
+                                                          //   child:
+                                                          //       ElevatedButton(
+                                                          //     style: ButtonStyle(
+                                                          //         backgroundColor:
+                                                          //             MaterialStateProperty
+                                                          //                 .all(
+                                                          //                     dullgreen)),
+                                                          //     onPressed: () {
+                                                          //       Navigator.of(
+                                                          //               context)
+                                                          //           .pop(); // dismisses only the dialog and returns true
+                                                          //     },
+                                                          //     child:
+                                                          //         Text('Close'),
+                                                          //   ),
+                                                          // ),
+                                                        ],
+                                                      )),
+                                                );
+                                              });
+                                        },
+                                        child: Container(
+                                          margin: EdgeInsets.symmetric(
+                                              vertical: 10),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Column(
+                                                children: [
+                                                  Container(
                                                       margin:
                                                           EdgeInsets.symmetric(
                                                               vertical: 7),
                                                       padding:
                                                           EdgeInsets.all(5),
-                                                      child: Text(totalCal
-                                                              .toStringAsFixed(
-                                                                  2) +
-                                                          ' kCal'),
-                                                    ),
-                                                    Container(
+                                                      child: Text('Cal')),
+                                                  Container(
                                                       margin:
                                                           EdgeInsets.symmetric(
                                                               vertical: 7),
                                                       padding:
                                                           EdgeInsets.all(5),
-                                                      child: Text(totalFats
-                                                              .toStringAsFixed(
-                                                                  2) +
-                                                          ' g'),
-                                                    ),
-                                                    Container(
+                                                      child: Text('Fats')),
+                                                  Container(
                                                       margin:
                                                           EdgeInsets.symmetric(
                                                               vertical: 7),
                                                       padding:
                                                           EdgeInsets.all(5),
-                                                      child: Text(totalCarbs
-                                                              .toStringAsFixed(
-                                                                  2) +
-                                                          ' g'),
-                                                    ),
-                                                    Container(
+                                                      child: Text('Carbs')),
+                                                  Container(
                                                       margin:
                                                           EdgeInsets.symmetric(
                                                               vertical: 7),
                                                       padding:
                                                           EdgeInsets.all(5),
-                                                      child: Text(totalProtein
-                                                              .toStringAsFixed(
-                                                                  2) +
-                                                          ' g'),
-                                                    ),
-                                                    Container(
+                                                      child: Text('Protein')),
+                                                  Container(
                                                       margin:
                                                           EdgeInsets.symmetric(
                                                               vertical: 7),
                                                       padding:
                                                           EdgeInsets.all(5),
-                                                      child: Text(totalFibre
-                                                              .toStringAsFixed(
-                                                                  2) +
-                                                          ' g'),
-                                                    ),
-                                                  ],
-                                                ),
-                                                Column(
-                                                  children: [
-                                                    Container(
-                                                      margin:
-                                                          EdgeInsets.symmetric(
-                                                              vertical: 7),
-                                                      padding:
-                                                          EdgeInsets.all(5),
-                                                      child: CircleAvatar(
-                                                        radius: 10,
-                                                        backgroundColor:
-                                                            (totalCal >= 630 &&
-                                                                    totalCal <=
-                                                                        700)
-                                                                ? softgreen
-                                                                : (totalCal >
-                                                                        700
-                                                                    ? pastelred
-                                                                    : dustyorange),
-                                                        child: Icon(
-                                                          (prevCal == 0)
-                                                              ? Icons
-                                                                  .horizontal_rule
-                                                              : (prevCal == 1)
-                                                                  ? Icons
-                                                                      .keyboard_arrow_up
-                                                                  : Icons
-                                                                      .keyboard_arrow_down,
-                                                          size: 15,
-                                                          color: white,
-                                                        ),
+                                                      child: Text('Fibre')),
+                                                ],
+                                              ),
+                                              SizedBox(width: 55),
+                                              Column(
+                                                children: [
+                                                  Container(
+                                                    margin:
+                                                        EdgeInsets.symmetric(
+                                                            vertical: 7),
+                                                    padding: EdgeInsets.all(5),
+                                                    child: Text(totalCal
+                                                            .toStringAsFixed(
+                                                                2) +
+                                                        ' kCal'),
+                                                  ),
+                                                  Container(
+                                                    margin:
+                                                        EdgeInsets.symmetric(
+                                                            vertical: 7),
+                                                    padding: EdgeInsets.all(5),
+                                                    child: Text(totalFats
+                                                            .toStringAsFixed(
+                                                                2) +
+                                                        ' g'),
+                                                  ),
+                                                  Container(
+                                                    margin:
+                                                        EdgeInsets.symmetric(
+                                                            vertical: 7),
+                                                    padding: EdgeInsets.all(5),
+                                                    child: Text(totalCarbs
+                                                            .toStringAsFixed(
+                                                                2) +
+                                                        ' g'),
+                                                  ),
+                                                  Container(
+                                                    margin:
+                                                        EdgeInsets.symmetric(
+                                                            vertical: 7),
+                                                    padding: EdgeInsets.all(5),
+                                                    child: Text(totalProtein
+                                                            .toStringAsFixed(
+                                                                2) +
+                                                        ' g'),
+                                                  ),
+                                                  Container(
+                                                    margin:
+                                                        EdgeInsets.symmetric(
+                                                            vertical: 7),
+                                                    padding: EdgeInsets.all(5),
+                                                    child: Text(totalFibre
+                                                            .toStringAsFixed(
+                                                                2) +
+                                                        ' g'),
+                                                  ),
+                                                ],
+                                              ),
+                                              Column(
+                                                children: [
+                                                  Container(
+                                                    margin:
+                                                        EdgeInsets.symmetric(
+                                                            vertical: 7),
+                                                    padding: EdgeInsets.all(5),
+                                                    child: CircleAvatar(
+                                                      radius: 10,
+                                                      backgroundColor:
+                                                          (totalCal >= 630 &&
+                                                                  totalCal <=
+                                                                      700)
+                                                              ? softgreen
+                                                              : (totalCal > 700
+                                                                  ? pastelred
+                                                                  : dustyorange),
+                                                      child: Icon(
+                                                        (prevCal == 0)
+                                                            ? Icons
+                                                                .horizontal_rule
+                                                            : (prevCal == 1)
+                                                                ? Icons
+                                                                    .keyboard_arrow_up
+                                                                : Icons
+                                                                    .keyboard_arrow_down,
+                                                        size: 15,
+                                                        color: white,
                                                       ),
                                                     ),
-                                                    Container(
-                                                      margin:
-                                                          EdgeInsets.symmetric(
-                                                              vertical: 7),
-                                                      padding:
-                                                          EdgeInsets.all(3),
-                                                      child: CircleAvatar(
-                                                        radius: 10,
-                                                        backgroundColor:
-                                                            (totalFats >= 630 &&
-                                                                    totalFats <=
-                                                                        700)
-                                                                ? softgreen
-                                                                : (totalFats >
-                                                                        700
-                                                                    ? pastelred
-                                                                    : dustyorange),
-                                                        child: Icon(
-                                                          (prevFats == 0)
-                                                              ? Icons
-                                                                  .horizontal_rule
-                                                              : (prevFats == 1)
-                                                                  ? Icons
-                                                                      .keyboard_arrow_up
-                                                                  : Icons
-                                                                      .keyboard_arrow_down,
-                                                          size: 15,
-                                                          color: white,
-                                                        ),
+                                                  ),
+                                                  Container(
+                                                    margin:
+                                                        EdgeInsets.symmetric(
+                                                            vertical: 7),
+                                                    padding: EdgeInsets.all(3),
+                                                    child: CircleAvatar(
+                                                      radius: 10,
+                                                      backgroundColor:
+                                                          (totalFats >= 630 &&
+                                                                  totalFats <=
+                                                                      700)
+                                                              ? softgreen
+                                                              : (totalFats > 700
+                                                                  ? pastelred
+                                                                  : dustyorange),
+                                                      child: Icon(
+                                                        (prevFats == 0)
+                                                            ? Icons
+                                                                .horizontal_rule
+                                                            : (prevFats == 1)
+                                                                ? Icons
+                                                                    .keyboard_arrow_up
+                                                                : Icons
+                                                                    .keyboard_arrow_down,
+                                                        size: 15,
+                                                        color: white,
                                                       ),
                                                     ),
-                                                    Container(
-                                                      margin:
-                                                          EdgeInsets.symmetric(
-                                                              vertical: 7),
-                                                      padding:
-                                                          EdgeInsets.all(3),
-                                                      child: CircleAvatar(
-                                                        radius: 10,
-                                                        backgroundColor:
-                                                            (totalCarbs >=
-                                                                        630 &&
-                                                                    totalCarbs <=
-                                                                        700)
-                                                                ? softgreen
-                                                                : (totalCarbs >
-                                                                        700
-                                                                    ? pastelred
-                                                                    : dustyorange),
-                                                        child: Icon(
-                                                          (prevCarbs == 0)
-                                                              ? Icons
-                                                                  .horizontal_rule
-                                                              : (prevCarbs == 1)
-                                                                  ? Icons
-                                                                      .keyboard_arrow_up
-                                                                  : Icons
-                                                                      .keyboard_arrow_down,
-                                                          size: 15,
-                                                          color: white,
-                                                        ),
+                                                  ),
+                                                  Container(
+                                                    margin:
+                                                        EdgeInsets.symmetric(
+                                                            vertical: 7),
+                                                    padding: EdgeInsets.all(3),
+                                                    child: CircleAvatar(
+                                                      radius: 10,
+                                                      backgroundColor:
+                                                          (totalCarbs >= 630 &&
+                                                                  totalCarbs <=
+                                                                      700)
+                                                              ? softgreen
+                                                              : (totalCarbs >
+                                                                      700
+                                                                  ? pastelred
+                                                                  : dustyorange),
+                                                      child: Icon(
+                                                        (prevCarbs == 0)
+                                                            ? Icons
+                                                                .horizontal_rule
+                                                            : (prevCarbs == 1)
+                                                                ? Icons
+                                                                    .keyboard_arrow_up
+                                                                : Icons
+                                                                    .keyboard_arrow_down,
+                                                        size: 15,
+                                                        color: white,
                                                       ),
                                                     ),
-                                                    Container(
-                                                      margin:
-                                                          EdgeInsets.symmetric(
-                                                              vertical: 7),
-                                                      padding:
-                                                          EdgeInsets.all(3),
-                                                      child: CircleAvatar(
-                                                        radius: 10,
-                                                        backgroundColor:
-                                                            (totalProtein >=
-                                                                        630 &&
-                                                                    totalProtein <=
-                                                                        700)
-                                                                ? softgreen
-                                                                : (totalProtein >
-                                                                        700
-                                                                    ? pastelred
-                                                                    : dustyorange),
-                                                        child: Icon(
-                                                          (prevProtein == 0)
-                                                              ? Icons
-                                                                  .horizontal_rule
-                                                              : (prevProtein ==
-                                                                      1)
-                                                                  ? Icons
-                                                                      .keyboard_arrow_up
-                                                                  : Icons
-                                                                      .keyboard_arrow_down,
-                                                          size: 15,
-                                                          color: white,
-                                                        ),
+                                                  ),
+                                                  Container(
+                                                    margin:
+                                                        EdgeInsets.symmetric(
+                                                            vertical: 7),
+                                                    padding: EdgeInsets.all(3),
+                                                    child: CircleAvatar(
+                                                      radius: 10,
+                                                      backgroundColor:
+                                                          (totalProtein >=
+                                                                      630 &&
+                                                                  totalProtein <=
+                                                                      700)
+                                                              ? softgreen
+                                                              : (totalProtein >
+                                                                      700
+                                                                  ? pastelred
+                                                                  : dustyorange),
+                                                      child: Icon(
+                                                        (prevProtein == 0)
+                                                            ? Icons
+                                                                .horizontal_rule
+                                                            : (prevProtein == 1)
+                                                                ? Icons
+                                                                    .keyboard_arrow_up
+                                                                : Icons
+                                                                    .keyboard_arrow_down,
+                                                        size: 15,
+                                                        color: white,
                                                       ),
                                                     ),
-                                                    Container(
-                                                      margin:
-                                                          EdgeInsets.symmetric(
-                                                              vertical: 7),
-                                                      padding:
-                                                          EdgeInsets.all(3),
-                                                      child: CircleAvatar(
-                                                        radius: 10,
-                                                        backgroundColor:
-                                                            (totalFibre >=
-                                                                        630 &&
-                                                                    totalFibre <=
-                                                                        700)
-                                                                ? softgreen
-                                                                : (totalFibre >
-                                                                        700
-                                                                    ? pastelred
-                                                                    : dustyorange),
-                                                        child: Icon(
-                                                          (prevFibre == 0)
-                                                              ? Icons
-                                                                  .horizontal_rule
-                                                              : (prevFibre == 1)
-                                                                  ? Icons
-                                                                      .keyboard_arrow_up
-                                                                  : Icons
-                                                                      .keyboard_arrow_down,
-                                                          size: 15,
-                                                          color: white,
-                                                        ),
+                                                  ),
+                                                  Container(
+                                                    margin:
+                                                        EdgeInsets.symmetric(
+                                                            vertical: 7),
+                                                    padding: EdgeInsets.all(3),
+                                                    child: CircleAvatar(
+                                                      radius: 10,
+                                                      backgroundColor:
+                                                          (totalFibre >= 630 &&
+                                                                  totalFibre <=
+                                                                      700)
+                                                              ? softgreen
+                                                              : (totalFibre >
+                                                                      700
+                                                                  ? pastelred
+                                                                  : dustyorange),
+                                                      child: Icon(
+                                                        (prevFibre == 0)
+                                                            ? Icons
+                                                                .horizontal_rule
+                                                            : (prevFibre == 1)
+                                                                ? Icons
+                                                                    .keyboard_arrow_up
+                                                                : Icons
+                                                                    .keyboard_arrow_down,
+                                                        size: 15,
+                                                        color: white,
                                                       ),
                                                     ),
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
-                                          ],
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
                                       Row(
