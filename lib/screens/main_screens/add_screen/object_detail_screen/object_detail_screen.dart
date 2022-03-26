@@ -237,127 +237,163 @@ class _ObjectDetailState extends State<ObjectDetail> {
                               ],
                             ),
                             Container(
-                              height: 200,
-                              padding: EdgeInsets.fromLTRB(0, 0, 30, 0),
-                              child: GridView.count(
-                                primary: false,
-                                childAspectRatio: 3 / 1,
-                                crossAxisCount: 3,
-                                crossAxisSpacing: 5,
-                                children: <Widget>[
-                                  Column(
-                                    children: [
-                                      Text(
-                                        "Cal",
-                                        style: TextStyle(
-                                          fontFamily: 'Poppins',
-                                          color: darkgreyblue,
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w500,
-                                          fontStyle: FontStyle.normal,
-                                        ),
+                                height: 150,
+                                padding: EdgeInsets.fromLTRB(0, 0, 30, 0),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      height: 60,
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            width: 90,
+                                            child: Column(
+                                              children: [
+                                                Text(
+                                                  "Cal",
+                                                  style: TextStyle(
+                                                    fontFamily: 'Poppins',
+                                                    color: darkgreyblue,
+                                                    fontSize: 18,
+                                                    fontWeight: FontWeight.w500,
+                                                    fontStyle: FontStyle.normal,
+                                                  ),
+                                                ),
+                                                Text(fr.cal.toString() + 'kCal',
+                                                    style: TextStyle(
+                                                      fontFamily: 'Poppins',
+                                                      color: Color(0xb2000000),
+                                                      fontSize: 14,
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      fontStyle:
+                                                          FontStyle.normal,
+                                                    )),
+                                              ],
+                                            ),
+                                          ),
+                                          Container(
+                                            width: 90,
+                                            child: Column(
+                                              children: [
+                                                Text(
+                                                  "Fats",
+                                                  style: TextStyle(
+                                                    fontFamily: 'Poppins',
+                                                    color: darkgreyblue,
+                                                    fontSize: 18,
+                                                    fontWeight: FontWeight.w500,
+                                                    fontStyle: FontStyle.normal,
+                                                  ),
+                                                ),
+                                                Text(fr.fats.toString() + 'g',
+                                                    style: TextStyle(
+                                                      fontFamily: 'Poppins',
+                                                      color: Color(0xb2000000),
+                                                      fontSize: 14,
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      fontStyle:
+                                                          FontStyle.normal,
+                                                    )),
+                                              ],
+                                            ),
+                                          ),
+                                          Container(
+                                            width: 90,
+                                            child: Column(
+                                              children: [
+                                                Text(
+                                                  "Carbs",
+                                                  style: TextStyle(
+                                                    fontFamily: 'Poppins',
+                                                    color: darkgreyblue,
+                                                    fontSize: 18,
+                                                    fontWeight: FontWeight.w500,
+                                                    fontStyle: FontStyle.normal,
+                                                  ),
+                                                ),
+                                                Text(fr.carbs.toString() + 'g',
+                                                    style: TextStyle(
+                                                      fontFamily: 'Poppins',
+                                                      color: Color(0xb2000000),
+                                                      fontSize: 14,
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      fontStyle:
+                                                          FontStyle.normal,
+                                                    )),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                      Text(fr.cal.toString() + 'kCal',
-                                          style: TextStyle(
-                                            fontFamily: 'Poppins',
-                                            color: Color(0xb2000000),
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w400,
-                                            fontStyle: FontStyle.normal,
-                                          )),
-                                    ],
-                                  ),
-                                  Column(
-                                    children: [
-                                      Text(
-                                        "Fats",
-                                        style: TextStyle(
-                                          fontFamily: 'Poppins',
-                                          color: darkgreyblue,
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w500,
-                                          fontStyle: FontStyle.normal,
-                                        ),
+                                    ),
+                                    Container(
+                                      height: 60,
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            width: 90,
+                                            child: Column(
+                                              children: [
+                                                Text(
+                                                  "Protein",
+                                                  style: TextStyle(
+                                                    fontFamily: 'Poppins',
+                                                    color: darkgreyblue,
+                                                    fontSize: 18,
+                                                    fontWeight: FontWeight.w500,
+                                                    fontStyle: FontStyle.normal,
+                                                  ),
+                                                ),
+                                                Text(
+                                                    fr.protein.toString() + 'g',
+                                                    style: TextStyle(
+                                                      fontFamily: 'Poppins',
+                                                      color: Color(0xb2000000),
+                                                      fontSize: 14,
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      fontStyle:
+                                                          FontStyle.normal,
+                                                    )),
+                                              ],
+                                            ),
+                                          ),
+                                          Container(
+                                            width: 90,
+                                            child: Column(
+                                              children: [
+                                                Text(
+                                                  "Fibre",
+                                                  style: TextStyle(
+                                                    fontFamily: 'Poppins',
+                                                    color: darkgreyblue,
+                                                    fontSize: 18,
+                                                    fontWeight: FontWeight.w500,
+                                                    fontStyle: FontStyle.normal,
+                                                  ),
+                                                ),
+                                                Text(fr.fibre.toString() + 'g',
+                                                    style: TextStyle(
+                                                      fontFamily: 'Poppins',
+                                                      color: Color(0xb2000000),
+                                                      fontSize: 14,
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      fontStyle:
+                                                          FontStyle.normal,
+                                                    )),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                      Text(fr.fats.toString() + 'g',
-                                          style: TextStyle(
-                                            fontFamily: 'Poppins',
-                                            color: Color(0xb2000000),
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w400,
-                                            fontStyle: FontStyle.normal,
-                                          )),
-                                    ],
-                                  ),
-                                  Column(
-                                    children: [
-                                      Text(
-                                        "Carbs",
-                                        style: TextStyle(
-                                          fontFamily: 'Poppins',
-                                          color: darkgreyblue,
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w500,
-                                          fontStyle: FontStyle.normal,
-                                        ),
-                                      ),
-                                      Text(fr.carbs.toString() + 'g',
-                                          style: TextStyle(
-                                            fontFamily: 'Poppins',
-                                            color: Color(0xb2000000),
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w400,
-                                            fontStyle: FontStyle.normal,
-                                          )),
-                                    ],
-                                  ),
-                                  Column(
-                                    children: [
-                                      Text(
-                                        "Protein",
-                                        style: TextStyle(
-                                          fontFamily: 'Poppins',
-                                          color: darkgreyblue,
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w500,
-                                          fontStyle: FontStyle.normal,
-                                        ),
-                                      ),
-                                      Text(fr.protein.toString() + 'g',
-                                          style: TextStyle(
-                                            fontFamily: 'Poppins',
-                                            color: Color(0xb2000000),
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w400,
-                                            fontStyle: FontStyle.normal,
-                                          )),
-                                    ],
-                                  ),
-                                  Column(
-                                    children: [
-                                      Text(
-                                        "Fibre",
-                                        style: TextStyle(
-                                          fontFamily: 'Poppins',
-                                          color: darkgreyblue,
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w500,
-                                          fontStyle: FontStyle.normal,
-                                        ),
-                                      ),
-                                      Text(fr.fibre.toString() + 'g',
-                                          style: TextStyle(
-                                            fontFamily: 'Poppins',
-                                            color: Color(0xb2000000),
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w400,
-                                            fontStyle: FontStyle.normal,
-                                          )),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
+                                    ),
+                                  ],
+                                )),
                           ],
                         ),
                       ),
