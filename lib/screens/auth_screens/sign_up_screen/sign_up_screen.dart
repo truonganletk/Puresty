@@ -403,6 +403,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             _showToast("Height has to be a number!");
                           } else if (usernameController.text.contains(' ')) {
                             _showToast("Username must not contain spaces.");
+                          } else if (fullnameController.text.length > 26) {
+                            _showToast(
+                                "Full name must be less than 26 characters.");
+                          } else if (usernameController.text.length < 8 ||
+                              usernameController.text.length > 20) {
+                            _showToast(
+                                "Username must be between 8-20 characters.");
+                          } else if (passwordController.text.length < 8 ||
+                              passwordController.text.length > 20) {
+                            _showToast(
+                                "Password must be between 8-20 characters.");
+                          } else if (weightController.text.length < 2 ||
+                              weightController.text.length > 3) {
+                            _showToast("Your weight is invalid.");
+                          } else if (heightController.text.length < 2 ||
+                              heightController.text.length > 3) {
+                            _showToast("Your height is invalid.");
                           } else {
                             context
                                 .read<FirebaseAuthentication>()
