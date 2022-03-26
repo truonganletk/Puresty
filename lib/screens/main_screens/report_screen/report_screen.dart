@@ -191,19 +191,29 @@ class _ReportScreenState extends State<ReportScreen> {
     setState(() {
       totalCal = tempCal /
           100 /
-          ((_stateView == StateView.Monthly) ? daysofmonth.length : 1);
+          ((_stateView == StateView.Monthly && daysofmonth.length != 0)
+              ? daysofmonth.length
+              : 1);
       totalFats = tempFats /
           100 /
-          ((_stateView == StateView.Monthly) ? daysofmonth.length : 1);
+          ((_stateView == StateView.Monthly) && daysofmonth.length != 0
+              ? daysofmonth.length
+              : 1);
       totalCarbs = tempCarbs /
           100 /
-          ((_stateView == StateView.Monthly) ? daysofmonth.length : 1);
+          ((_stateView == StateView.Monthly) && daysofmonth.length != 0
+              ? daysofmonth.length
+              : 1);
       totalProtein = tempProtein /
           100 /
-          ((_stateView == StateView.Monthly) ? daysofmonth.length : 1);
+          ((_stateView == StateView.Monthly) && daysofmonth.length != 0
+              ? daysofmonth.length
+              : 1);
       totalFibre = tempFibre /
           100 /
-          ((_stateView == StateView.Monthly) ? daysofmonth.length : 1);
+          ((_stateView == StateView.Monthly) && daysofmonth.length != 0
+              ? daysofmonth.length
+              : 1);
       totalItems = tempItems;
       totalWeight = tempWeight / 100;
       hasPrevTime = temphasPrevTime;
@@ -291,25 +301,24 @@ class _ReportScreenState extends State<ReportScreen> {
                 2.64 * SizeConfig.heightMultiplier,
                 2.64 * SizeConfig.heightMultiplier),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  children: [
-                    Container(
-                      child: Text(
-                        'Report',
-                        style: TextStyle(
-                          color: black,
-                          fontSize: 40.0,
-                          fontWeight: FontWeight.w900,
-                        ),
-                      ),
+                Container(
+                  child: Text(
+                    'Report',
+                    style: TextStyle(
+                      color: black,
+                      fontSize: 40.0,
+                      fontWeight: FontWeight.w900,
                     ),
-                  ],
+                  ),
                 ),
                 Container(
                   margin: EdgeInsets.symmetric(vertical: 10),
                   child: Text(
                       'How it goes? This is a report on the nutrition you got into the body based on what you ate.',
+                      textAlign: TextAlign.left,
                       style: TextStyle(
                         fontFamily: 'Poppins',
                         color: darkgreyblue,
