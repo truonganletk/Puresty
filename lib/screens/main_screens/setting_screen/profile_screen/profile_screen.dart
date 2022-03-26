@@ -90,6 +90,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
       } else if (!isNumeric(heightController.text)) {
         _showToast("Height has to be a number!");
         return;
+      } else if (fullnameController.text.length > 26) {
+        _showToast("Full name must be less than 26 characters.");
+        return;
+      } else if (weightController.text.length < 2 ||
+          weightController.text.length > 3) {
+        _showToast("Your weight is invalid.");
+        return;
+      } else if (heightController.text.length < 2 ||
+          heightController.text.length > 3) {
+        _showToast("Your height is invalid.");
+        return;
       }
       FirebaseAuthentication.updateInfo(fullnameController.text,
           _sex.toString(), heightController.text, weightController.text);
