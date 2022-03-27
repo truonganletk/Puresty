@@ -54,6 +54,11 @@ class _ObjectDetailState extends State<ObjectDetail> {
       _showToast('Serving size has to be a number!');
       return;
     }
+    int fweightnumber = int.parse(fweight);
+    if (fweightnumber < 1 || fweightnumber > 9999) {
+      _showToast('Serving size must be from 1-9999g!');
+      return;
+    }
     foodeaten
         .add({
           'date': Timestamp.now(),
