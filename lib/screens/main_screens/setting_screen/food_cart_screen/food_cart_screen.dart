@@ -344,7 +344,8 @@ class _FoodCartState extends State<FoodCart> {
                                                                 _listfoodcartitem
                                                                     .elementAt(
                                                                         index)
-                                                                    .foodname,
+                                                                    .foodname
+                                                                    .toUpperCase(),
                                                                 style:
                                                                     TextStyle(
                                                                   fontFamily:
