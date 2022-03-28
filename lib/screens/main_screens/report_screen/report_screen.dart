@@ -288,6 +288,45 @@ class _ReportScreenState extends State<ReportScreen> {
     _refreshdata();
   }
 
+  void _pickDateDialog() async {
+    var pickedDate = await showDatePicker(
+        context: context,
+        initialEntryMode: DatePickerEntryMode.calendarOnly,
+        initialDate: DateTime(currentYear, currentMonth, currentDay),
+        //which date will display when user open the picker
+        firstDate: DateTime(2020),
+        //what will be the previous supported year in picker
+        lastDate:
+            DateTime.now(), //what will be the up to supported date in picker
+        builder: (BuildContext context, Widget? child) {
+          return Theme(
+            data: ThemeData.dark().copyWith(
+              colorScheme: ColorScheme.dark(
+                primary: softgreen,
+                onPrimary: black,
+                surface: softgreen,
+                onSurface: black,
+              ),
+              dialogBackgroundColor: white,
+            ),
+            child: child!,
+          );
+        });
+    //then usually do the future job
+    if (pickedDate == null) {
+      //if user tap cancel then this function will stop
+      return;
+    }
+    setState(() {
+      //for rebuilding the ui
+      //_selectedDate = pickedDate;
+      currentDay = pickedDate.day;
+      currentYear = pickedDate.year;
+      currentMonth = pickedDate.month;
+      _refreshdata();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
@@ -987,19 +1026,24 @@ class _ReportScreenState extends State<ReportScreen> {
                                   size: 40,
                                 ),
                               ),
-                              Text(
-                                listOfMonths[currentMonth - 1] +
-                                    (_stateView == StateView.Daily
-                                        ? ' ' +
-                                            listOfDays[currentDay - 1] +
-                                            ', '
-                                        : ' ') +
-                                    currentYear.toString(),
-                                style: TextStyle(
-                                  color: darkgreyblue,
-                                  fontSize: 24,
-                                  fontFamily: 'SegoeUI',
-                                  fontWeight: FontWeight.w900,
+                              GestureDetector(
+                                onTap: (_stateView == StateView.Daily)
+                                    ? _pickDateDialog
+                                    : null,
+                                child: Text(
+                                  listOfMonths[currentMonth - 1] +
+                                      (_stateView == StateView.Daily
+                                          ? ' ' +
+                                              listOfDays[currentDay - 1] +
+                                              ', '
+                                          : ' ') +
+                                      currentYear.toString(),
+                                  style: TextStyle(
+                                    color: darkgreyblue,
+                                    fontSize: 24,
+                                    fontFamily: 'SegoeUI',
+                                    fontWeight: FontWeight.w900,
+                                  ),
                                 ),
                               ),
                               IconButton(
